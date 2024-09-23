@@ -60,6 +60,7 @@ struct ContentView: View {
         do {
             let files = try FileManager.default.contentsOfDirectory(at: folderURL, includingPropertiesForKeys: nil)
             self.images = files.filter { imageExtensions.contains($0.pathExtension.lowercased()) }
+                .sorted { $0.lastPathComponent.localizedStandardCompare($1.lastPathComponent) == .orderedAscending }
             if !self.images.isEmpty {
                 self.currentIndex = 0
                 self.currentImageURL = self.images[self.currentIndex]
@@ -76,6 +77,7 @@ struct ContentView: View {
         do {
             let files = try FileManager.default.contentsOfDirectory(at: folderURL, includingPropertiesForKeys: nil)
             self.images = files.filter { imageExtensions.contains($0.pathExtension.lowercased()) }
+                .sorted { $0.lastPathComponent.localizedStandardCompare($1.lastPathComponent) == .orderedAscending }
             if let index = self.images.firstIndex(of: fileURL) {
                 self.currentIndex = index
                 self.currentImageURL = self.images[self.currentIndex]
