@@ -5,6 +5,7 @@ struct ContentView: View {
     @State private var images: [URL] = []
     @State private var currentIndex: Int = 0
     @State private var currentImageURL: URL? = nil
+    @State private var isSliderVisible: Bool = false
 
     var body: some View {
         VStack {
@@ -17,6 +18,12 @@ struct ContentView: View {
                 Text("Drag and drop a folder or image file here")
                     .font(.headline)
                     .foregroundColor(.gray)
+            }
+            
+            if !images.isEmpty {
+                SliderView(currentIndex: $currentIndex, totalImages: images.count)
+                    .opacity(isSliderVisible ? 1 : 0)
+                    .animation(.easeInOut, value: isSliderVisible)
             }
             
             Button("Open Folder") {
@@ -51,6 +58,12 @@ struct ContentView: View {
                 }
                 return event
             }
+        }
+        .onHover { isHovering in
+            isSliderVisible = isHovering
+        }
+        .onChange(of: currentIndex) { newValue in
+            currentImageURL = images[newValue]
         }
     }
     
@@ -135,5 +148,18 @@ struct ContentView: View {
     // 音を再生する関数
     private func playSound() {
         NSSound(named: "Basso")?.play()
+    }
+}
+
+struct SliderView: View {
+    @Binding var currentIndex: Int
+    let totalImages: Int
+    
+    var body: some View {
+        Slider(value: Binding(
+            get: { Double(currentIndex) },
+            set: { currentIndex = Int($0) }
+        ), in: 0...Double(totalImages - 1), step: 1)
+        .padding()
     }
 }
