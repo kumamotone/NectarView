@@ -14,6 +14,10 @@ struct ContentView: View {
                     .resizable()
                     .scaledToFit()
                     .frame(maxWidth: .infinity, maxHeight: .infinity)
+                
+                Text("\(currentIndex + 1) / \(images.count)")
+                    .font(.caption)
+                    .padding(.top, 4)
             } else {
                 Text("Drag and drop a folder or image file here")
                     .font(.headline)
