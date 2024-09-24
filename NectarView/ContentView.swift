@@ -6,6 +6,8 @@ struct ContentView: View {
     @State private var currentIndex: Int = 0
     @State private var currentImageURL: URL? = nil
     @State private var isSliderVisible: Bool = false
+    @State private var isFullscreen: Bool = false
+    @Environment(\.presentationMode) var presentationMode
 
     var body: some View {
         VStack {
@@ -14,6 +16,9 @@ struct ContentView: View {
                     .resizable()
                     .scaledToFit()
                     .frame(maxWidth: .infinity, maxHeight: .infinity)
+                    .onTapGesture(count: 2) {
+                        toggleFullscreen()
+                    }
                 
                 Text("\(currentIndex + 1) / \(images.count)")
                     .font(.caption)
@@ -181,6 +186,17 @@ struct ContentView: View {
     // 音を再生する関数
     private func playSound() {
         NSSound(named: "Basso")?.play()
+    }
+    
+    private func toggleFullscreen() {
+        isFullscreen.toggle()
+        if let window = NSApplication.shared.windows.first {
+            if isFullscreen {
+                window.toggleFullScreen(nil)
+            } else {
+                window.toggleFullScreen(nil)
+            }
+        }
     }
 }
 
