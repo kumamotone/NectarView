@@ -11,8 +11,9 @@ struct ContentView: View {
     var body: some View {
         GeometryReader { geometry in
             ZStack {
-                if let currentImageURL = imageLoader.currentImageURL {
-                    WebImage(url: currentImageURL)
+                if let currentImageURL = imageLoader.currentImageURL,
+                   let image = imageLoader.getImage(for: currentImageURL) {
+                    Image(nsImage: image)
                         .resizable()
                         .scaledToFit()
                         .frame(maxWidth: .infinity, maxHeight: .infinity)
@@ -20,7 +21,7 @@ struct ContentView: View {
                             toggleFullscreen()
                         }
                 } else {
-                    Text("ファイルまたはフォルダをドラッグ＆ドロップしてください")
+                    Text("画像を読み込み中...")
                         .font(.headline)
                         .foregroundColor(.gray)
                 }

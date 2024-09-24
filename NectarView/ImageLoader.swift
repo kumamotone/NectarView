@@ -7,11 +7,14 @@ class ImageLoader: ObservableObject {
     @Published var currentIndex: Int = 0 {
         didSet {
             currentImageURL = images.isEmpty ? nil : images[currentIndex]
+            preloadAdjacentImages()
         }
     }
     @Published var currentImageURL: URL? = nil
     
     private let imageExtensions = ["png", "jpg", "jpeg", "gif", "bmp", "tiff", "webp"]
+    private var imageCache = NSCache<NSURL, NSImage>()
+    private let preloadQueue = DispatchQueue(label: "com.nectarview.imagepreload", qos: .utility)
     
     func loadImages(from url: URL) {
         if url.pathExtension.lowercased() == "zip" {
@@ -121,6 +124,38 @@ class ImageLoader: ObservableObject {
             alert.addButton(withTitle: "OK")
             alert.runModal()
         }
+    }
+    
+    private func preloadAdjacentImages() {
+        let adjacentIndices = [
+            max(0, currentIndex - 1),
+            min(images.count - 1, currentIndex + 1)
+        ]
+        
+        for index in adjacentIndices {
+            let url = images[index]
+            preloadQueue.async { [weak self] in
+                guard let self = self else { return }
+                if self.imageCache.object(forKey: url as NSURL) == nil {
+                    if let image = NSImage(contentsOf: url) {
+                        self.imageCache.setObject(image, forKey: url as NSURL)
+                    }
+                }
+            }
+        }
+    }
+    
+    func getImage(for url: URL) -> NSImage? {
+        if let cachedImage = imageCache.object(forKey: url as NSURL) {
+            return cachedImage
+        }
+        
+        if let image = NSImage(contentsOf: url) {
+            imageCache.setObject(image, forKey: url as NSURL)
+            return image
+        }
+        
+        return nil
     }
     
     func showNextImage() {
