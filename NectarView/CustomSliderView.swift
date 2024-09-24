@@ -47,7 +47,7 @@ struct CustomSliderView: View {
                     .foregroundColor(.white)
                     .cornerRadius(4)
                     .opacity(isHovering ? 1 : 0)
-                    .position(x: hoverLocation, y: -20)
+                    .position(x: hoverLocation, y: 0)
             )
         }
         .frame(height: 20)
