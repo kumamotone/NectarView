@@ -9,6 +9,8 @@ struct ContentView: View {
     @State private var isFullscreen: Bool = false
     @State var isSettingsPresented: Bool = false
     @Environment(\.presentationMode) var presentationMode
+    @State private var isDragging: Bool = false
+    @State private var isControlBarDragging: Bool = false
 
     var body: some View {
         GeometryReader { geometry in
@@ -58,12 +60,33 @@ struct ContentView: View {
                         .cornerRadius(10)
                         .padding(.bottom)
                         .transition(.move(edge: .bottom))
+                        .gesture(
+                            DragGesture(coordinateSpace: .global)
+                                .onChanged { _ in
+                                    isControlBarDragging = true
+                                }
+                                .onEnded { _ in
+                                    isControlBarDragging = false
+                                }
+                        )
                     }
                 }
             }
             .frame(maxWidth: .infinity, maxHeight: .infinity)
+            .contentShape(Rectangle()) // ビュー全体をタップ可能にする
+            .gesture(
+                DragGesture()
+                    .onChanged { _ in
+                        if !isControlBarDragging {
+                            NSApp.mainWindow?.performDrag(with: NSEvent.mouseEvent(with: .leftMouseDragged, location: NSEvent.mouseLocation, modifierFlags: [], timestamp: 0, windowNumber: NSApp.mainWindow?.windowNumber ?? 0, context: nil, eventNumber: 0, clickCount: 1, pressure: 1)!)
+                        }
+                    }
+            )
         }
         .frame(minWidth: 400, minHeight: 400)
+        .background(WindowAccessor { window in
+            window.isMovableByWindowBackground = false
+        })
         .onDrop(of: [.fileURL], isTargeted: nil) { providers in
             if let provider = providers.first {
                 _ = provider.loadObject(ofClass: URL.self) { url, error in
@@ -142,4 +165,21 @@ struct ContentView: View {
             }
         }
     }
+}
+
+// WindowAccessorを追加
+struct WindowAccessor: NSViewRepresentable {
+    let callback: (NSWindow) -> Void
+
+    func makeNSView(context: Context) -> NSView {
+        let view = NSView()
+        DispatchQueue.main.async {
+            if let window = view.window {
+                self.callback(window)
+            }
+        }
+        return view
+    }
+
+    func updateNSView(_ nsView: NSView, context: Context) {}
 }
