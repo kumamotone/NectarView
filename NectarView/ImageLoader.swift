@@ -23,10 +23,14 @@ class ImageLoader: ObservableObject {
     
     @AppStorage("lastOpenedURL") private var lastOpenedURL: String?
     @AppStorage("lastOpenedIndex") private var lastOpenedIndex: Int = 0
+    @AppStorage("lastOpenedZipContent") private var lastOpenedZipContent: Data?
+
+    private var currentZipExtractionDir: URL?
 
     func loadImages(from url: URL) {
-        // 現在のURLを保存
         lastOpenedURL = url.absoluteString
+        lastOpenedZipContent = nil
+        currentZipExtractionDir = nil
 
         if url.pathExtension.lowercased() == "zip" {
             loadImagesFromZip(url: url)
@@ -37,44 +41,50 @@ class ImageLoader: ObservableObject {
     
     private func loadImagesFromZip(url: URL) {
         do {
-            guard let archive = Archive(url: url, accessMode: .read) else { 
+            guard let archive = Archive(url: url, accessMode: .read) else {
                 print("ZIPアーカイブを開けませんでした: \(url.path)")
-                return 
+                return
             }
-            
-            var extractedImages: [URL] = []
-            
+
             let tempDir = FileManager.default.temporaryDirectory
             let zipFileName = url.deletingPathExtension().lastPathComponent
             let extractionDir = tempDir.appendingPathComponent(zipFileName)
-            
-            try FileManager.default.createDirectory(at: extractionDir, withIntermediateDirectories: true, attributes: nil)
-            
+
+            if !FileManager.default.fileExists(atPath: extractionDir.path) {
+                try FileManager.default.createDirectory(at: extractionDir, withIntermediateDirectories: true, attributes: nil)
+            }
+
+            currentZipExtractionDir = extractionDir
+
+            var extractedImages: [URL] = []
+
             for entry in archive {
                 let entryPath = entry.path
-                
+
                 if entryPath.hasPrefix("__MACOSX") || (entryPath as NSString).lastPathComponent.hasPrefix("._") {
                     continue
                 }
-                
+
                 let entryPathExtension = (entryPath as NSString).pathExtension.lowercased()
-                
+
                 if !imageExtensions.contains(entryPathExtension) {
                     continue
                 }
-                
+
                 let extractionPath = extractionDir.appendingPathComponent(entryPath)
                 let extractionFolder = extractionPath.deletingLastPathComponent()
-                
-                try FileManager.default.createDirectory(at: extractionFolder, withIntermediateDirectories: true, attributes: nil)
-                
-                try archive.extract(entry, to: extractionPath)
+
+                if !FileManager.default.fileExists(atPath: extractionPath.path) {
+                    try FileManager.default.createDirectory(at: extractionFolder, withIntermediateDirectories: true, attributes: nil)
+                    try archive.extract(entry, to: extractionPath)
+                }
                 extractedImages.append(extractionPath)
             }
-            
+
             DispatchQueue.main.async {
                 self.images = extractedImages.sorted { $0.lastPathComponent.localizedStandardCompare($1.lastPathComponent) == .orderedAscending }
                 self.currentIndex = 0
+                self.lastOpenedZipContent = try? Data(contentsOf: url)
             }
         } catch {
             print("ZIPアーカイブを開く際のエラー: \(error.localizedDescription)")
@@ -212,10 +222,70 @@ class ImageLoader: ObservableObject {
     
     func restoreLastSession() {
         if let urlString = lastOpenedURL, let url = URL(string: urlString) {
-            loadImages(from: url)
+            if url.pathExtension.lowercased() == "zip", let zipContent = lastOpenedZipContent {
+                restoreZipSession(zipContent: zipContent, originalURL: url)
+            } else {
+                loadImages(from: url)
+            }
             DispatchQueue.main.async {
                 self.currentIndex = min(self.lastOpenedIndex, self.images.count - 1)
             }
+        }
+    }
+    
+    private func restoreZipSession(zipContent: Data, originalURL: URL) {
+        do {
+            let tempDir = FileManager.default.temporaryDirectory
+            let zipFileName = originalURL.deletingPathExtension().lastPathComponent
+            let extractionDir = tempDir.appendingPathComponent(zipFileName)
+
+            if !FileManager.default.fileExists(atPath: extractionDir.path) {
+                try FileManager.default.createDirectory(at: extractionDir, withIntermediateDirectories: true, attributes: nil)
+            }
+
+            currentZipExtractionDir = extractionDir
+
+            let tempZipURL = tempDir.appendingPathComponent("\(zipFileName).zip")
+            try zipContent.write(to: tempZipURL)
+
+            guard let archive = Archive(url: tempZipURL, accessMode: .read) else {
+                print("一時ZIPアーカイブを開けませんでした")
+                return
+            }
+
+            var extractedImages: [URL] = []
+
+            for entry in archive {
+                let entryPath = entry.path
+
+                if entryPath.hasPrefix("__MACOSX") || (entryPath as NSString).lastPathComponent.hasPrefix("._") {
+                    continue
+                }
+
+                let entryPathExtension = (entryPath as NSString).pathExtension.lowercased()
+
+                if !imageExtensions.contains(entryPathExtension) {
+                    continue
+                }
+
+                let extractionPath = extractionDir.appendingPathComponent(entryPath)
+                let extractionFolder = extractionPath.deletingLastPathComponent()
+
+                if !FileManager.default.fileExists(atPath: extractionPath.path) {
+                    try FileManager.default.createDirectory(at: extractionFolder, withIntermediateDirectories: true, attributes: nil)
+                    try archive.extract(entry, to: extractionPath)
+                }
+                extractedImages.append(extractionPath)
+            }
+
+            DispatchQueue.main.async {
+                self.images = extractedImages.sorted { $0.lastPathComponent.localizedStandardCompare($1.lastPathComponent) == .orderedAscending }
+            }
+
+            try FileManager.default.removeItem(at: tempZipURL)
+        } catch {
+            print("ZIPセッションの復元中にエラーが発生しました: \(error.localizedDescription)")
+            showAlert(message: "前回のZIPセッションの復元中にエラーが発生しました: \(error.localizedDescription)")
         }
     }
     
