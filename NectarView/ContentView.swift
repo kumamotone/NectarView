@@ -90,6 +90,7 @@ struct ContentView: View {
         .onDisappear {
             stopMouseTracking()
         }
+        .navigationTitle(imageLoader.currentTitle)
     }
     
     private func startMouseTracking() {

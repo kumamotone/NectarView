@@ -14,6 +14,7 @@ class ImageLoader: ObservableObject {
         }
     }
     @Published var currentImageURL: URL? = nil
+    @Published var currentTitle: String = "NectarView"
     
     private let imageExtensions = ["png", "jpg", "jpeg", "gif", "bmp", "tiff", "webp"]
     private var imageCache = NSCache<NSURL, NSImage>()
@@ -33,8 +34,10 @@ class ImageLoader: ObservableObject {
         currentZipExtractionDir = nil
 
         if url.pathExtension.lowercased() == "zip" {
+            currentTitle = url.lastPathComponent
             loadImagesFromZip(url: url)
         } else {
+            currentTitle = url.deletingLastPathComponent().lastPathComponent
             loadImagesFromFileOrFolder(url: url)
         }
     }
@@ -223,8 +226,10 @@ class ImageLoader: ObservableObject {
     func restoreLastSession() {
         if let urlString = lastOpenedURL, let url = URL(string: urlString) {
             if url.pathExtension.lowercased() == "zip", let zipContent = lastOpenedZipContent {
+                currentTitle = url.lastPathComponent
                 restoreZipSession(zipContent: zipContent, originalURL: url)
             } else {
+                currentTitle = url.deletingLastPathComponent().lastPathComponent
                 loadImages(from: url)
             }
             DispatchQueue.main.async {
