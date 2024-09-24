@@ -20,10 +20,10 @@ struct CustomSliderView: View {
                     .fill(Color.blue)
                     .frame(width: CGFloat(currentIndex + 1) / CGFloat(totalImages) * geometry.size.width, height: 4)
                 
-                Circle()
+                RoundedRectangle(cornerRadius: 4)
                     .fill(Color.blue)
-                    .frame(width: 16, height: 16)
-                    .position(x: CGFloat(currentIndex + 1) / CGFloat(totalImages) * geometry.size.width, y: 2)
+                    .frame(width: 12, height: 24)
+                    .position(x: CGFloat(currentIndex + 1) / CGFloat(totalImages) * geometry.size.width, y: geometry.size.height / 2)
             }
             .gesture(
                 DragGesture(minimumDistance: 0)
@@ -50,6 +50,6 @@ struct CustomSliderView: View {
                     .position(x: hoverLocation, y: 0)
             )
         }
-        .frame(height: 20)
+        .frame(height: 30)
     }
 }
