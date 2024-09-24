@@ -73,7 +73,7 @@ struct ContentView: View {
             }
             startMouseTracking()
         }
-        .onChange(of: currentIndex) { newValue in
+        .onChange(of: currentIndex) { oldValue, newValue in
             currentImageURL = images[newValue]
         }
         .onDisappear {
