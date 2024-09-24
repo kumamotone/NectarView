@@ -11,6 +11,9 @@ struct ContentView: View {
     @Environment(\.presentationMode) var presentationMode
     @State private var isDragging: Bool = false
     @State private var isControlBarDragging: Bool = false
+    @State private var dragStartLocation: NSPoint?
+    @State private var windowStartLocation: NSPoint?
+    @State private var dragOffset: CGSize = .zero
 
     var body: some View {
         GeometryReader { geometry in
@@ -62,11 +65,27 @@ struct ContentView: View {
                         .transition(.move(edge: .bottom))
                         .gesture(
                             DragGesture(coordinateSpace: .global)
-                                .onChanged { _ in
-                                    isControlBarDragging = true
+                                .onChanged { value in
+                                    if !isControlBarDragging {
+                                        if dragStartLocation == nil {
+                                            dragStartLocation = value.startLocation
+                                            windowStartLocation = NSApp.mainWindow?.frame.origin
+                                        }
+                                        if let startLocation = dragStartLocation,
+                                           let windowStart = windowStartLocation,
+                                           let window = NSApp.mainWindow {
+                                            let dx = value.location.x - startLocation.x
+                                            let dy = value.location.y - startLocation.y
+                                            window.setFrameOrigin(NSPoint(
+                                                x: windowStart.x + dx,
+                                                y: windowStart.y + dy
+                                            ))
+                                        }
+                                    }
                                 }
                                 .onEnded { _ in
-                                    isControlBarDragging = false
+                                    dragStartLocation = nil
+                                    windowStartLocation = nil
                                 }
                         )
                     }
@@ -76,10 +95,23 @@ struct ContentView: View {
             .contentShape(Rectangle()) // ビュー全体をタップ可能にする
             .gesture(
                 DragGesture()
-                    .onChanged { _ in
+                    .onChanged { value in
                         if !isControlBarDragging {
-                            NSApp.mainWindow?.performDrag(with: NSEvent.mouseEvent(with: .leftMouseDragged, location: NSEvent.mouseLocation, modifierFlags: [], timestamp: 0, windowNumber: NSApp.mainWindow?.windowNumber ?? 0, context: nil, eventNumber: 0, clickCount: 1, pressure: 1)!)
+                            let newDragOffset = CGSize(
+                                width: value.translation.width + self.dragOffset.width,
+                                height: value.translation.height + self.dragOffset.height
+                            )
+                            if let window = NSApp.mainWindow {
+                                window.setFrameOrigin(NSPoint(
+                                    x: window.frame.origin.x + newDragOffset.width - self.dragOffset.width,
+                                    y: window.frame.origin.y - newDragOffset.height + self.dragOffset.height
+                                ))
+                            }
+                            self.dragOffset = newDragOffset
                         }
+                    }
+                    .onEnded { _ in
+                        self.dragOffset = .zero
                     }
             )
         }
