@@ -2,6 +2,7 @@ import Foundation
 import AppKit
 import ZIPFoundation
 import SDWebImage
+import SwiftUI
 
 class ImageLoader: ObservableObject {
     @Published var images: [URL] = []
@@ -9,6 +10,7 @@ class ImageLoader: ObservableObject {
         didSet {
             currentImageURL = images.isEmpty ? nil : images[currentIndex]
             preloadAdjacentImages()
+            updateLastOpenedIndex()
         }
     }
     @Published var currentImageURL: URL? = nil
@@ -19,7 +21,13 @@ class ImageLoader: ObservableObject {
     private var prefetchedImages: [URL: NSImage] = [:]
     private let prefetchRange = 5
     
+    @AppStorage("lastOpenedURL") private var lastOpenedURL: String?
+    @AppStorage("lastOpenedIndex") private var lastOpenedIndex: Int = 0
+
     func loadImages(from url: URL) {
+        // 現在のURLを保存
+        lastOpenedURL = url.absoluteString
+
         if url.pathExtension.lowercased() == "zip" {
             loadImagesFromZip(url: url)
         } else {
@@ -200,5 +208,19 @@ class ImageLoader: ObservableObject {
     
     private func playSound() {
         NSSound(named: "Basso")?.play()
+    }
+    
+    func restoreLastSession() {
+        if let urlString = lastOpenedURL, let url = URL(string: urlString) {
+            loadImages(from: url)
+            DispatchQueue.main.async {
+                self.currentIndex = min(self.lastOpenedIndex, self.images.count - 1)
+            }
+        }
+    }
+    
+    // currentIndexが変更されたときに呼ばれるメソッド
+    func updateLastOpenedIndex() {
+        lastOpenedIndex = currentIndex
     }
 }
