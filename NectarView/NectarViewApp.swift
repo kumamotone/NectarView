@@ -19,5 +19,8 @@ struct NectarViewApp: App {
         WindowGroup {
             ContentView()
         }
+        .commands {
+            ContentView_Menus()
+        }
     }
 }

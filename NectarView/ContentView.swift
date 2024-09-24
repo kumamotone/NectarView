@@ -19,7 +19,7 @@ struct ContentView: View {
                     .font(.caption)
                     .padding(.top, 4)
             } else {
-                Text("Drag and drop a folder or image file here")
+                Text("ファイルまたはフォルダをドラッグ＆ドロップしてください")
                     .font(.headline)
                     .foregroundColor(.gray)
             }
@@ -29,12 +29,8 @@ struct ContentView: View {
                     .opacity(isSliderVisible ? 1 : 0)
                     .animation(.easeInOut, value: isSliderVisible)
             }
-            
-            Button("Open Folder") {
-                openFolder()
-            }
-            .padding()
         }
+        .frame(minWidth: 400, minHeight: 400)
         .onDrop(of: [.fileURL], isTargeted: nil) { providers in
             if let provider = providers.first {
                 _ = provider.loadObject(ofClass: URL.self) { url, error in
@@ -48,11 +44,10 @@ struct ContentView: View {
             }
             return false
         }
-        .frame(minWidth: 400, minHeight: 400)
         .onAppear {
             NSEvent.addLocalMonitorForEvents(matching: .keyDown) { event in
                 if handleKeyPress(event: event) {
-                    return nil // イベントを処理済みとしてシステムに渡さない
+                    return nil
                 }
                 return event
             }
@@ -66,7 +61,7 @@ struct ContentView: View {
     }
     
     // フォルダまたはファイルから全ての画像を読み込む
-    private func loadImages(from url: URL) {
+    func loadImages(from url: URL) {
         let imageExtensions = ["png", "jpg", "jpeg", "gif", "bmp", "tiff", "webp"]
         let folderURL = url.hasDirectoryPath ? url : url.deletingLastPathComponent()
         
@@ -202,6 +197,30 @@ struct SliderView: View {
             .padding()
         } else {
             EmptyView()
+        }
+    }
+}
+
+// メニュー用の構造体
+struct ContentView_Menus: Commands {
+    @CommandsBuilder var body: some Commands {
+        CommandMenu("ファイル") {
+            Button("開く...") {
+                openFileOrFolder()
+            }
+            .keyboardShortcut("O", modifiers: .command)
+        }
+    }
+    
+    private func openFileOrFolder() {
+        let dialog = NSOpenPanel()
+        dialog.title = "ファイルまたはフォルダを選択"
+        dialog.canChooseFiles = true
+        dialog.canChooseDirectories = true
+        dialog.allowsMultipleSelection = false
+
+        if dialog.runModal() == .OK, let result = dialog.url {
+            ContentView().loadImages(from: result)
         }
     }
 }
