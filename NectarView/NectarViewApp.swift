@@ -10,17 +10,21 @@ import SwiftData
 
 @main
 struct NectarViewApp: App {
-    init() {
-        // ネットワーク設定の読み込みを無効化
-        UserDefaults.standard.set(false, forKey: "NSFileManagerShouldReadNetworkSettings")
-    }
+    @StateObject private var appSettings = AppSettings()
+    @State private var isSettingsPresented = false
 
     var body: some Scene {
         WindowGroup {
             ContentView()
+                .environmentObject(appSettings)
+                .sheet(isPresented: $isSettingsPresented) {
+                    SettingsView(appSettings: appSettings)
+                        .frame(width: 300, height: 150)
+                }
         }
         .commands {
-            ContentView_Menus()
+            ContentView_Menus(isSettingsPresented: $isSettingsPresented)
+            SidebarCommands()
         }
     }
 }

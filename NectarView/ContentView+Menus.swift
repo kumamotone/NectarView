@@ -1,7 +1,16 @@
 import SwiftUI
 
 struct ContentView_Menus: Commands {
-    @CommandsBuilder var body: some Commands {
+    @Binding var isSettingsPresented: Bool
+
+    var body: some Commands {
+        CommandGroup(after: .newItem) {
+            Button("設定") {
+                isSettingsPresented = true
+            }
+            .keyboardShortcut(",", modifiers: .command)
+        }
+        
         CommandMenu("ファイル") {
             Button("開く...") {
                 openFileOrFolder()

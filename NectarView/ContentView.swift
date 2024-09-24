@@ -3,14 +3,18 @@ import SDWebImageSwiftUI
 
 struct ContentView: View {
     @StateObject private var imageLoader = ImageLoader()
+    @EnvironmentObject private var appSettings: AppSettings
     @State private var isControlsVisible: Bool = false
     @State private var timer: Timer?
     @State private var isFullscreen: Bool = false
+    @State var isSettingsPresented: Bool = false
     @Environment(\.presentationMode) var presentationMode
 
     var body: some View {
         GeometryReader { geometry in
             ZStack {
+                appSettings.backgroundColor.edgesIgnoringSafeArea(.all)
+                
                 if let currentImageURL = imageLoader.currentImageURL,
                    let image = imageLoader.getImage(for: currentImageURL) {
                     Image(nsImage: image)
@@ -50,7 +54,7 @@ struct ContentView: View {
                             }
                         }
                         .padding()
-                        .background(Color.black.opacity(0.5))
+                        .background(appSettings.controlBarColor)
                         .cornerRadius(10)
                         .padding(.bottom)
                         .transition(.move(edge: .bottom))
@@ -91,6 +95,10 @@ struct ContentView: View {
             stopMouseTracking()
         }
         .navigationTitle(imageLoader.currentTitle)
+        .sheet(isPresented: $isSettingsPresented) {
+            SettingsView(appSettings: appSettings)
+                .frame(width: 300, height: 150)
+        }
     }
     
     private func startMouseTracking() {
