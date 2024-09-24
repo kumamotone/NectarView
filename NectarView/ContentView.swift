@@ -14,6 +14,7 @@ struct ContentView: View {
     @State private var dragStartLocation: NSPoint?
     @State private var windowStartLocation: NSPoint?
     @State private var dragOffset: CGSize = .zero
+    @State private var isControlBarHovered: Bool = false
 
     var body: some View {
         GeometryReader { geometry in
@@ -63,29 +64,16 @@ struct ContentView: View {
                         .cornerRadius(10)
                         .padding(.bottom)
                         .transition(.move(edge: .bottom))
+                        .onHover { hovering in
+                            isControlBarHovered = hovering
+                        }
                         .gesture(
-                            DragGesture(coordinateSpace: .global)
-                                .onChanged { value in
-                                    if !isControlBarDragging {
-                                        if dragStartLocation == nil {
-                                            dragStartLocation = value.startLocation
-                                            windowStartLocation = NSApp.mainWindow?.frame.origin
-                                        }
-                                        if let startLocation = dragStartLocation,
-                                           let windowStart = windowStartLocation,
-                                           let window = NSApp.mainWindow {
-                                            let dx = value.location.x - startLocation.x
-                                            let dy = value.location.y - startLocation.y
-                                            window.setFrameOrigin(NSPoint(
-                                                x: windowStart.x + dx,
-                                                y: windowStart.y + dy
-                                            ))
-                                        }
-                                    }
+                            DragGesture()
+                                .onChanged { _ in
+                                    isControlBarDragging = true
                                 }
                                 .onEnded { _ in
-                                    dragStartLocation = nil
-                                    windowStartLocation = nil
+                                    isControlBarDragging = false
                                 }
                         )
                     }
@@ -96,7 +84,7 @@ struct ContentView: View {
             .gesture(
                 DragGesture()
                     .onChanged { value in
-                        if !isControlBarDragging {
+                        if !isControlBarHovered {
                             let newDragOffset = CGSize(
                                 width: value.translation.width + self.dragOffset.width,
                                 height: value.translation.height + self.dragOffset.height
