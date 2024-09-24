@@ -5,35 +5,50 @@ struct ContentView: View {
     @State private var images: [URL] = []
     @State private var currentIndex: Int = 0
     @State private var currentImageURL: URL? = nil
-    @State private var isSliderVisible: Bool = false
+    @State private var isControlsVisible: Bool = false
+    @State private var timer: Timer?
     @State private var isFullscreen: Bool = false
     @Environment(\.presentationMode) var presentationMode
 
     var body: some View {
-        VStack {
-            if let currentImageURL = currentImageURL {
-                WebImage(url: currentImageURL)
-                    .resizable()
-                    .scaledToFit()
-                    .frame(maxWidth: .infinity, maxHeight: .infinity)
-                    .onTapGesture(count: 2) {
-                        toggleFullscreen()
-                    }
+        GeometryReader { geometry in
+            ZStack {
+                if let currentImageURL = currentImageURL {
+                    WebImage(url: currentImageURL)
+                        .resizable()
+                        .scaledToFit()
+                        .frame(maxWidth: .infinity, maxHeight: .infinity)
+                        .onTapGesture(count: 2) {
+                            toggleFullscreen()
+                        }
+                } else {
+                    Text("ファイルまたはフォルダをドラッグ＆ドロップしてください")
+                        .font(.headline)
+                        .foregroundColor(.gray)
+                }
                 
-                Text("\(currentIndex + 1) / \(images.count)")
-                    .font(.caption)
-                    .padding(.top, 4)
-            } else {
-                Text("ファイルまたはフォルダをドラッグ＆ドロップしてください")
-                    .font(.headline)
-                    .foregroundColor(.gray)
+                VStack {
+                    Spacer()
+                    if isControlsVisible && images.count > 0 {
+                        HStack {
+                            Text("\(currentIndex + 1) / \(images.count)")
+                                .font(.caption)
+                                .padding(.leading)
+                            
+                            if images.count > 1 {
+                                SliderView(currentIndex: $currentIndex, totalImages: images.count)
+                                    .frame(maxWidth: geometry.size.width * 0.8)
+                            }
+                        }
+                        .padding()
+                        .background(Color.black.opacity(0.5))
+                        .cornerRadius(10)
+                        .padding(.bottom)
+                        .transition(.move(edge: .bottom))
+                    }
+                }
             }
-            
-            if images.count > 1 {
-                SliderView(currentIndex: $currentIndex, totalImages: images.count)
-                    .opacity(isSliderVisible ? 1 : 0)
-                    .animation(.easeInOut, value: isSliderVisible)
-            }
+            .frame(maxWidth: .infinity, maxHeight: .infinity)
         }
         .frame(minWidth: 400, minHeight: 400)
         .onDrop(of: [.fileURL], isTargeted: nil) { providers in
@@ -56,15 +71,48 @@ struct ContentView: View {
                 }
                 return event
             }
-        }
-        .onHover { isHovering in
-            isSliderVisible = isHovering
+            startMouseTracking()
         }
         .onChange(of: currentIndex) { newValue in
             currentImageURL = images[newValue]
         }
+        .onDisappear {
+            stopMouseTracking()
+        }
     }
     
+    private func startMouseTracking() {
+        timer = Timer.scheduledTimer(withTimeInterval: 0.1, repeats: true) { _ in
+            if let window = NSApplication.shared.windows.first {
+                // グローバルなマウス位置を取得
+                let mouseLocation = NSEvent.mouseLocation
+                
+                // ウィンドウ内のローカル座標に変換
+                let localMouseLocation = window.convertFromScreen(NSRect(origin: mouseLocation, size: .zero)).origin
+
+                // ウィンドウの高さ
+                let windowHeight = window.frame.height
+
+                // 画面下部100px以内にマウスがあるかをチェック
+                if localMouseLocation.y < 100 {
+                    withAnimation {
+                        isControlsVisible = true
+                    }
+                } else {
+                    withAnimation {
+                        isControlsVisible = false
+                    }
+                }
+            }
+        }
+    }
+
+
+    private func stopMouseTracking() {
+        timer?.invalidate()
+        timer = nil
+    }
+
     // フォルダまたはファイルから全ての画像を読み込む
     func loadImages(from url: URL) {
         let imageExtensions = ["png", "jpg", "jpeg", "gif", "bmp", "tiff", "webp"]
@@ -205,15 +253,10 @@ struct SliderView: View {
     let totalImages: Int
     
     var body: some View {
-        if totalImages > 1 {
-            Slider(value: Binding(
-                get: { Double(currentIndex) },
-                set: { currentIndex = Int($0) }
-            ), in: 0...Double(totalImages - 1), step: 1)
-            .padding()
-        } else {
-            EmptyView()
-        }
+        Slider(value: Binding(
+            get: { Double(currentIndex) },
+            set: { currentIndex = Int($0) }
+        ), in: 0...Double(totalImages - 1), step: 1)
     }
 }
 
