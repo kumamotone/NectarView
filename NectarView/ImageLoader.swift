@@ -1,6 +1,7 @@
 import Foundation
 import AppKit
 import ZIPFoundation
+import SDWebImage
 
 class ImageLoader: ObservableObject {
     @Published var images: [URL] = []
@@ -15,6 +16,8 @@ class ImageLoader: ObservableObject {
     private let imageExtensions = ["png", "jpg", "jpeg", "gif", "bmp", "tiff", "webp"]
     private var imageCache = NSCache<NSURL, NSImage>()
     private let preloadQueue = DispatchQueue(label: "com.nectarview.imagepreload", qos: .utility)
+    private var prefetchedImages: [URL: NSImage] = [:]
+    private let prefetchRange = 5
     
     func loadImages(from url: URL) {
         if url.pathExtension.lowercased() == "zip" {
@@ -145,7 +148,28 @@ class ImageLoader: ObservableObject {
         }
     }
     
+    func prefetchImages() {
+        guard !images.isEmpty else { return }
+        
+        let start = max(0, currentIndex - prefetchRange)
+        let end = min(images.count - 1, currentIndex + prefetchRange)
+        
+        for index in start...end {
+            let url = images[index]
+            if prefetchedImages[url] == nil {
+                SDWebImageManager.shared.loadImage(with: url, options: [], progress: nil) { [weak self] (image, _, _, _, _, _) in
+                    if let image = image {
+                        self?.prefetchedImages[url] = image
+                    }
+                }
+            }
+        }
+    }
+    
     func getImage(for url: URL) -> NSImage? {
+        if let prefetchedImage = prefetchedImages[url] {
+            return prefetchedImage
+        }
         if let cachedImage = imageCache.object(forKey: url as NSURL) {
             return cachedImage
         }

@@ -35,8 +35,18 @@ struct ContentView: View {
                                 .padding(.leading)
                             
                             if imageLoader.images.count > 1 {
-                                SliderView(currentIndex: $imageLoader.currentIndex, totalImages: imageLoader.images.count)
-                                    .frame(maxWidth: geometry.size.width * 0.8)
+                                CustomSliderView(
+                                    currentIndex: $imageLoader.currentIndex,
+                                    totalImages: imageLoader.images.count,
+                                    onHover: { index in
+                                        // ホバー時の処理（必要に応じて）
+                                    },
+                                    onClick: { index in
+                                        imageLoader.currentIndex = index
+                                        imageLoader.prefetchImages()
+                                    }
+                                )
+                                .frame(maxWidth: geometry.size.width * 0.8)
                             }
                         }
                         .padding()
@@ -71,6 +81,7 @@ struct ContentView: View {
                 return event
             }
             startMouseTracking()
+            imageLoader.prefetchImages()
         }
         .onDisappear {
             stopMouseTracking()
