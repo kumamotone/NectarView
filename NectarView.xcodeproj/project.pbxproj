@@ -8,6 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		D07E8B102CA22E8B00C7E124 /* SDWebImageSwiftUI in Frameworks */ = {isa = PBXBuildFile; productRef = D07E8B0F2CA22E8B00C7E124 /* SDWebImageSwiftUI */; };
+		D07E8B162CA2449000C7E124 /* ZIPFoundation in Frameworks */ = {isa = PBXBuildFile; productRef = D07E8B152CA2449000C7E124 /* ZIPFoundation */; };
 		D0AABEC22CA22D0E00878C45 /* NectarViewApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = D0AABEC12CA22D0E00878C45 /* NectarViewApp.swift */; };
 		D0AABEC42CA22D0E00878C45 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D0AABEC32CA22D0E00878C45 /* ContentView.swift */; };
 		D0AABEC62CA22D0E00878C45 /* Item.swift in Sources */ = {isa = PBXBuildFile; fileRef = D0AABEC52CA22D0E00878C45 /* Item.swift */; };
@@ -56,6 +57,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				D07E8B102CA22E8B00C7E124 /* SDWebImageSwiftUI in Frameworks */,
+				D07E8B162CA2449000C7E124 /* ZIPFoundation in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -152,6 +154,7 @@
 			name = NectarView;
 			packageProductDependencies = (
 				D07E8B0F2CA22E8B00C7E124 /* SDWebImageSwiftUI */,
+				D07E8B152CA2449000C7E124 /* ZIPFoundation */,
 			);
 			productName = NectarView;
 			productReference = D0AABEBE2CA22D0E00878C45 /* NectarView.app */;
@@ -227,6 +230,7 @@
 			mainGroup = D0AABEB52CA22D0E00878C45;
 			packageReferences = (
 				D0AABEEE2CA22E1700878C45 /* XCRemoteSwiftPackageReference "SDWebImageSwiftUI" */,
+				D07E8B142CA2448F00C7E124 /* XCRemoteSwiftPackageReference "ZIPFoundation" */,
 			);
 			productRefGroup = D0AABEBF2CA22D0E00878C45 /* Products */;
 			projectDirPath = "";
@@ -597,6 +601,14 @@
 /* End XCConfigurationList section */
 
 /* Begin XCRemoteSwiftPackageReference section */
+		D07E8B142CA2448F00C7E124 /* XCRemoteSwiftPackageReference "ZIPFoundation" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/weichsel/ZIPFoundation.git";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 0.9.19;
+			};
+		};
 		D0AABEEE2CA22E1700878C45 /* XCRemoteSwiftPackageReference "SDWebImageSwiftUI" */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/SDWebImage/SDWebImageSwiftUI";
@@ -612,6 +624,11 @@
 			isa = XCSwiftPackageProductDependency;
 			package = D0AABEEE2CA22E1700878C45 /* XCRemoteSwiftPackageReference "SDWebImageSwiftUI" */;
 			productName = SDWebImageSwiftUI;
+		};
+		D07E8B152CA2449000C7E124 /* ZIPFoundation */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = D07E8B142CA2448F00C7E124 /* XCRemoteSwiftPackageReference "ZIPFoundation" */;
+			productName = ZIPFoundation;
 		};
 /* End XCSwiftPackageProductDependency section */
 	};

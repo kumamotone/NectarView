@@ -1,5 +1,6 @@
 import SwiftUI
 import SDWebImageSwiftUI
+import ZIPFoundation
 
 struct ContentView: View {
     @State private var images: [URL] = []
@@ -56,7 +57,11 @@ struct ContentView: View {
                 _ = provider.loadObject(ofClass: URL.self) { url, error in
                     if let url = url, url.isFileURL {
                         DispatchQueue.main.async {
-                            loadImages(from: url)
+                            if url.pathExtension.lowercased() == "zip" {
+                                loadImagesFromZip(url: url)
+                            } else {
+                                loadImages(from: url)
+                            }
                         }
                     }
                 }
@@ -78,6 +83,73 @@ struct ContentView: View {
         }
         .onDisappear {
             stopMouseTracking()
+        }
+    }
+    
+    private func loadImagesFromZip(url: URL) {
+        do {
+            guard let archive = Archive(url: url, accessMode: .read) else { 
+                print("ZIPアーカイブを開けませんでした: \(url.path)")
+                return 
+            }
+            let imageExtensions = ["png", "jpg", "jpeg", "gif", "bmp", "tiff", "webp"]
+            
+            var extractedImages: [URL] = []
+            
+            // 一時フォルダへのアクセス権限を確認
+            let tempDir = FileManager.default.temporaryDirectory
+            if FileManager.default.isWritableFile(atPath: tempDir.path) {
+                print("一時フォルダに書き込み可能: \(tempDir.path)")
+            } else {
+                print("一時フォルダに書き込み不可: \(tempDir.path)")
+            }
+            
+            // ZIPファイル名を基にした一時フォルダを作成
+            let zipFileName = url.deletingPathExtension().lastPathComponent
+            let extractionDir = tempDir.appendingPathComponent(zipFileName)
+            try FileManager.default.createDirectory(at: extractionDir, withIntermediateDirectories: true, attributes: nil)
+            
+            for entry in archive {
+                let entryPath = entry.path
+                
+                // __MACOSXフォルダおよび ._ファイルを無視
+                if entryPath.hasPrefix("__MACOSX") || (entryPath as NSString).lastPathComponent.hasPrefix("._") {
+                    continue
+                }
+                
+                let entryPathExtension = (entryPath as NSString).pathExtension.lowercased()
+                
+                // 拡張子が画像形式でない場合はスキップ
+                if !imageExtensions.contains(entryPathExtension) {
+                    print("サポートされていないファイル形式: \(entryPath)")
+                    continue
+                }
+                
+                let extractionPath = extractionDir.appendingPathComponent(entryPath)
+                let extractionFolder = extractionPath.deletingLastPathComponent()
+                
+                do {
+                    // 必要に応じてフォルダを作成
+                    try FileManager.default.createDirectory(at: extractionFolder, withIntermediateDirectories: true, attributes: nil)
+                    
+                    try archive.extract(entry, to: extractionPath)
+                    print("ファイルを抽出しました: \(extractionPath.path)")
+                    extractedImages.append(extractionPath)
+                } catch {
+                    print("エントリの抽出エラー \(entryPath): \(error.localizedDescription)")
+                }
+            }
+            
+            images = extractedImages.sorted { $0.lastPathComponent.localizedStandardCompare($1.lastPathComponent) == .orderedAscending }
+            if !images.isEmpty {
+                currentIndex = 0
+                currentImageURL = images[currentIndex]
+                print("有効な画像が見つかりました: \(images.count)枚")
+            } else {
+                print("ZIPファイル内に有効な画像が見つかりませんでした。")
+            }
+        } catch {
+            print("ZIPアーカイブを開く際のエラー: \(error.localizedDescription)")
         }
     }
     
@@ -260,7 +332,7 @@ struct SliderView: View {
     }
 }
 
-// メニュー用の構造体
+// メニュー用の構��体
 struct ContentView_Menus: Commands {
     @CommandsBuilder var body: some Commands {
         CommandMenu("ファイル") {
