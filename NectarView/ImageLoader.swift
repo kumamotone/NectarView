@@ -181,7 +181,7 @@ class ImageLoader: ObservableObject {
         if let nsError = error as NSError? {
             switch nsError.code {
             case NSFileReadNoPermissionError:
-                showAlert(message: "ファイルへのアクセス権限がありません。アプリケーションの権限設定を確認してください。\nファイルパス: \(url.path)")
+                showAlert(message: "ファイルへのアクセス権限があり���ん。アプリケーションの権限設定を確認してください。\nファイルパス: \(url.path)")
             case NSFileReadUnknownError:
                 showAlert(message: "ファイルの読み込みに失敗しました。ファイルが存在するか確認してください。\nファイルパス: \(url.path)")
             default:
@@ -319,15 +319,25 @@ class ImageLoader: ObservableObject {
 
         if isSpreadViewEnabled {
             if isRightToLeftReading {
-                let rightIndex = safeCurrentIndex
-                let leftIndex = rightIndex + 1 < images.count ? rightIndex + 1 : nil
-                currentSpreadIndices = (leftIndex, rightIndex)
-                currentIndex = rightIndex
+                if safeCurrentIndex == images.count - 1 {
+                    // 最後のページの場合、1ページだけ表示
+                    currentSpreadIndices = (nil, safeCurrentIndex)
+                } else {
+                    let rightIndex = safeCurrentIndex
+                    let leftIndex = rightIndex + 1 < images.count ? rightIndex + 1 : nil
+                    currentSpreadIndices = (leftIndex, rightIndex)
+                }
+                currentIndex = safeCurrentIndex
             } else {
-                let leftIndex = safeCurrentIndex
-                let rightIndex = leftIndex + 1 < images.count ? leftIndex + 1 : nil
-                currentSpreadIndices = (leftIndex, rightIndex)
-                currentIndex = leftIndex
+                if safeCurrentIndex == 0 {
+                    // 最初のページの場合、1ページだけ表示
+                    currentSpreadIndices = (safeCurrentIndex, nil)
+                } else {
+                    let leftIndex = safeCurrentIndex % 2 == 0 ? safeCurrentIndex - 1 : safeCurrentIndex
+                    let rightIndex = leftIndex + 1 < images.count ? leftIndex + 1 : nil
+                    currentSpreadIndices = (leftIndex, rightIndex)
+                }
+                currentIndex = currentSpreadIndices.0 ?? safeCurrentIndex
             }
         } else {
             currentSpreadIndices = (nil, safeCurrentIndex)
@@ -342,36 +352,42 @@ class ImageLoader: ObservableObject {
         if isRightToLeftReading {
             if currentIndex > 1 {
                 currentIndex -= 2
+            } else if currentIndex == 1 {
+                currentIndex = 0
             } else {
                 playSound()
             }
         } else {
             if currentIndex < images.count - 2 {
                 currentIndex += 2
-            } else if currentIndex < images.count - 1 {
-                currentIndex += 1
+            } else if currentIndex == images.count - 2 {
+                currentIndex = images.count - 1
             } else {
                 playSound()
             }
         }
+        updateSpreadIndices(isSpreadViewEnabled: true, isRightToLeftReading: isRightToLeftReading)
     }
     
     func showPreviousSpread(isRightToLeftReading: Bool) {
         if isRightToLeftReading {
             if currentIndex < images.count - 2 {
                 currentIndex += 2
-            } else if currentIndex < images.count - 1 {
-                currentIndex += 1
+            } else if currentIndex == images.count - 2 {
+                currentIndex = images.count - 1
             } else {
                 playSound()
             }
         } else {
             if currentIndex > 1 {
                 currentIndex -= 2
+            } else if currentIndex == 1 {
+                currentIndex = 0
             } else {
                 playSound()
             }
         }
+        updateSpreadIndices(isSpreadViewEnabled: true, isRightToLeftReading: isRightToLeftReading)
     }
     
     private func preloadNextImage() {

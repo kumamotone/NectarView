@@ -24,7 +24,7 @@ struct NectarViewApp: App {
                 .environmentObject(appSettings)
                 .sheet(isPresented: $isSettingsPresented) {
                     SettingsView(appSettings: appSettings)
-                        .frame(width: 300, height: 150)
+                        .frame(width: 300, height: 300)
                 }
         }
         .commands {

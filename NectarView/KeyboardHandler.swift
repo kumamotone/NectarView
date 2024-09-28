@@ -1,20 +1,40 @@
+import Foundation
 import AppKit
 
-struct KeyboardHandler {
+class KeyboardHandler {
     static func handleKeyPress(event: NSEvent, imageLoader: ImageLoader, appSettings: AppSettings) -> Bool {
-        let isReversed = appSettings.isKeyboardDirectionReversed
         switch event.keyCode {
-        case 123: // 左矢印キー
-            isReversed ? imageLoader.showNextImage() : imageLoader.showPreviousImage()
+        case 123, 124: // 左矢印キー、右矢印キー
+            let isNext = (event.keyCode == 123) != appSettings.isLeftRightKeyReversed
+            if appSettings.isSpreadViewEnabled {
+                if isNext {
+                    imageLoader.showNextSpread(isRightToLeftReading: appSettings.isRightToLeftReading)
+                } else {
+                    imageLoader.showPreviousSpread(isRightToLeftReading: appSettings.isRightToLeftReading)
+                }
+            } else {
+                if isNext {
+                    imageLoader.showNextImage()
+                } else {
+                    imageLoader.showPreviousImage()
+                }
+            }
             return true
-        case 124: // 右矢印キー
-            isReversed ? imageLoader.showPreviousImage() : imageLoader.showNextImage()
-            return true
-        case 125: // 下矢印キー
-            imageLoader.showNextImage()
-            return true
-        case 126: // 上矢印キー
-            imageLoader.showPreviousImage()
+        case 125, 126: // 下矢印キー、上矢印キー
+            let isNext = (event.keyCode == 126) != appSettings.isUpDownKeyReversed
+            if appSettings.isSpreadViewEnabled {
+                if isNext {
+                    imageLoader.showNextSpread(isRightToLeftReading: appSettings.isRightToLeftReading)
+                } else {
+                    imageLoader.showPreviousSpread(isRightToLeftReading: appSettings.isRightToLeftReading)
+                }
+            } else {
+                if isNext {
+                    imageLoader.showNextImage()
+                } else {
+                    imageLoader.showPreviousImage()
+                }
+            }
             return true
         default:
             return false

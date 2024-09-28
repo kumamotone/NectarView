@@ -163,6 +163,7 @@
     },
     "ReverseKeyboardDirection" : {
       "comment" : "Reverse keyboard direction",
+      "extractionState" : "stale",
       "localizations" : {
         "en" : {
           "stringUnit" : {
@@ -174,6 +175,40 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "左キーで次のページに進む"
+          }
+        }
+      }
+    },
+    "ReverseLeftRightKey" : {
+      "comment" : "Reverse left-right key direction",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Reverse left-right key direction"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "左右キーの動作を反転"
+          }
+        }
+      }
+    },
+    "ReverseUpDownKey" : {
+      "comment" : "Reverse up-down key direction",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Reverse up-down key direction"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "上下キーの動作を反転"
           }
         }
       }

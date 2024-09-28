@@ -9,7 +9,8 @@ struct SettingsView: View {
             ColorPicker(NSLocalizedString("BackgroundColor", comment: "BackgroundColor"), selection: $appSettings.backgroundColor)
             ColorPicker(NSLocalizedString("ControlBarColor", comment: "ControlBarColor"), selection: $appSettings.controlBarColor)
             
-            Toggle(NSLocalizedString("ReverseKeyboardDirection", comment: "Reverse keyboard direction"), isOn: $appSettings.isKeyboardDirectionReversed)
+            Toggle(NSLocalizedString("ReverseLeftRightKey", comment: "Reverse left-right key direction"), isOn: $appSettings.isLeftRightKeyReversed)
+            Toggle(NSLocalizedString("ReverseUpDownKey", comment: "Reverse up-down key direction"), isOn: $appSettings.isUpDownKeyReversed)
             
             Button(NSLocalizedString("ResetSettings", comment: "ResetSettings")) {
                 appSettings.resetToDefaults()
@@ -19,7 +20,7 @@ struct SettingsView: View {
             }
         }
         .padding()
-        .frame(width: 800, height: 600)
+        .frame(width: 300, height: 300)
         .navigationTitle(NSLocalizedString("Settings", comment: "Settings"))
         .toolbar {
             ToolbarItem(placement: .confirmationAction) {

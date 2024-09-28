@@ -6,16 +6,9 @@ class AppSettings: ObservableObject {
             UserDefaults.standard.setColor(backgroundColor, forKey: "backgroundColor")
         }
     }
-    
     @Published var controlBarColor: Color {
         didSet {
             UserDefaults.standard.setColor(controlBarColor, forKey: "controlBarColor")
-        }
-    }
-    
-    @Published var isKeyboardDirectionReversed: Bool {
-        didSet {
-            UserDefaults.standard.set(isKeyboardDirectionReversed, forKey: "isKeyboardDirectionReversed")
         }
     }
     
@@ -24,29 +17,38 @@ class AppSettings: ObservableObject {
             UserDefaults.standard.set(isSpreadViewEnabled, forKey: "isSpreadViewEnabled")
         }
     }
-    
     @Published var isRightToLeftReading: Bool {
         didSet {
             UserDefaults.standard.set(isRightToLeftReading, forKey: "isRightToLeftReading")
+        }
+    }
+    @Published var isLeftRightKeyReversed: Bool {
+        didSet {
+            UserDefaults.standard.set(isLeftRightKeyReversed, forKey: "isLeftRightKeyReversed")
+        }
+    }
+    @Published var isUpDownKeyReversed: Bool {
+        didSet {
+            UserDefaults.standard.set(isUpDownKeyReversed, forKey: "isUpDownKeyReversed")
         }
     }
     
     init() {
         self.backgroundColor = UserDefaults.standard.color(forKey: "backgroundColor") ?? .black
         self.controlBarColor = UserDefaults.standard.color(forKey: "controlBarColor") ?? Color(red: 0.9, green: 0.9, blue: 0.9, opacity: 0.4)
-        self.isKeyboardDirectionReversed = UserDefaults.standard.bool(forKey: "isKeyboardDirectionReversed", defaultValue: true)
         self.isSpreadViewEnabled = UserDefaults.standard.bool(forKey: "isSpreadViewEnabled")
         self.isRightToLeftReading = UserDefaults.standard.bool(forKey: "isRightToLeftReading")
+        self.isLeftRightKeyReversed = UserDefaults.standard.bool(forKey: "isLeftRightKeyReversed", defaultValue: true)
+        self.isUpDownKeyReversed = UserDefaults.standard.bool(forKey: "isUpDownKeyReversed")
     }
     
     func resetToDefaults() {
-        self.backgroundColor = .black
-        self.controlBarColor = Color(red: 0.9, green: 0.9, blue: 0.9, opacity: 0.4)
-        self.isKeyboardDirectionReversed = true
-        
-        UserDefaults.standard.removeObject(forKey: "backgroundColor")
-        UserDefaults.standard.removeObject(forKey: "controlBarColor")
-        UserDefaults.standard.set(true, forKey: "isKeyboardDirectionReversed")
+        backgroundColor = .black
+        controlBarColor = Color(red: 0.9, green: 0.9, blue: 0.9, opacity: 0.4)
+        isSpreadViewEnabled = false
+        isRightToLeftReading = false
+        isLeftRightKeyReversed = true
+        isUpDownKeyReversed = false
     }
 }
 
