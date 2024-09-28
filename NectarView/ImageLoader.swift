@@ -24,13 +24,11 @@ class ImageLoader: ObservableObject {
     
     @AppStorage("lastOpenedURL") private var lastOpenedURL: String?
     @AppStorage("lastOpenedIndex") private var lastOpenedIndex: Int = 0
-    @AppStorage("lastOpenedZipContent") private var lastOpenedZipContent: Data?
-
+    
     private var currentZipExtractionDir: URL?
 
     func loadImages(from url: URL) {
         lastOpenedURL = url.absoluteString
-        lastOpenedZipContent = nil
         currentZipExtractionDir = nil
 
         if url.pathExtension.lowercased() == "zip" {
@@ -87,7 +85,6 @@ class ImageLoader: ObservableObject {
             DispatchQueue.main.async {
                 self.images = extractedImages.sorted { $0.lastPathComponent.localizedStandardCompare($1.lastPathComponent) == .orderedAscending }
                 self.currentIndex = 0
-                self.lastOpenedZipContent = try? Data(contentsOf: url)
             }
         } catch {
             print("ZIPアーカイブを開く際のエラー: \(error.localizedDescription)")
@@ -225,9 +222,9 @@ class ImageLoader: ObservableObject {
     
     func restoreLastSession() {
         if let urlString = lastOpenedURL, let url = URL(string: urlString) {
-            if url.pathExtension.lowercased() == "zip", let zipContent = lastOpenedZipContent {
+            if url.pathExtension.lowercased() == "zip" {
                 currentTitle = url.lastPathComponent
-                restoreZipSession(zipContent: zipContent, originalURL: url)
+                restoreZipSession(originalURL: url)
             } else {
                 currentTitle = url.deletingLastPathComponent().lastPathComponent
                 loadImages(from: url)
@@ -238,7 +235,7 @@ class ImageLoader: ObservableObject {
         }
     }
     
-    private func restoreZipSession(zipContent: Data, originalURL: URL) {
+    private func restoreZipSession(originalURL: URL) {
         do {
             let tempDir = FileManager.default.temporaryDirectory
             let zipFileName = originalURL.deletingPathExtension().lastPathComponent
@@ -250,11 +247,9 @@ class ImageLoader: ObservableObject {
 
             currentZipExtractionDir = extractionDir
 
-            let tempZipURL = tempDir.appendingPathComponent("\(zipFileName).zip")
-            try zipContent.write(to: tempZipURL)
-
-            guard let archive = Archive(url: tempZipURL, accessMode: .read) else {
-                print("一時ZIPアーカイブを開けませんでした")
+            guard let archive = Archive(url: originalURL, accessMode: .read) else {
+                print("ZIPアーカイブを開けませんでした")
+                showAlert(message: "ZIPアーカイブを開けませんでした")
                 return
             }
 
@@ -287,7 +282,6 @@ class ImageLoader: ObservableObject {
                 self.images = extractedImages.sorted { $0.lastPathComponent.localizedStandardCompare($1.lastPathComponent) == .orderedAscending }
             }
 
-            try FileManager.default.removeItem(at: tempZipURL)
         } catch {
             print("ZIPセッションの復元中にエラーが発生しました: \(error.localizedDescription)")
             showAlert(message: "前回のZIPセッションの復元中にエラーが発生しました: \(error.localizedDescription)")
