@@ -5,14 +5,13 @@ struct CustomSliderView: View {
     let totalImages: Int
     let onHover: (Int) -> Void
     let onClick: (Int) -> Void
-    
-    @State private var hoverLocation: CGFloat = 0
-    @State private var isHovering: Bool = false
+    @Binding var hoverIndex: Int
+    @Binding var hoverLocation: CGFloat
+    @Binding var isHovering: Bool
     
     var body: some View {
         GeometryReader { geometry in
             ZStack(alignment: .leading) {
-
                 // 実際のスライダーの外観
                 Rectangle()
                     .fill(Color.gray.opacity(0.3))
@@ -28,6 +27,7 @@ struct CustomSliderView: View {
                     .fill(Color.blue)
                     .frame(width: 12, height: 24)
                     .position(x: CGFloat(currentIndex + 1) / CGFloat(totalImages) * geometry.size.width, y: geometry.size.height / 2)
+                
                 // クリック可能な領域を作成
                 Rectangle()
                     .fill(Color.clear)
@@ -36,35 +36,41 @@ struct CustomSliderView: View {
                     .gesture(
                         DragGesture(minimumDistance: 0)
                             .onChanged { value in
-                                updateIndex(value: value, in: geometry)
+                                updateIndex(location: value.location.x, in: geometry)
                             }
-                            .onEnded { _ in
+                            .onEnded { value in
+                                let newIndex = calculateIndex(for: value.location.x, in: geometry)
+                                currentIndex = newIndex
                                 isHovering = false
-                                onClick(currentIndex)
+                                onClick(newIndex)
                             }
                     )
-                
+                    .onHover { hovering in
+                        isHovering = hovering
+                    }
+                    .onContinuousHover { phase in
+                        switch phase {
+                        case .active(let location):
+                            updateIndex(location: location.x, in: geometry)
+                        case .ended:
+                            isHovering = false
+                        }
+                    }
             }
-            .overlay(
-                Text("\(currentIndex + 1)/\(totalImages)")
-                    .font(.caption)
-                    .padding(4)
-                    .background(Color.black.opacity(0.7))
-                    .foregroundColor(.white)
-                    .cornerRadius(4)
-                    .opacity(isHovering ? 1 : 0)
-                    .position(x: hoverLocation, y: 0)
-            )
         }
         .frame(height: 30)
-        .contentShape(Rectangle()) // この行を追加
+        .contentShape(Rectangle())
     }
     
-    private func updateIndex(value: DragGesture.Value, in geometry: GeometryProxy) {
-        let newIndex = Int((value.location.x / geometry.size.width) * CGFloat(totalImages))
-        currentIndex = max(0, min(newIndex, totalImages - 1))
-        hoverLocation = value.location.x
+    private func updateIndex(location: CGFloat, in geometry: GeometryProxy) {
+        hoverIndex = calculateIndex(for: location, in: geometry)
+        hoverLocation = location
         isHovering = true
-        onHover(currentIndex)
+        onHover(hoverIndex)
+    }
+    
+    private func calculateIndex(for location: CGFloat, in geometry: GeometryProxy) -> Int {
+        let newIndex = Int((location / geometry.size.width) * CGFloat(totalImages))
+        return max(0, min(newIndex, totalImages - 1))
     }
 }

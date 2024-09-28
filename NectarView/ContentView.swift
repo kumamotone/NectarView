@@ -15,6 +15,9 @@ struct ContentView: View {
     @State private var windowStartLocation: NSPoint?
     @State private var dragOffset: CGSize = .zero
     @State private var isControlBarHovered: Bool = false
+    @State private var sliderHoverIndex: Int = 0
+    @State private var sliderHoverLocation: CGFloat = 0
+    @State private var isSliderHovering: Bool = false
 
     var body: some View {
         GeometryReader { geometry in
@@ -91,7 +94,10 @@ struct ContentView: View {
                                     onClick: { index in
                                         imageLoader.currentIndex = index
                                         imageLoader.prefetchImages()
-                                    }
+                                    },
+                                    hoverIndex: $sliderHoverIndex,
+                                    hoverLocation: $sliderHoverLocation,
+                                    isHovering: $isSliderHovering
                                 )
                                 .frame(maxWidth: geometry.size.width * 0.8)
                             }
@@ -114,6 +120,27 @@ struct ContentView: View {
                                 }
                         )
                     }
+                }
+
+                // プレビュー表示
+                if isSliderHovering, let previewImage = imageLoader.getImage(for: imageLoader.images[sliderHoverIndex]) {
+                    VStack {
+                        Image(nsImage: previewImage)
+                            .resizable()
+                            .scaledToFit()
+                            .frame(width: 200, height: 200)
+                            .cornerRadius(10)
+                        Text("\(sliderHoverIndex + 1)/\(imageLoader.images.count)")
+                            .font(.caption)
+                            .padding(4)
+                            .background(Color.black.opacity(0.7))
+                            .foregroundColor(.white)
+                            .cornerRadius(4)
+                    }
+                    .background(Color.white)
+                    .cornerRadius(10)
+                    .shadow(radius: 5)
+                    .position(x: sliderHoverLocation + 100, y: geometry.size.height - 200)
                 }
             }
             .frame(maxWidth: .infinity, maxHeight: .infinity)
