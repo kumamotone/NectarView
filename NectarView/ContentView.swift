@@ -23,14 +23,17 @@ struct ContentView: View {
                 
                 if appSettings.isSpreadViewEnabled {
                     HStack(spacing: 0) {
+                        Spacer(minLength: 0)
                         ForEach([imageLoader.currentSpreadIndices.0, imageLoader.currentSpreadIndices.1].compactMap { $0 }, id: \.self) { index in
-                            if let image = imageLoader.getImage(for: imageLoader.images[index]) {
+                            if index < imageLoader.images.count,
+                               let image = imageLoader.getImage(for: imageLoader.images[index]) {
                                 Image(nsImage: image)
                                     .resizable()
                                     .scaledToFit()
                                     .frame(maxWidth: geometry.size.width / 2, maxHeight: .infinity)
                             }
                         }
+                        Spacer(minLength: 0)
                     }
                 } else {
                     if let currentImageURL = imageLoader.currentImageURL,
@@ -197,7 +200,7 @@ struct ContentView: View {
     private func startMouseTracking() {
         timer = Timer.scheduledTimer(withTimeInterval: 0.1, repeats: true) { timer in
             if let window = NSApplication.shared.windows.first {
-                // グローバルなマウス位置を取得
+                // グローバルなマウス位置を取
                 let mouseLocation = NSEvent.mouseLocation
                 
                 // ウィンドウの位置とサイズを取得

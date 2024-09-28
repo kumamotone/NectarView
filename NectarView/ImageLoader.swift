@@ -18,7 +18,7 @@ class ImageLoader: ObservableObject {
     @Published var currentSourcePath: String = ""
     @Published var currentFolderPath: String = ""
     @Published var currentFileName: String = ""
-    @Published var currentSpreadIndices: (Int?, Int) = (nil, 0)
+    @Published var currentSpreadIndices: (Int?, Int?) = (nil, nil)
     
     private let imageExtensions = ["png", "jpg", "jpeg", "gif", "bmp", "tiff", "webp"]
     private var imageCache = NSCache<NSURL, NSImage>()
@@ -56,6 +56,19 @@ class ImageLoader: ObservableObject {
         self.currentSourcePath = url.path
         self.currentFolderPath = url.deletingLastPathComponent().path
         updateCurrentFileName()
+        
+        // 画像のロード後に必ずupdateSpreadIndicesを呼び出す
+        DispatchQueue.main.async { [weak self] in
+            guard let self = self else { return }
+            let isSpreadViewEnabled = UserDefaults.standard.bool(forKey: "isSpreadViewEnabled")
+            let isRightToLeftReading = UserDefaults.standard.bool(forKey: "isRightToLeftReading")
+            self.updateSpreadIndices(isSpreadViewEnabled: isSpreadViewEnabled, isRightToLeftReading: isRightToLeftReading)
+            
+            // 見開き表示の場合、2枚目の画像も読み込む
+            if isSpreadViewEnabled {
+                self.preloadNextImage()
+            }
+        }
     }
     
     private func updateCurrentFileName() {
@@ -297,29 +310,45 @@ class ImageLoader: ObservableObject {
     }
     
     func updateSpreadIndices(isSpreadViewEnabled: Bool, isRightToLeftReading: Bool) {
+        guard !images.isEmpty else {
+            currentSpreadIndices = (nil, nil)
+            return
+        }
+
+        let safeCurrentIndex = min(max(currentIndex, 0), images.count - 1)
+
         if isSpreadViewEnabled {
-            let currentIndex = self.currentIndex
-            let otherIndex = isRightToLeftReading ? currentIndex + 1 : currentIndex - 1
-            
             if isRightToLeftReading {
-                currentSpreadIndices = (otherIndex < images.count ? otherIndex : nil, currentIndex)
+                let rightIndex = safeCurrentIndex
+                let leftIndex = rightIndex + 1 < images.count ? rightIndex + 1 : nil
+                currentSpreadIndices = (leftIndex, rightIndex)
+                currentIndex = rightIndex
             } else {
-                currentSpreadIndices = (otherIndex >= 0 ? otherIndex : nil, currentIndex)
+                let leftIndex = safeCurrentIndex
+                let rightIndex = leftIndex + 1 < images.count ? leftIndex + 1 : nil
+                currentSpreadIndices = (leftIndex, rightIndex)
+                currentIndex = leftIndex
             }
         } else {
-            currentSpreadIndices = (nil, currentIndex)
+            currentSpreadIndices = (nil, safeCurrentIndex)
+            currentIndex = safeCurrentIndex
         }
+        
+        // 現在のインデックスが変更されたことを通知
+        objectWillChange.send()
     }
     
     func showNextSpread(isRightToLeftReading: Bool) {
         if isRightToLeftReading {
-            if currentIndex > 0 {
-                currentIndex -= 1
+            if currentIndex > 1 {
+                currentIndex -= 2
             } else {
                 playSound()
             }
         } else {
-            if currentIndex < images.count - 1 {
+            if currentIndex < images.count - 2 {
+                currentIndex += 2
+            } else if currentIndex < images.count - 1 {
                 currentIndex += 1
             } else {
                 playSound()
@@ -329,16 +358,33 @@ class ImageLoader: ObservableObject {
     
     func showPreviousSpread(isRightToLeftReading: Bool) {
         if isRightToLeftReading {
-            if currentIndex < images.count - 1 {
+            if currentIndex < images.count - 2 {
+                currentIndex += 2
+            } else if currentIndex < images.count - 1 {
                 currentIndex += 1
             } else {
                 playSound()
             }
         } else {
-            if currentIndex > 0 {
-                currentIndex -= 1
+            if currentIndex > 1 {
+                currentIndex -= 2
             } else {
                 playSound()
+            }
+        }
+    }
+    
+    private func preloadNextImage() {
+        let nextIndex = currentIndex + 1
+        if nextIndex < images.count {
+            let url = images[nextIndex]
+            preloadQueue.async { [weak self] in
+                guard let self = self else { return }
+                if self.imageCache.object(forKey: url as NSURL) == nil {
+                    if let image = NSImage(contentsOf: url) {
+                        self.imageCache.setObject(image, forKey: url as NSURL)
+                    }
+                }
             }
         }
     }
