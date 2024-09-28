@@ -121,7 +121,6 @@ struct ContentView: View {
             return false
         }
         .onAppear {
-            imageLoader.restoreLastSession()
             NSEvent.addLocalMonitorForEvents(matching: .keyDown) { event in
                 if KeyboardHandler.handleKeyPress(event: event, imageLoader: imageLoader, appSettings: appSettings) {
                     return nil
@@ -129,10 +128,6 @@ struct ContentView: View {
                 return event
             }
             startMouseTracking()
-            imageLoader.prefetchImages()
-        }
-        .onChange(of: imageLoader.currentIndex) { oldValue, newValue in
-            imageLoader.updateLastOpenedIndex()
         }
         .onDisappear {
             stopMouseTracking()

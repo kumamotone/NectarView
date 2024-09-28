@@ -10,7 +10,6 @@ class ImageLoader: ObservableObject {
         didSet {
             currentImageURL = images.isEmpty ? nil : images[currentIndex]
             preloadAdjacentImages()
-            updateLastOpenedIndex()
         }
     }
     @Published var currentImageURL: URL? = nil
@@ -23,22 +22,12 @@ class ImageLoader: ObservableObject {
     private var prefetchedImages: [URL: NSImage] = [:]
     private let prefetchRange = 5
     
-    @AppStorage("lastOpenedURL") private var lastOpenedURL: String?
-    @AppStorage("lastOpenedIndex") private var lastOpenedIndex: Int = 0
-    
     private var currentZipArchive: Archive?
     private var zipImageEntries: [Entry] = []
     private var zipFileURL: URL?
     private var zipEntryPaths: [String] = []
 
-    @AppStorage("folderBookmarks") private var folderBookmarks: Data = Data()
-    
     func loadImages(from url: URL) {
-        lastOpenedURL = url.absoluteString
-        
-        // ブックマークを作成または更新
-        updateBookmark(for: url)
-        
         // 既存のデータをクリア
         images = []
         currentIndex = 0
@@ -119,9 +108,6 @@ class ImageLoader: ObservableObject {
             let filteredImages = files.filter { imageExtensions.contains($0.pathExtension.lowercased()) }
                 .sorted { $0.lastPathComponent.localizedStandardCompare($1.lastPathComponent) == .orderedAscending }
             
-            // フォルダ内の画像に対してブックマークを作成
-            updateFolderBookmarks(for: filteredImages)
-            
             DispatchQueue.main.async {
                 self.images = filteredImages
                 if !self.images.isEmpty {
@@ -153,25 +139,6 @@ class ImageLoader: ObservableObject {
             } else {
                 handleLoadError(url: url, error: error)
             }
-        }
-    }
-    
-    private func updateFolderBookmarks(for urls: [URL]) {
-        var bookmarks: [Data] = []
-        for url in urls {
-            do {
-                let bookmark = try url.bookmarkData(options: .withSecurityScope, includingResourceValuesForKeys: nil, relativeTo: nil)
-                bookmarks.append(bookmark)
-            } catch {
-                print("画像のブックマーク作成中にエラーが発生しました: \(error)")
-            }
-        }
-        
-        do {
-            let encodedBookmarks = try JSONEncoder().encode(bookmarks)
-            folderBookmarks = encodedBookmarks
-        } catch {
-            print("ブックマークのエンコード中にエラーが発生しました: \(error)")
         }
     }
     
@@ -309,106 +276,6 @@ class ImageLoader: ObservableObject {
     private func playSound() {
         NSSound.beep()
     }
-    
-    func restoreLastSession() {
-        guard let urlString = lastOpenedURL, let url = URL(string: urlString) else {
-            print("前回のセッション情報が見つかりません")
-            return
-        }
-        
-        self.currentSourcePath = url.path
-        
-        if url.hasDirectoryPath {
-            restoreFolderSession(url: url)
-        } else {
-            restoreFileSession(url: url)
-        }
-    }
-    
-    private func restoreFolderSession(url: URL) {
-        do {
-            let bookmarks = try JSONDecoder().decode([Data].self, from: folderBookmarks)
-            var restoredURLs: [URL] = []
-            
-            for bookmarkData in bookmarks {
-                var isStale = false
-                do {
-                    let resolvedURL = try URL(resolvingBookmarkData: bookmarkData, options: .withSecurityScope, relativeTo: nil, bookmarkDataIsStale: &isStale)
-                    
-                    if resolvedURL.startAccessingSecurityScopedResource() {
-                        restoredURLs.append(resolvedURL)
-                    } else {
-                        print("画像へのアクセスが拒否されました: \(resolvedURL.path)")
-                    }
-                } catch {
-                    print("画像のブックマーク解決中にエラーが発生しました: \(error)")
-                }
-            }
-            
-            if !restoredURLs.isEmpty {
-                DispatchQueue.main.async {
-                    self.images = restoredURLs
-                    self.currentIndex = min(self.lastOpenedIndex, self.images.count - 1)
-                    self.currentImageURL = self.images[self.currentIndex]
-                }
-            } else {
-                showAlert(message: "フォルダ内の画像へのアクセスに失敗しました。フォルダを再度開いてください。")
-            }
-        } catch {
-            print("フォルダブックマークのデコード中にエラーが発生しました: \(error)")
-            showAlert(message: "前回開いたフォルダの情報を復元できませんでした。フォルダを再度開いてください。")
-        }
-    }
-    
-    private func restoreFileSession(url: URL) {
-        // セキュリティスコープドブックマークを使用してアクセス権限を取得
-        if let bookmarkData = UserDefaults.standard.data(forKey: "lastOpenedURLBookmark") {
-            var isStale = false
-            do {
-                let resolvedURL = try URL(resolvingBookmarkData: bookmarkData, options: .withSecurityScope, relativeTo: nil, bookmarkDataIsStale: &isStale)
-                
-                if isStale {
-                    // ブックマークが古くなっている場合は更新
-                    updateBookmark(for: url)
-                }
-                
-                // セキュリティスコープドリソースへのアクセスを開始
-                if resolvedURL.startAccessingSecurityScopedResource() {
-                    defer {
-                        resolvedURL.stopAccessingSecurityScopedResource()
-                    }
-                    
-                    loadImages(from: resolvedURL)
-                    DispatchQueue.main.async {
-                        self.currentIndex = min(self.lastOpenedIndex, self.images.count - 1)
-                    }
-                } else {
-                    print("セキュリティスコープドリソースへのアクセスが拒否されました")
-                    showAlert(message: "ファイルへのアクセスが拒否されました。アプリケーションの権限設定を確認してください。")
-                }
-            } catch {
-                print("ブックマークの解決中にエラーが発生しました: \(error)")
-                showAlert(message: "前回開いたファイルへのアクセスに失敗しました。ファイルを再度開いてください。")
-            }
-        } else {
-            print("ブックマークデータが見つかりません")
-            showAlert(message: "前回開いたファイルの情報が見つかりません。ファイルを再度開いてください。")
-        }
-    }
-    
-    private func updateBookmark(for url: URL) {
-        do {
-            let bookmarkData = try url.bookmarkData(options: .withSecurityScope, includingResourceValuesForKeys: nil, relativeTo: nil)
-            UserDefaults.standard.set(bookmarkData, forKey: "lastOpenedURLBookmark")
-        } catch {
-            print("ブックマークの更新中にエラーが発生しました: \(error)")
-        }
-    }
-    
-    func updateLastOpenedIndex() {
-        lastOpenedIndex = currentIndex
-    }
-
     func requestAccessForURL(_ url: URL, completion: @escaping (Bool) -> Void) {
         let openPanel = NSOpenPanel()
         openPanel.directoryURL = url
@@ -420,8 +287,6 @@ class ImageLoader: ObservableObject {
         openPanel.begin { result in
             if result == .OK {
                 if let selectedURL = openPanel.url {
-                    // 選択されたURLに対する権限を取得
-                    self.updateBookmark(for: selectedURL)
                     completion(true)
                 } else {
                     completion(false)
