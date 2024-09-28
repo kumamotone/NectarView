@@ -150,18 +150,26 @@ struct ContentView: View {
                 // グローバルなマウス位置を取得
                 let mouseLocation = NSEvent.mouseLocation
                 
-                // ウィンドウ内のローカル座標に変換
-                let localMouseLocation = window.convertFromScreen(NSRect(origin: mouseLocation, size: .zero)).origin
+                // ウィンドウの位置とサイズを取得
+                let windowFrame = window.frame
+                
+                // マウスがウィンドウ内にあるかチェック
+                if NSPointInRect(mouseLocation, windowFrame) {
+                    // ウィンドウ内のローカル座標に変換
+                    let localMouseLocation = window.convertFromScreen(NSRect(origin: mouseLocation, size: .zero)).origin
 
-                // ウィンドウの高さ
-                let windowHeight = window.frame.height
-
-                // 画面下部100px以内にマウスがあるかをチェック
-                if localMouseLocation.y < 100 {
-                    withAnimation {
-                        isControlsVisible = true
+                    // 画面下部100px以内にマウスがあるかをチェック
+                    if localMouseLocation.y < 100 {
+                        withAnimation {
+                            isControlsVisible = true
+                        }
+                    } else {
+                        withAnimation {
+                            isControlsVisible = false
+                        }
                     }
                 } else {
+                    // マウスがウィンドウ外にある場合はコントロールを非表示にする
                     withAnimation {
                         isControlsVisible = false
                     }
