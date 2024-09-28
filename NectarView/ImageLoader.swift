@@ -25,8 +25,6 @@ class ImageLoader: ObservableObject {
     @AppStorage("lastOpenedURL") private var lastOpenedURL: String?
     @AppStorage("lastOpenedIndex") private var lastOpenedIndex: Int = 0
     
-    private var currentZipExtractionDir: URL?
-    private var previousZipExtractionDir: URL?
     private var currentZipArchive: Archive?
     private var zipImageEntries: [Entry] = []
     private var zipFileURL: URL?
@@ -42,7 +40,6 @@ class ImageLoader: ObservableObject {
         
         if url.pathExtension.lowercased() == "zip" {
             currentTitle = url.lastPathComponent
-            cleanupTemporaryDirectory()
             loadImagesFromZip(url: url)
         } else {
             currentTitle = url.deletingLastPathComponent().lastPathComponent
@@ -52,7 +49,6 @@ class ImageLoader: ObservableObject {
     
     private func loadImagesFromZip(url: URL) {
         do {
-            // 既存のZIPアーカイブとキャッシュをクリア
             currentZipArchive = nil
             imageCache.removeAllObjects()
             prefetchedImages.removeAll()
@@ -244,86 +240,14 @@ class ImageLoader: ObservableObject {
     
     func restoreLastSession() {
         if let urlString = lastOpenedURL, let url = URL(string: urlString) {
-            if url.pathExtension.lowercased() == "zip" {
-                currentTitle = url.lastPathComponent
-                restoreZipSession(originalURL: url)
-            } else {
-                currentTitle = url.deletingLastPathComponent().lastPathComponent
-                loadImages(from: url)
-            }
+            loadImages(from: url)
             DispatchQueue.main.async {
                 self.currentIndex = min(self.lastOpenedIndex, self.images.count - 1)
             }
         }
     }
     
-    private func restoreZipSession(originalURL: URL) {
-        do {
-            let tempDir = FileManager.default.temporaryDirectory
-            let zipFileName = originalURL.deletingPathExtension().lastPathComponent
-            let extractionDir = tempDir.appendingPathComponent(zipFileName)
-
-            if !FileManager.default.fileExists(atPath: extractionDir.path) {
-                try FileManager.default.createDirectory(at: extractionDir, withIntermediateDirectories: true, attributes: nil)
-            }
-
-            currentZipExtractionDir = extractionDir
-
-            let archive = try Archive(url: originalURL, accessMode: .read)
-
-            var extractedImages: [URL] = []
-
-            for entry in archive {
-                let entryPath = entry.path
-
-                if entryPath.hasPrefix("__MACOSX") || (entryPath as NSString).lastPathComponent.hasPrefix("._") {
-                    continue
-                }
-
-                let entryPathExtension = (entryPath as NSString).pathExtension.lowercased()
-
-                if !imageExtensions.contains(entryPathExtension) {
-                    continue
-                }
-
-                let extractionPath = extractionDir.appendingPathComponent(entryPath)
-                let extractionFolder = extractionPath.deletingLastPathComponent()
-
-                if !FileManager.default.fileExists(atPath: extractionPath.path) {
-                    try FileManager.default.createDirectory(at: extractionFolder, withIntermediateDirectories: true, attributes: nil)
-                    _ = try archive.extract(entry, to: extractionPath)
-                }
-                extractedImages.append(extractionPath)
-            }
-
-            DispatchQueue.main.async {
-                self.images = extractedImages.sorted { $0.lastPathComponent.localizedStandardCompare($1.lastPathComponent) == .orderedAscending }
-            }
-
-        } catch {
-            print("ZIPセッションの復元中にエラーが発生しました: \(error.localizedDescription)")
-            showAlert(message: "前回のZIPセッション復元中にエラーが発生しました: \(error.localizedDescription)")
-        }
-    }
-    
-    // currentIndexが変更されたときに呼ばれるメソッド
     func updateLastOpenedIndex() {
         lastOpenedIndex = currentIndex
-    }
-    
-    private func cleanupTemporaryDirectory() {
-        let fileManager = FileManager.default
-        let tempDir = fileManager.temporaryDirectory
-
-        do {
-            let contents = try fileManager.contentsOfDirectory(at: tempDir, includingPropertiesForKeys: nil, options: [])
-            for url in contents {
-                if url != previousZipExtractionDir && url != currentZipExtractionDir {
-                    try fileManager.removeItem(at: url)
-                }
-            }
-        } catch {
-            print("一時ディレクトリのクリーンアップ中にエラーが発生しました: \(error.localizedDescription)")
-        }
     }
 }
