@@ -49,10 +49,8 @@ class ImageLoader: ObservableObject {
         prefetchedImages.removeAll()
 
         if url.pathExtension.lowercased() == "zip" {
-            currentTitle = url.lastPathComponent
             loadImagesFromZip(url: url)
         } else {
-            currentTitle = url.deletingLastPathComponent().lastPathComponent
             loadImagesFromFileOrFolder(url: url)
         }
     }
@@ -66,6 +64,9 @@ class ImageLoader: ObservableObject {
             let archive = try Archive(url: url, accessMode: .read)
             currentZipArchive = archive
             zipFileURL = url
+            
+            // ZIPファイルの名前をタイトルとして設定
+            currentTitle = url.lastPathComponent
             
             zipImageEntries = archive.filter { entry in
                 let entryPath = entry.path
@@ -100,6 +101,9 @@ class ImageLoader: ObservableObject {
         prefetchedImages.removeAll()
 
         let folderURL = url.hasDirectoryPath ? url : url.deletingLastPathComponent()
+        
+        // タイトルを設定
+        currentTitle = url.hasDirectoryPath ? url.lastPathComponent : url.deletingPathExtension().lastPathComponent
         
         do {
             let files = try FileManager.default.contentsOfDirectory(at: folderURL, includingPropertiesForKeys: nil)
