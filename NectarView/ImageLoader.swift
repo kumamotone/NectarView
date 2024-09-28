@@ -42,10 +42,7 @@ class ImageLoader: ObservableObject {
     
     private func loadImagesFromZip(url: URL) {
         do {
-            guard let archive = Archive(url: url, accessMode: .read) else {
-                print("ZIPアーカイブを開けませんでした: \(url.path)")
-                return
-            }
+            let archive = try Archive(url: url, accessMode: .read)
 
             let tempDir = FileManager.default.temporaryDirectory
             let zipFileName = url.deletingPathExtension().lastPathComponent
@@ -247,11 +244,7 @@ class ImageLoader: ObservableObject {
 
             currentZipExtractionDir = extractionDir
 
-            guard let archive = Archive(url: originalURL, accessMode: .read) else {
-                print("ZIPアーカイブを開けませんでした")
-                showAlert(message: "ZIPアーカイブを開けませんでした")
-                return
-            }
+            let archive = try Archive(url: originalURL, accessMode: .read)
 
             var extractedImages: [URL] = []
 
