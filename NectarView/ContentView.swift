@@ -30,11 +30,12 @@ struct ContentView: View {
                                 Image(nsImage: image)
                                     .resizable()
                                     .scaledToFit()
-                                    .frame(maxWidth: geometry.size.width / 2, maxHeight: .infinity)
+                                    .frame(maxWidth: min(geometry.size.width / 2, geometry.size.height * (image.size.width / image.size.height)), maxHeight: geometry.size.height)
                             }
                         }
                         Spacer(minLength: 0)
                     }
+                    .frame(maxWidth: .infinity)
                 } else {
                     if let currentImageURL = imageLoader.currentImageURL,
                        let image = imageLoader.getImage(for: currentImageURL) {
