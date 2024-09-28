@@ -9,12 +9,15 @@ class ImageLoader: ObservableObject {
     @Published var currentIndex: Int = 0 {
         didSet {
             currentImageURL = images.isEmpty ? nil : images[currentIndex]
+            updateCurrentFileName()
             preloadAdjacentImages()
         }
     }
     @Published var currentImageURL: URL? = nil
     @Published var currentTitle: String = "NectarView"
     @Published var currentSourcePath: String = ""
+    @Published var currentFolderPath: String = ""
+    @Published var currentFileName: String = ""
 
     private let imageExtensions = ["png", "jpg", "jpeg", "gif", "bmp", "tiff", "webp"]
     private var imageCache = NSCache<NSURL, NSImage>()
@@ -50,7 +53,18 @@ class ImageLoader: ObservableObject {
         }
         
         self.currentSourcePath = url.path
+        self.currentFolderPath = url.deletingLastPathComponent().path
+        updateCurrentFileName()
     }
+    
+    private func updateCurrentFileName() {
+        if !images.isEmpty && currentIndex < images.count {
+            currentFileName = images[currentIndex].lastPathComponent
+        } else {
+            currentFileName = ""
+        }
+    }
+
     
     private func loadImagesFromZip(url: URL) {
         do {
@@ -64,6 +78,8 @@ class ImageLoader: ObservableObject {
             
             // ZIPファイルの名前をタイトルとして設定
             currentTitle = url.lastPathComponent
+            currentFolderPath = url.deletingLastPathComponent().path
+            currentFileName = url.lastPathComponent
             
             zipImageEntries = archive.filter { entry in
                 let entryPath = entry.path
@@ -99,8 +115,10 @@ class ImageLoader: ObservableObject {
 
         let folderURL = url.hasDirectoryPath ? url : url.deletingLastPathComponent()
         
-        // タイトルを設定
+        // タイトルとパス情報を設定
         currentTitle = url.hasDirectoryPath ? url.lastPathComponent : url.deletingPathExtension().lastPathComponent
+        currentFolderPath = folderURL.path
+        currentFileName = url.hasDirectoryPath ? "" : url.lastPathComponent
         
         do {
             let files = try FileManager.default.contentsOfDirectory(at: folderURL, includingPropertiesForKeys: nil)

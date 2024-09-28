@@ -133,6 +133,9 @@ struct ContentView: View {
             stopMouseTracking()
         }
         .navigationTitle(currentImageInfo)
+        .onChange(of: imageLoader.currentIndex) { _, _ in
+            updateWindowTitle()
+        }
         .sheet(isPresented: $isSettingsPresented) {
             SettingsView(appSettings: appSettings)
                 .frame(width: 300, height: 150)
@@ -143,10 +146,15 @@ struct ContentView: View {
         if imageLoader.images.isEmpty {
             return NSLocalizedString("NoImagesLoaded", comment: "画像がロードされていません")
         } else {
-            let url = URL(fileURLWithPath: imageLoader.currentSourcePath)
-            let isDirectory = (try? url.resourceValues(forKeys: [.isDirectoryKey]))?.isDirectory ?? false
-            let displayPath = isDirectory ? url.path : url.lastPathComponent
-            return "\(displayPath) (\(imageLoader.currentIndex + 1)/\(imageLoader.images.count))"
+            let folderInfo = imageLoader.currentFolderPath
+            let fileInfo = imageLoader.currentFileName
+            return "\(folderInfo)/\(fileInfo) (\(imageLoader.currentIndex + 1)/\(imageLoader.images.count))"
+        }
+    }
+
+    private func updateWindowTitle() {
+        if let window = NSApplication.shared.windows.first {
+            window.title = currentImageInfo
         }
     }
 
