@@ -137,13 +137,21 @@ struct ContentView: View {
         .onDisappear {
             stopMouseTracking()
         }
-        .navigationTitle(imageLoader.currentTitle)
+        .navigationTitle(currentImageInfo)
         .sheet(isPresented: $isSettingsPresented) {
             SettingsView(appSettings: appSettings)
                 .frame(width: 300, height: 150)
         }
     }
-    
+
+    private var currentImageInfo: String {
+        if imageLoader.images.isEmpty {
+            return NSLocalizedString("NoImagesLoaded", comment: "No images loaded")
+        } else {
+            return "\(imageLoader.currentTitle) (\(imageLoader.currentIndex + 1) / \(imageLoader.images.count))"
+        }
+    }
+
     private func startMouseTracking() {
         timer = Timer.scheduledTimer(withTimeInterval: 0.1, repeats: true) { timer in
             if let window = NSApplication.shared.windows.first {

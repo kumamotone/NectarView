@@ -124,6 +124,9 @@
         }
       }
     },
+    "NoImagesLoaded" : {
+      "comment" : "No images loaded"
+    },
     "OpenTemporaryDirectory" : {
       "comment" : "OpenTemporaryDirectory",
       "localizations" : {
