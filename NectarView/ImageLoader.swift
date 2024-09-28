@@ -19,6 +19,8 @@ class ImageLoader: ObservableObject {
     @Published var currentFolderPath: String = ""
     @Published var currentFileName: String = ""
     @Published var currentSpreadIndices: (Int?, Int?) = (nil, nil)
+    @Published var currentZipFileName: String?
+    @Published var currentZipEntryFileName: String?
     
     private let imageExtensions = ["png", "jpg", "jpeg", "gif", "bmp", "tiff", "webp"]
     private var imageCache = NSCache<NSURL, NSImage>()
@@ -73,12 +75,25 @@ class ImageLoader: ObservableObject {
     
     private func updateCurrentFileName() {
         if !images.isEmpty && currentIndex < images.count {
-            currentFileName = images[currentIndex].lastPathComponent
+            if currentZipArchive != nil {
+                updateCurrentZipEntryFileName()
+            } else {
+                currentFileName = images[currentIndex].lastPathComponent
+            }
         } else {
             currentFileName = ""
+            currentZipEntryFileName = nil
         }
     }
-
+    
+    private func updateCurrentZipEntryFileName() {
+        if let currentZipArchive = currentZipArchive,
+           currentIndex < zipEntryPaths.count {
+            currentZipEntryFileName = (zipEntryPaths[currentIndex] as NSString).lastPathComponent
+        } else {
+            currentZipEntryFileName = nil
+        }
+    }
     
     private func loadImagesFromZip(url: URL) {
         do {
@@ -90,7 +105,8 @@ class ImageLoader: ObservableObject {
             currentZipArchive = archive
             zipFileURL = url
             
-            // ZIPファイルの名前をタイトルとして設定
+            // ZIPファイルの名前を設定
+            currentZipFileName = url.lastPathComponent
             currentTitle = url.lastPathComponent
             currentFolderPath = url.deletingLastPathComponent().path
             currentFileName = url.lastPathComponent
@@ -109,6 +125,7 @@ class ImageLoader: ObservableObject {
                 self.images = self.zipEntryPaths.indices.map { URL(fileURLWithPath: "zip://\($0)") }
                 self.currentIndex = 0
                 self.currentImageURL = self.images.first
+                self.updateCurrentZipEntryFileName()
             }
         } catch {
             print("ZIPアーカイブを開く際のエラー: \(error.localizedDescription)")
@@ -181,7 +198,7 @@ class ImageLoader: ObservableObject {
         if let nsError = error as NSError? {
             switch nsError.code {
             case NSFileReadNoPermissionError:
-                showAlert(message: "ファイルへのアクセス権限があり���ん。アプリケーションの権限設定を確認してください。\nファイルパス: \(url.path)")
+                showAlert(message: "ファイルへのアクセス権限がありん。アプリケーションの権限設定を確認してください。\nファイルパス: \(url.path)")
             case NSFileReadUnknownError:
                 showAlert(message: "ファイルの読み込みに失敗しました。ファイルが存在するか確認してください。\nファイルパス: \(url.path)")
             default:

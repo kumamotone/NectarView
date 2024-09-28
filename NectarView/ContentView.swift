@@ -189,7 +189,13 @@ struct ContentView: View {
     }
 
     private var currentImageInfo: String {
-        if imageLoader.images.isEmpty {
+        if let zipFileName = imageLoader.currentZipFileName {
+            if let entryFileName = imageLoader.currentZipEntryFileName {
+                return "\(zipFileName) - \(entryFileName) (\(imageLoader.currentIndex + 1)/\(imageLoader.images.count))"
+            } else {
+                return "\(zipFileName) (\(imageLoader.currentIndex + 1)/\(imageLoader.images.count))"
+            }
+        } else if imageLoader.images.isEmpty {
             return NSLocalizedString("NoImagesLoaded", comment: "画像がロードされていません")
         } else {
             let folderInfo = imageLoader.currentFolderPath
