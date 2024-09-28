@@ -9,7 +9,7 @@ struct SettingsView: View {
             ColorPicker(NSLocalizedString("BackgroundColor", comment: "BackgroundColor"), selection: $appSettings.backgroundColor)
             ColorPicker(NSLocalizedString("ControlBarColor", comment: "ControlBarColor"), selection: $appSettings.controlBarColor)
             
-            Toggle(NSLocalizedString("ReverseLeftRightKeySinglePage", comment: "Reverse left-right key direction (single page mode)"), isOn: $appSettings.isLeftRightKeyReversed)
+            Toggle(NSLocalizedString("ReverseLeftRightKey", comment: "Reverse left-right key direction"), isOn: $appSettings.isLeftRightKeyReversed)
             
             Button(NSLocalizedString("ResetSettings", comment: "ResetSettings")) {
                 appSettings.resetToDefaults()

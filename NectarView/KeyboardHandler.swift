@@ -10,43 +10,43 @@ class KeyboardHandler {
         switch event.keyCode {
         case 126: // 上矢印キー
             if isSpreadView {
-                showPrevious(imageLoader: imageLoader, isSpreadView: true, isRightToLeftReading: isRightToLeftReading)
+                imageLoader.showPreviousSpreadSimple()
             } else {
                 imageLoader.showPreviousImage()
             }
             return true
         case 125: // 下矢印キー
             if isSpreadView {
-                showNext(imageLoader: imageLoader, isSpreadView: true, isRightToLeftReading: isRightToLeftReading)
+                imageLoader.showNextSpreadSimple()
             } else {
                 imageLoader.showNextImage()
             }
             return true
         case 123: // 左矢印キー
-            if isSpreadView {
-                if isRightToLeftReading {
-                    showNext(imageLoader: imageLoader, isSpreadView: true, isRightToLeftReading: isRightToLeftReading)
+            if isLeftRightReversed {
+                if isSpreadView {
+                    imageLoader.showNextSpread(isRightToLeftReading: isRightToLeftReading)
                 } else {
-                    showPrevious(imageLoader: imageLoader, isSpreadView: true, isRightToLeftReading: isRightToLeftReading)
+                    imageLoader.showNextImage()
                 }
             } else {
-                if isLeftRightReversed {
-                    imageLoader.showNextImage()
+                if isSpreadView {
+                    imageLoader.showPreviousSpread(isRightToLeftReading: isRightToLeftReading)
                 } else {
                     imageLoader.showPreviousImage()
                 }
             }
             return true
         case 124: // 右矢印キー
-            if isSpreadView {
-                if isRightToLeftReading {
-                    showPrevious(imageLoader: imageLoader, isSpreadView: true, isRightToLeftReading: isRightToLeftReading)
+            if isLeftRightReversed {
+                if isSpreadView {
+                    imageLoader.showPreviousSpread(isRightToLeftReading: isRightToLeftReading)
                 } else {
-                    showNext(imageLoader: imageLoader, isSpreadView: true, isRightToLeftReading: isRightToLeftReading)
+                    imageLoader.showPreviousImage()
                 }
             } else {
-                if isLeftRightReversed {
-                    imageLoader.showPreviousImage()
+                if isSpreadView {
+                    imageLoader.showNextSpread(isRightToLeftReading: isRightToLeftReading)
                 } else {
                     imageLoader.showNextImage()
                 }
@@ -54,22 +54,6 @@ class KeyboardHandler {
             return true
         default:
             return false
-        }
-    }
-
-    private static func showNext(imageLoader: ImageLoader, isSpreadView: Bool, isRightToLeftReading: Bool) {
-        if isSpreadView {
-            imageLoader.showNextSpread(isRightToLeftReading: isRightToLeftReading)
-        } else {
-            imageLoader.showNextImage()
-        }
-    }
-
-    private static func showPrevious(imageLoader: ImageLoader, isSpreadView: Bool, isRightToLeftReading: Bool) {
-        if isSpreadView {
-            imageLoader.showPreviousSpread(isRightToLeftReading: isRightToLeftReading)
-        } else {
-            imageLoader.showPreviousImage()
         }
     }
 }

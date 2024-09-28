@@ -105,7 +105,7 @@ class ImageLoader: ObservableObject {
             currentZipArchive = archive
             zipFileURL = url
             
-            // ZIPファイルの名前を設定
+            // ZIPファイルの名���を設定
             currentZipFileName = url.lastPathComponent
             currentTitle = url.lastPathComponent
             currentFolderPath = url.deletingLastPathComponent().path
@@ -405,6 +405,28 @@ class ImageLoader: ObservableObject {
             }
         }
         updateSpreadIndices(isSpreadViewEnabled: true, isRightToLeftReading: isRightToLeftReading)
+    }
+    
+    func showNextSpreadSimple() {
+        if currentIndex < images.count - 2 {
+            currentIndex += 2
+        } else if currentIndex == images.count - 2 {
+            currentIndex = images.count - 1
+        } else {
+            playSound()
+        }
+        updateSpreadIndices(isSpreadViewEnabled: true, isRightToLeftReading: false)
+    }
+    
+    func showPreviousSpreadSimple() {
+        if currentIndex > 1 {
+            currentIndex -= 2
+        } else if currentIndex == 1 {
+            currentIndex = 0
+        } else {
+            playSound()
+        }
+        updateSpreadIndices(isSpreadViewEnabled: true, isRightToLeftReading: false)
     }
     
     private func preloadNextImage() {

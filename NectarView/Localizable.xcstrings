@@ -181,7 +181,6 @@
     },
     "ReverseLeftRightKey" : {
       "comment" : "Reverse left-right key direction",
-      "extractionState" : "stale",
       "localizations" : {
         "en" : {
           "stringUnit" : {
@@ -199,6 +198,7 @@
     },
     "ReverseLeftRightKeySinglePage" : {
       "comment" : "Reverse left-right key direction (single page mode)",
+      "extractionState" : "stale",
       "localizations" : {
         "en" : {
           "stringUnit" : {
