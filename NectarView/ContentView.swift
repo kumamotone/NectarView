@@ -27,9 +27,6 @@ struct ContentView: View {
                         .resizable()
                         .scaledToFit()
                         .frame(maxWidth: .infinity, maxHeight: .infinity)
-                        .onTapGesture(count: 2) {
-                            toggleFullscreen()
-                        }
                 } else {
                     Text("画像を読み込み中...")
                         .font(.headline)
@@ -81,6 +78,9 @@ struct ContentView: View {
             }
             .frame(maxWidth: .infinity, maxHeight: .infinity)
             .contentShape(Rectangle()) // ビュー全体をタップ可能にする
+            .onTapGesture(count: 2) {
+                toggleFullscreen()
+            }
             .gesture(
                 DragGesture()
                     .onChanged { value in
@@ -176,13 +176,8 @@ struct ContentView: View {
     }
 
     private func toggleFullscreen() {
-        isFullscreen.toggle()
         if let window = NSApplication.shared.windows.first {
-            if isFullscreen {
-                window.toggleFullScreen(nil)
-            } else {
-                window.toggleFullScreen(nil)
-            }
+            window.toggleFullScreen(nil)
         }
     }
 }
