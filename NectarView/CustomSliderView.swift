@@ -8,6 +8,7 @@ struct CustomSliderView: View {
     @Binding var hoverIndex: Int
     @Binding var hoverLocation: CGFloat
     @Binding var isHovering: Bool
+    @State private var isDragging: Bool = false
     
     var body: some View {
         GeometryReader { geometry in
@@ -36,22 +37,24 @@ struct CustomSliderView: View {
                     .gesture(
                         DragGesture(minimumDistance: 0)
                             .onChanged { value in
-                                updateIndex(location: value.location.x, in: geometry)
+                                isDragging = true
+                                updateCurrentIndex(location: value.location.x, in: geometry)
                             }
                             .onEnded { value in
-                                let newIndex = calculateIndex(for: value.location.x, in: geometry)
-                                currentIndex = newIndex
+                                isDragging = false
                                 isHovering = false
-                                onClick(newIndex)
+                                onClick(currentIndex)
                             }
                     )
                     .onHover { hovering in
-                        isHovering = hovering
+                        isHovering = hovering && !isDragging
                     }
                     .onContinuousHover { phase in
                         switch phase {
                         case .active(let location):
-                            updateIndex(location: location.x, in: geometry)
+                            if !isDragging {
+                                updateHoverIndex(location: location.x, in: geometry)
+                            }
                         case .ended:
                             isHovering = false
                         }
@@ -62,11 +65,17 @@ struct CustomSliderView: View {
         .contentShape(Rectangle())
     }
     
-    private func updateIndex(location: CGFloat, in geometry: GeometryProxy) {
+    private func updateHoverIndex(location: CGFloat, in geometry: GeometryProxy) {
         hoverIndex = calculateIndex(for: location, in: geometry)
         hoverLocation = location
         isHovering = true
         onHover(hoverIndex)
+    }
+    
+    private func updateCurrentIndex(location: CGFloat, in geometry: GeometryProxy) {
+        currentIndex = calculateIndex(for: location, in: geometry)
+        hoverLocation = location
+        onHover(currentIndex)
     }
     
     private func calculateIndex(for location: CGFloat, in geometry: GeometryProxy) -> Int {
