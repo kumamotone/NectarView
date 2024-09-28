@@ -10,6 +10,12 @@ struct KeyboardHandler {
         case 124: // 右矢印キー
             isReversed ? imageLoader.showPreviousImage() : imageLoader.showNextImage()
             return true
+        case 125: // 下矢印キー
+            imageLoader.showNextImage()
+            return true
+        case 126: // 上矢印キー
+            imageLoader.showPreviousImage()
+            return true
         default:
             return false
         }
