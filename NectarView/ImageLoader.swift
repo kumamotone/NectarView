@@ -38,6 +38,16 @@ class ImageLoader: ObservableObject {
         currentIndex = 0
         currentImageURL = nil
         
+        // ZIPファイルの状態をクリア
+        currentZipArchive = nil
+        zipImageEntries.removeAll()
+        zipFileURL = nil
+        zipEntryPaths.removeAll()
+        
+        // キャッシュをクリア
+        imageCache.removeAllObjects()
+        prefetchedImages.removeAll()
+
         if url.pathExtension.lowercased() == "zip" {
             currentTitle = url.lastPathComponent
             loadImagesFromZip(url: url)
@@ -85,6 +95,10 @@ class ImageLoader: ObservableObject {
     }
     
     private func loadImagesFromFileOrFolder(url: URL) {
+        // 既存のキャッシュをクリア
+        imageCache.removeAllObjects()
+        prefetchedImages.removeAll()
+
         let folderURL = url.hasDirectoryPath ? url : url.deletingLastPathComponent()
         
         do {
@@ -98,6 +112,7 @@ class ImageLoader: ObservableObject {
                 if !self.images.isEmpty {
                     self.currentIndex = url.hasDirectoryPath ? 0 : (self.images.firstIndex(of: url) ?? 0)
                 }
+                self.currentImageURL = self.images.isEmpty ? nil : self.images[self.currentIndex]
             }
         } catch {
             handleLoadError(url: url, error: error)
