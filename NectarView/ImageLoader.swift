@@ -56,8 +56,7 @@ class ImageLoader: ObservableObject {
         }
         
         self.currentSourcePath = url.path
-        self.currentFolderPath = url.deletingLastPathComponent().path
-        updateCurrentFileName()
+        updateCurrentFolderAndFileName(url: url)
         
         // 画像のロード後に必ずupdateSpreadIndicesを呼び出す
         DispatchQueue.main.async { [weak self] in
@@ -70,6 +69,16 @@ class ImageLoader: ObservableObject {
             if isSpreadViewEnabled {
                 self.preloadNextImage()
             }
+        }
+    }
+    
+    private func updateCurrentFolderAndFileName(url: URL) {
+        if url.hasDirectoryPath {
+            currentFolderPath = url.path
+            currentFileName = ""
+        } else {
+            currentFolderPath = url.deletingLastPathComponent().path
+            currentFileName = url.lastPathComponent
         }
     }
     
@@ -105,7 +114,7 @@ class ImageLoader: ObservableObject {
             currentZipArchive = archive
             zipFileURL = url
             
-            // ZIPファイルの名���を設定
+            // ZIPファイルの名を設定
             currentZipFileName = url.lastPathComponent
             currentTitle = url.lastPathComponent
             currentFolderPath = url.deletingLastPathComponent().path
@@ -148,8 +157,7 @@ class ImageLoader: ObservableObject {
         
         // タイトルとパス情報を設定
         currentTitle = url.hasDirectoryPath ? url.lastPathComponent : url.deletingPathExtension().lastPathComponent
-        currentFolderPath = folderURL.path
-        currentFileName = url.hasDirectoryPath ? "" : url.lastPathComponent
+        updateCurrentFolderAndFileName(url: url)
         
         do {
             let files = try FileManager.default.contentsOfDirectory(at: folderURL, includingPropertiesForKeys: nil)
@@ -173,6 +181,7 @@ class ImageLoader: ObservableObject {
                     }
                 }
                 self.currentImageURL = self.images.isEmpty ? nil : self.images[self.currentIndex]
+                self.updateCurrentFileName()
             }
         } catch {
             if (error as NSError).code == NSFileReadNoPermissionError {
