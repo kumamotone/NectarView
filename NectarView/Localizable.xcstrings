@@ -90,6 +90,23 @@
         }
       }
     },
+    "OpenTemporaryDirectory" : {
+      "comment" : "OpenTemporaryDirectory",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "OpenTemporaryDirectory"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "一時ディレクトリを開く"
+          }
+        }
+      }
+    },
     "ResetSettings" : {
       "comment" : "ResetSettings",
       "localizations" : {

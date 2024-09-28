@@ -12,9 +12,12 @@ struct SettingsView: View {
             Button(NSLocalizedString("ResetSettings", comment: "ResetSettings")) {
                 appSettings.resetToDefaults()
             }
+            Button(NSLocalizedString("OpenTemporaryDirectory", comment: "OpenTemporaryDirectory")) {
+                openTemporaryDirectory()
+            }
         }
         .padding()
-        .frame(width: 300, height: 200)
+        .frame(width: 800, height: 600)
         .navigationTitle(NSLocalizedString("Settings", comment: "Settings"))
         .toolbar {
             ToolbarItem(placement: .confirmationAction) {
@@ -23,5 +26,10 @@ struct SettingsView: View {
                 }
             }
         }
+    }
+    
+    private func openTemporaryDirectory() {
+        let tempDir = FileManager.default.temporaryDirectory
+        NSWorkspace.shared.open(tempDir)
     }
 }

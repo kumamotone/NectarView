@@ -26,13 +26,14 @@ class ImageLoader: ObservableObject {
     @AppStorage("lastOpenedIndex") private var lastOpenedIndex: Int = 0
     
     private var currentZipExtractionDir: URL?
+    private var previousZipExtractionDir: URL?
 
     func loadImages(from url: URL) {
         lastOpenedURL = url.absoluteString
-        currentZipExtractionDir = nil
-
+        
         if url.pathExtension.lowercased() == "zip" {
             currentTitle = url.lastPathComponent
+            cleanupTemporaryDirectory()
             loadImagesFromZip(url: url)
         } else {
             currentTitle = url.deletingLastPathComponent().lastPathComponent
@@ -52,6 +53,7 @@ class ImageLoader: ObservableObject {
                 try FileManager.default.createDirectory(at: extractionDir, withIntermediateDirectories: true, attributes: nil)
             }
 
+            previousZipExtractionDir = currentZipExtractionDir
             currentZipExtractionDir = extractionDir
 
             var extractedImages: [URL] = []
@@ -284,5 +286,21 @@ class ImageLoader: ObservableObject {
     // currentIndexが変更されたときに呼ばれるメソッド
     func updateLastOpenedIndex() {
         lastOpenedIndex = currentIndex
+    }
+    
+    private func cleanupTemporaryDirectory() {
+        let fileManager = FileManager.default
+        let tempDir = fileManager.temporaryDirectory
+
+        do {
+            let contents = try fileManager.contentsOfDirectory(at: tempDir, includingPropertiesForKeys: nil, options: [])
+            for url in contents {
+                if url != previousZipExtractionDir && url != currentZipExtractionDir {
+                    try fileManager.removeItem(at: url)
+                }
+            }
+        } catch {
+            print("一時ディレクトリのクリーンアップ中にエラーが発生しました: \(error.localizedDescription)")
+        }
     }
 }
