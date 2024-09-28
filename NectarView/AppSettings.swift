@@ -19,10 +19,24 @@ class AppSettings: ObservableObject {
         }
     }
     
+    @Published var isSpreadViewEnabled: Bool {
+        didSet {
+            UserDefaults.standard.set(isSpreadViewEnabled, forKey: "isSpreadViewEnabled")
+        }
+    }
+    
+    @Published var isRightToLeftReading: Bool {
+        didSet {
+            UserDefaults.standard.set(isRightToLeftReading, forKey: "isRightToLeftReading")
+        }
+    }
+    
     init() {
         self.backgroundColor = UserDefaults.standard.color(forKey: "backgroundColor") ?? .black
         self.controlBarColor = UserDefaults.standard.color(forKey: "controlBarColor") ?? Color(red: 0.9, green: 0.9, blue: 0.9, opacity: 0.4)
         self.isKeyboardDirectionReversed = UserDefaults.standard.bool(forKey: "isKeyboardDirectionReversed", defaultValue: true)
+        self.isSpreadViewEnabled = UserDefaults.standard.bool(forKey: "isSpreadViewEnabled")
+        self.isRightToLeftReading = UserDefaults.standard.bool(forKey: "isRightToLeftReading")
     }
     
     func resetToDefaults() {

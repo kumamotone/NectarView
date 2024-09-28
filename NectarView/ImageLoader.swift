@@ -18,7 +18,8 @@ class ImageLoader: ObservableObject {
     @Published var currentSourcePath: String = ""
     @Published var currentFolderPath: String = ""
     @Published var currentFileName: String = ""
-
+    @Published var currentSpreadIndices: (Int?, Int) = (nil, 0)
+    
     private let imageExtensions = ["png", "jpg", "jpeg", "gif", "bmp", "tiff", "webp"]
     private var imageCache = NSCache<NSURL, NSImage>()
     private let preloadQueue = DispatchQueue(label: "com.nectarview.imagepreload", qos: .utility)
@@ -294,6 +295,54 @@ class ImageLoader: ObservableObject {
     private func playSound() {
         NSSound.beep()
     }
+    
+    func updateSpreadIndices(isSpreadViewEnabled: Bool, isRightToLeftReading: Bool) {
+        if isSpreadViewEnabled {
+            let currentIndex = self.currentIndex
+            let otherIndex = isRightToLeftReading ? currentIndex + 1 : currentIndex - 1
+            
+            if isRightToLeftReading {
+                currentSpreadIndices = (otherIndex < images.count ? otherIndex : nil, currentIndex)
+            } else {
+                currentSpreadIndices = (otherIndex >= 0 ? otherIndex : nil, currentIndex)
+            }
+        } else {
+            currentSpreadIndices = (nil, currentIndex)
+        }
+    }
+    
+    func showNextSpread(isRightToLeftReading: Bool) {
+        if isRightToLeftReading {
+            if currentIndex > 0 {
+                currentIndex -= 1
+            } else {
+                playSound()
+            }
+        } else {
+            if currentIndex < images.count - 1 {
+                currentIndex += 1
+            } else {
+                playSound()
+            }
+        }
+    }
+    
+    func showPreviousSpread(isRightToLeftReading: Bool) {
+        if isRightToLeftReading {
+            if currentIndex < images.count - 1 {
+                currentIndex += 1
+            } else {
+                playSound()
+            }
+        } else {
+            if currentIndex > 0 {
+                currentIndex -= 1
+            } else {
+                playSound()
+            }
+        }
+    }
+    
     func requestAccessForURL(_ url: URL, completion: @escaping (Bool) -> Void) {
         let openPanel = NSOpenPanel()
         openPanel.directoryURL = url

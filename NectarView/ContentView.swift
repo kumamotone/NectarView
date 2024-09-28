@@ -21,19 +21,55 @@ struct ContentView: View {
             ZStack {
                 appSettings.backgroundColor.edgesIgnoringSafeArea(.all)
                 
-                if let currentImageURL = imageLoader.currentImageURL,
-                   let image = imageLoader.getImage(for: currentImageURL) {
-                    Image(nsImage: image)
-                        .resizable()
-                        .scaledToFit()
-                        .frame(maxWidth: .infinity, maxHeight: .infinity)
+                if appSettings.isSpreadViewEnabled {
+                    HStack(spacing: 0) {
+                        ForEach([imageLoader.currentSpreadIndices.0, imageLoader.currentSpreadIndices.1].compactMap { $0 }, id: \.self) { index in
+                            if let image = imageLoader.getImage(for: imageLoader.images[index]) {
+                                Image(nsImage: image)
+                                    .resizable()
+                                    .scaledToFit()
+                                    .frame(maxWidth: geometry.size.width / 2, maxHeight: .infinity)
+                            }
+                        }
+                    }
                 } else {
-                    Text(NSLocalizedString("DropYourImagesHere", comment: "DropYourImagesHere"))
-                        .font(.headline)
-                        .foregroundColor(.gray)
+                    if let currentImageURL = imageLoader.currentImageURL,
+                       let image = imageLoader.getImage(for: currentImageURL) {
+                        Image(nsImage: image)
+                            .resizable()
+                            .scaledToFit()
+                            .frame(maxWidth: .infinity, maxHeight: .infinity)
+                    } else {
+                        Text(NSLocalizedString("DropYourImagesHere", comment: "DropYourImagesHere"))
+                            .font(.headline)
+                            .foregroundColor(.gray)
+                    }
                 }
                 
                 VStack {
+                    HStack {
+                        Spacer()
+                        Button(action: {
+                            appSettings.isSpreadViewEnabled.toggle()
+                        }) {
+                            Image(systemName: appSettings.isSpreadViewEnabled ? "book.closed" : "book.open")
+                                .foregroundColor(.white)
+                                .padding(8)
+                                .background(Color.black.opacity(0.5))
+                                .cornerRadius(8)
+                        }
+                        Button(action: {
+                            appSettings.isRightToLeftReading.toggle()
+                        }) {
+                            Image(systemName: appSettings.isRightToLeftReading ? "arrow.left" : "arrow.right")
+                                .foregroundColor(.white)
+                                .padding(8)
+                                .background(Color.black.opacity(0.5))
+                                .cornerRadius(8)
+                        }
+                        .padding(.top, 10)
+                        .padding(.trailing, 10)
+                    }
                     Spacer()
                     if isControlsVisible && !imageLoader.images.isEmpty {
                         HStack {
@@ -107,6 +143,15 @@ struct ContentView: View {
         .background(WindowAccessor { window in
             window.isMovableByWindowBackground = false
         })
+        .onChange(of: appSettings.isSpreadViewEnabled) { _ in
+            imageLoader.updateSpreadIndices(isSpreadViewEnabled: appSettings.isSpreadViewEnabled, isRightToLeftReading: appSettings.isRightToLeftReading)
+        }
+        .onChange(of: appSettings.isRightToLeftReading) { _ in
+            imageLoader.updateSpreadIndices(isSpreadViewEnabled: appSettings.isSpreadViewEnabled, isRightToLeftReading: appSettings.isRightToLeftReading)
+        }
+        .onChange(of: imageLoader.currentIndex) { _ in
+            imageLoader.updateSpreadIndices(isSpreadViewEnabled: appSettings.isSpreadViewEnabled, isRightToLeftReading: appSettings.isRightToLeftReading)
+        }
         .onDrop(of: [.fileURL], isTargeted: nil) { providers in
             if let provider = providers.first {
                 _ = provider.loadObject(ofClass: URL.self) { url, error in
@@ -174,7 +219,7 @@ struct ContentView: View {
                         }
                     }
                 } else {
-                    // マウスがウィンドウ外にある場合はコントロールを非表示にする
+                    // マウスがウィンドウ外にある場合はコントロールを非表示にす
                     withAnimation {
                         isControlsVisible = false
                     }
