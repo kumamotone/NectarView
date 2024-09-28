@@ -11,6 +11,7 @@ import SwiftData
 @main
 struct NectarViewApp: App {
     @StateObject private var appSettings = AppSettings()
+    @NSApplicationDelegateAdaptor(AppDelegate.self) var appDelegate
     @State private var isSettingsPresented = false
 
     var body: some Scene {
@@ -23,8 +24,12 @@ struct NectarViewApp: App {
                 }
         }
         .commands {
-            ContentView_Menus(isSettingsPresented: $isSettingsPresented)
-            SidebarCommands()
+            CommandGroup(replacing: .appSettings) {
+                Button("設定") {
+                    isSettingsPresented = true
+                }
+                .keyboardShortcut(",", modifiers: .command)
+            }
         }
     }
 }
