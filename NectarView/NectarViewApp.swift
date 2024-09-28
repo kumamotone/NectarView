@@ -14,6 +14,10 @@ struct NectarViewApp: App {
     @NSApplicationDelegateAdaptor(AppDelegate.self) var appDelegate
     @State private var isSettingsPresented = false
 
+    init() {
+        NSWindow.allowsAutomaticWindowTabbing = false
+    }
+
     var body: some Scene {
         WindowGroup {
             ContentView()
@@ -30,6 +34,7 @@ struct NectarViewApp: App {
                 }
                 .keyboardShortcut(",", modifiers: .command)
             }
+            CommandGroup(replacing: .newItem) { }
         }
     }
 }

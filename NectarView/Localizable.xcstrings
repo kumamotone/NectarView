@@ -90,6 +90,40 @@
         }
       }
     },
+    "Edit" : {
+      "comment" : "Edit",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "Edit"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "編集"
+          }
+        }
+      }
+    },
+    "File" : {
+      "comment" : "File",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "File"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "ファイル"
+          }
+        }
+      }
+    },
     "OpenTemporaryDirectory" : {
       "comment" : "OpenTemporaryDirectory",
       "localizations" : {

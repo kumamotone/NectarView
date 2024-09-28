@@ -4,6 +4,16 @@ import SwiftUI
 class AppDelegate: NSObject, NSApplicationDelegate {
     func applicationDidFinishLaunching(_ notification: Notification) {
         print("アプリケーションが起動しました")
+        let rmMenuTitles = Set([NSLocalizedString("File", comment: "File"), NSLocalizedString("Edit", comment: "Edit")])
+
+        if let mainMenu = NSApp.mainMenu {
+            let menus = mainMenu.items.filter { item in
+                return rmMenuTitles.contains(item.title)
+            }
+            for i in menus {
+                mainMenu.removeItem(i)
+            }
+        }
     }
     
     func applicationWillTerminate(_ notification: Notification) {
