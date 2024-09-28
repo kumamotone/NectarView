@@ -217,7 +217,7 @@ class ImageLoader: ObservableObject {
     }
     
     private func playSound() {
-        NSSound(named: "Basso")?.play()
+        NSSound.beep()
     }
     
     func restoreLastSession() {

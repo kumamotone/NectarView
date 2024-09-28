@@ -2,13 +2,15 @@ import AppKit
 
 struct KeyboardHandler {
     static func handleKeyPress(event: NSEvent, imageLoader: ImageLoader) -> Bool {
-        if event.keyCode == 123 { // 左矢印キー
+        switch event.keyCode {
+        case 123, 126: // 左矢印キーまたは上矢印キー
             imageLoader.showPreviousImage()
             return true
-        } else if event.keyCode == 124 { // 右矢印キー
+        case 124, 125: // 右矢印キーまたは下矢印キー
             imageLoader.showNextImage()
             return true
+        default:
+            return false
         }
-        return false
     }
 }
