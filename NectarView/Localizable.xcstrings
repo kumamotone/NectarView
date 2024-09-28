@@ -181,6 +181,7 @@
     },
     "ReverseLeftRightKey" : {
       "comment" : "Reverse left-right key direction",
+      "extractionState" : "stale",
       "localizations" : {
         "en" : {
           "stringUnit" : {
@@ -196,8 +197,26 @@
         }
       }
     },
+    "ReverseLeftRightKeySinglePage" : {
+      "comment" : "Reverse left-right key direction (single page mode)",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Reverse left-right key direction (single page mode)"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "左右キーの動作を反転（単一ページモード）"
+          }
+        }
+      }
+    },
     "ReverseUpDownKey" : {
       "comment" : "Reverse up-down key direction",
+      "extractionState" : "stale",
       "localizations" : {
         "en" : {
           "stringUnit" : {

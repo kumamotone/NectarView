@@ -27,11 +27,6 @@ class AppSettings: ObservableObject {
             UserDefaults.standard.set(isLeftRightKeyReversed, forKey: "isLeftRightKeyReversed")
         }
     }
-    @Published var isUpDownKeyReversed: Bool {
-        didSet {
-            UserDefaults.standard.set(isUpDownKeyReversed, forKey: "isUpDownKeyReversed")
-        }
-    }
     
     init() {
         self.backgroundColor = UserDefaults.standard.color(forKey: "backgroundColor") ?? .black
@@ -39,7 +34,6 @@ class AppSettings: ObservableObject {
         self.isSpreadViewEnabled = UserDefaults.standard.bool(forKey: "isSpreadViewEnabled")
         self.isRightToLeftReading = UserDefaults.standard.bool(forKey: "isRightToLeftReading")
         self.isLeftRightKeyReversed = UserDefaults.standard.bool(forKey: "isLeftRightKeyReversed", defaultValue: true)
-        self.isUpDownKeyReversed = UserDefaults.standard.bool(forKey: "isUpDownKeyReversed")
     }
     
     func resetToDefaults() {
@@ -48,7 +42,6 @@ class AppSettings: ObservableObject {
         isSpreadViewEnabled = false
         isRightToLeftReading = false
         isLeftRightKeyReversed = true
-        isUpDownKeyReversed = false
     }
 }
 
