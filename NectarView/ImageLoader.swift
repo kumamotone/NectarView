@@ -27,9 +27,18 @@ class ImageLoader: ObservableObject {
     
     private var currentZipExtractionDir: URL?
     private var previousZipExtractionDir: URL?
+    private var currentZipArchive: Archive?
+    private var zipImageEntries: [Entry] = []
+    private var zipFileURL: URL?
+    private var zipEntryPaths: [String] = []
 
     func loadImages(from url: URL) {
         lastOpenedURL = url.absoluteString
+        
+        // 既存のデータをクリア
+        images = []
+        currentIndex = 0
+        currentImageURL = nil
         
         if url.pathExtension.lowercased() == "zip" {
             currentTitle = url.lastPathComponent
@@ -43,51 +52,33 @@ class ImageLoader: ObservableObject {
     
     private func loadImagesFromZip(url: URL) {
         do {
+            // 既存のZIPアーカイブとキャッシュをクリア
+            currentZipArchive = nil
+            imageCache.removeAllObjects()
+            prefetchedImages.removeAll()
+
             let archive = try Archive(url: url, accessMode: .read)
-
-            let tempDir = FileManager.default.temporaryDirectory
-            let zipFileName = url.deletingPathExtension().lastPathComponent
-            let extractionDir = tempDir.appendingPathComponent(zipFileName)
-
-            if !FileManager.default.fileExists(atPath: extractionDir.path) {
-                try FileManager.default.createDirectory(at: extractionDir, withIntermediateDirectories: true, attributes: nil)
-            }
-
-            previousZipExtractionDir = currentZipExtractionDir
-            currentZipExtractionDir = extractionDir
-
-            var extractedImages: [URL] = []
-
-            for entry in archive {
+            currentZipArchive = archive
+            zipFileURL = url
+            
+            zipImageEntries = archive.filter { entry in
                 let entryPath = entry.path
-
-                if entryPath.hasPrefix("__MACOSX") || (entryPath as NSString).lastPathComponent.hasPrefix("._") {
-                    continue
-                }
-
                 let entryPathExtension = (entryPath as NSString).pathExtension.lowercased()
+                return !entryPath.hasPrefix("__MACOSX") &&
+                       !(entryPath as NSString).lastPathComponent.hasPrefix("._") &&
+                       imageExtensions.contains(entryPathExtension)
+            }.sorted { $0.path.localizedStandardCompare($1.path) == .orderedAscending }
 
-                if !imageExtensions.contains(entryPathExtension) {
-                    continue
-                }
-
-                let extractionPath = extractionDir.appendingPathComponent(entryPath)
-                let extractionFolder = extractionPath.deletingLastPathComponent()
-
-                if !FileManager.default.fileExists(atPath: extractionPath.path) {
-                    try FileManager.default.createDirectory(at: extractionFolder, withIntermediateDirectories: true, attributes: nil)
-                    _ = try archive.extract(entry, to: extractionPath)
-                }
-                extractedImages.append(extractionPath)
-            }
+            zipEntryPaths = zipImageEntries.map { $0.path }
 
             DispatchQueue.main.async {
-                self.images = extractedImages.sorted { $0.lastPathComponent.localizedStandardCompare($1.lastPathComponent) == .orderedAscending }
+                self.images = self.zipEntryPaths.indices.map { URL(fileURLWithPath: "zip://\($0)") }
                 self.currentIndex = 0
+                self.currentImageURL = self.images.first
             }
         } catch {
             print("ZIPアーカイブを開く際のエラー: \(error.localizedDescription)")
-            showAlert(message: "ZIPファイルの展開中にエラーが発生しました: \(error.localizedDescription)")
+            showAlert(message: "ZIPファイルの読み込み中にエラーが発生しました: \(error.localizedDescription)")
             // エラーが発生した場合、画像リストをクリアし、インデックスをリセット
             DispatchQueue.main.async {
                 self.images = []
@@ -193,16 +184,39 @@ class ImageLoader: ObservableObject {
     }
     
     func getImage(for url: URL) -> NSImage? {
-        if let prefetchedImage = prefetchedImages[url] {
-            return prefetchedImage
-        }
         if let cachedImage = imageCache.object(forKey: url as NSURL) {
             return cachedImage
         }
         
-        if let image = NSImage(contentsOf: url) {
-            imageCache.setObject(image, forKey: url as NSURL)
-            return image
+        if let zipArchive = currentZipArchive, zipFileURL != nil {
+            // ZIPファイル内の画像の場合
+            let index = images.firstIndex(of: url) ?? -1
+            if index >= 0 && index < zipEntryPaths.count {
+                let entryPath = zipEntryPaths[index]
+                guard let entry = zipImageEntries.first(where: { $0.path == entryPath }) else {
+                    return nil
+                }
+                
+                do {
+                    var imageData = Data()
+                    _ = try zipArchive.extract(entry) { data in
+                        imageData.append(data)
+                    }
+                    
+                    if let image = NSImage(data: imageData) {
+                        imageCache.setObject(image, forKey: url as NSURL)
+                        return image
+                    }
+                } catch {
+                    print("画像の展開中にエラーが発生しました: \(error.localizedDescription)")
+                }
+            }
+        } else {
+            // 通常のファイルシステム上の画像の場合
+            if let image = NSImage(contentsOf: url) {
+                imageCache.setObject(image, forKey: url as NSURL)
+                return image
+            }
         }
         
         return nil
@@ -288,7 +302,7 @@ class ImageLoader: ObservableObject {
 
         } catch {
             print("ZIPセッションの復元中にエラーが発生しました: \(error.localizedDescription)")
-            showAlert(message: "前回のZIPセッションの復元中にエラーが発生しました: \(error.localizedDescription)")
+            showAlert(message: "前回のZIPセッション復元中にエラーが発生しました: \(error.localizedDescription)")
         }
     }
     
