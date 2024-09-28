@@ -38,23 +38,20 @@ struct CustomSliderView: View {
                         DragGesture(minimumDistance: 0)
                             .onChanged { value in
                                 isDragging = true
-                                updateCurrentIndex(location: value.location.x, in: geometry)
+                                updateIndexAndHover(location: value.location.x, in: geometry)
                             }
                             .onEnded { value in
                                 isDragging = false
-                                isHovering = false
                                 onClick(currentIndex)
                             }
                     )
                     .onHover { hovering in
-                        isHovering = hovering && !isDragging
+                        isHovering = hovering
                     }
                     .onContinuousHover { phase in
                         switch phase {
                         case .active(let location):
-                            if !isDragging {
-                                updateHoverIndex(location: location.x, in: geometry)
-                            }
+                            updateHoverIndex(location: location.x, in: geometry)
                         case .ended:
                             isHovering = false
                         }
@@ -72,10 +69,13 @@ struct CustomSliderView: View {
         onHover(hoverIndex)
     }
     
-    private func updateCurrentIndex(location: CGFloat, in geometry: GeometryProxy) {
-        currentIndex = calculateIndex(for: location, in: geometry)
+    private func updateIndexAndHover(location: CGFloat, in geometry: GeometryProxy) {
+        let newIndex = calculateIndex(for: location, in: geometry)
+        currentIndex = newIndex
+        hoverIndex = newIndex
         hoverLocation = location
-        onHover(currentIndex)
+        isHovering = true
+        onHover(newIndex)
     }
     
     private func calculateIndex(for location: CGFloat, in geometry: GeometryProxy) -> Int {
