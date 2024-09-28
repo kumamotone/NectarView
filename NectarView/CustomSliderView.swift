@@ -20,13 +20,13 @@ struct CustomSliderView: View {
                 
                 Rectangle()
                     .fill(Color.blue)
-                    .frame(width: CGFloat(currentIndex + 1) / CGFloat(totalImages) * geometry.size.width, height: 4)
-                    .position(x: (CGFloat(currentIndex + 1) / CGFloat(totalImages) * geometry.size.width) / 2, y: geometry.size.height / 2)
+                    .frame(width: CGFloat(currentIndex) / CGFloat(totalImages - 1) * geometry.size.width, height: 4)
+                    .position(x: (CGFloat(currentIndex) / CGFloat(totalImages - 1) * geometry.size.width) / 2, y: geometry.size.height / 2)
                 
                 RoundedRectangle(cornerRadius: 4)
                     .fill(Color.blue)
                     .frame(width: 12, height: 24)
-                    .position(x: CGFloat(currentIndex + 1) / CGFloat(totalImages) * geometry.size.width, y: geometry.size.height / 2)
+                    .position(x: CGFloat(currentIndex) / CGFloat(totalImages - 1) * geometry.size.width, y: geometry.size.height / 2)
                 
                 // クリック可能な領域を作成
                 Rectangle()
@@ -70,7 +70,8 @@ struct CustomSliderView: View {
     }
     
     private func calculateIndex(for location: CGFloat, in geometry: GeometryProxy) -> Int {
-        let newIndex = Int((location / geometry.size.width) * CGFloat(totalImages))
+        let ratio = location / geometry.size.width
+        let newIndex = Int(round(ratio * CGFloat(totalImages - 1)))
         return max(0, min(newIndex, totalImages - 1))
     }
 }
