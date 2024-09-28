@@ -74,7 +74,7 @@ class ImageLoader: ObservableObject {
 
                 if !FileManager.default.fileExists(atPath: extractionPath.path) {
                     try FileManager.default.createDirectory(at: extractionFolder, withIntermediateDirectories: true, attributes: nil)
-                    try archive.extract(entry, to: extractionPath)
+                    _ = try archive.extract(entry, to: extractionPath)
                 }
                 extractedImages.append(extractionPath)
             }
@@ -266,7 +266,7 @@ class ImageLoader: ObservableObject {
 
                 if !FileManager.default.fileExists(atPath: extractionPath.path) {
                     try FileManager.default.createDirectory(at: extractionFolder, withIntermediateDirectories: true, attributes: nil)
-                    try archive.extract(entry, to: extractionPath)
+                    _ = try archive.extract(entry, to: extractionPath)
                 }
                 extractedImages.append(extractionPath)
             }
