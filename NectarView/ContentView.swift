@@ -28,7 +28,7 @@ struct ContentView: View {
                         .scaledToFit()
                         .frame(maxWidth: .infinity, maxHeight: .infinity)
                 } else {
-                    Text("画像を読み込み中...")
+                    Text(NSLocalizedString("DropYourImagesHere", comment: "DropYourImagesHere"))
                         .font(.headline)
                         .foregroundColor(.gray)
                 }

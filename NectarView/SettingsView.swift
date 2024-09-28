@@ -6,19 +6,19 @@ struct SettingsView: View {
 
     var body: some View {
         Form {
-            ColorPicker("背景色", selection: $appSettings.backgroundColor)
-            ColorPicker("コントロールバーの色", selection: $appSettings.controlBarColor)
+            ColorPicker(NSLocalizedString("BackgroundColor", comment: "BackgroundColor"), selection: $appSettings.backgroundColor)
+            ColorPicker(NSLocalizedString("ControlBarColor", comment: "ControlBarColor"), selection: $appSettings.controlBarColor)
             
-            Button("設定をリセット") {
+            Button(NSLocalizedString("ResetSettings", comment: "ResetSettings")) {
                 appSettings.resetToDefaults()
             }
         }
         .padding()
-        .frame(width: 300, height: 200) // 高さを少し増やしました
-        .navigationTitle("設定")
+        .frame(width: 300, height: 200)
+        .navigationTitle(NSLocalizedString("Settings", comment: "Settings"))
         .toolbar {
             ToolbarItem(placement: .confirmationAction) {
-                Button("完了") {
+                Button(NSLocalizedString("Done", comment: "Done")) {
                     presentationMode.wrappedValue.dismiss()
                 }
             }

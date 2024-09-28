@@ -25,7 +25,7 @@ struct NectarViewApp: App {
         }
         .commands {
             CommandGroup(replacing: .appSettings) {
-                Button("設定") {
+                Button(NSLocalizedString("Settings", comment: "Settings")) {
                     isSettingsPresented = true
                 }
                 .keyboardShortcut(",", modifiers: .command)
