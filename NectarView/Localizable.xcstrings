@@ -161,6 +161,23 @@
         }
       }
     },
+    "ReverseKeyboardDirection" : {
+      "comment" : "Reverse keyboard direction",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Use the reverse (left) key to go to the next page"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "左キーで次のページに進む"
+          }
+        }
+      }
+    },
     "Settings" : {
       "comment" : "Settings",
       "extractionState" : "manual",

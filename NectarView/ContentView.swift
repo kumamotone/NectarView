@@ -123,7 +123,7 @@ struct ContentView: View {
         .onAppear {
             imageLoader.restoreLastSession()
             NSEvent.addLocalMonitorForEvents(matching: .keyDown) { event in
-                if KeyboardHandler.handleKeyPress(event: event, imageLoader: imageLoader) {
+                if KeyboardHandler.handleKeyPress(event: event, imageLoader: imageLoader, appSettings: appSettings) {
                     return nil
                 }
                 return event

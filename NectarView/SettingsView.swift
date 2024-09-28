@@ -9,6 +9,8 @@ struct SettingsView: View {
             ColorPicker(NSLocalizedString("BackgroundColor", comment: "BackgroundColor"), selection: $appSettings.backgroundColor)
             ColorPicker(NSLocalizedString("ControlBarColor", comment: "ControlBarColor"), selection: $appSettings.controlBarColor)
             
+            Toggle(NSLocalizedString("ReverseKeyboardDirection", comment: "Reverse keyboard direction"), isOn: $appSettings.isKeyboardDirectionReversed)
+            
             Button(NSLocalizedString("ResetSettings", comment: "ResetSettings")) {
                 appSettings.resetToDefaults()
             }
