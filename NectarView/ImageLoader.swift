@@ -15,7 +15,8 @@ class ImageLoader: ObservableObject {
     }
     @Published var currentImageURL: URL? = nil
     @Published var currentTitle: String = "NectarView"
-    
+    @Published var currentSourcePath: String = ""
+
     private let imageExtensions = ["png", "jpg", "jpeg", "gif", "bmp", "tiff", "webp"]
     private var imageCache = NSCache<NSURL, NSImage>()
     private let preloadQueue = DispatchQueue(label: "com.nectarview.imagepreload", qos: .utility)
@@ -53,6 +54,8 @@ class ImageLoader: ObservableObject {
         } else {
             loadImagesFromFileOrFolder(url: url)
         }
+        
+        self.currentSourcePath = url.path
     }
     
     private func loadImagesFromZip(url: URL) {
@@ -258,6 +261,9 @@ class ImageLoader: ObservableObject {
     }
     
     func restoreLastSession() {
+        if let lastOpenedURL = UserDefaults.standard.url(forKey: "lastOpenedURL") {
+            self.currentSourcePath = lastOpenedURL.path
+        }
         if let urlString = lastOpenedURL, let url = URL(string: urlString) {
             loadImages(from: url)
             DispatchQueue.main.async {

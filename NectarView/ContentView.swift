@@ -146,9 +146,12 @@ struct ContentView: View {
 
     private var currentImageInfo: String {
         if imageLoader.images.isEmpty {
-            return NSLocalizedString("NoImagesLoaded", comment: "No images loaded")
+            return NSLocalizedString("NoImagesLoaded", comment: "画像がロードされていません")
         } else {
-            return "\(imageLoader.currentTitle) (\(imageLoader.currentIndex + 1) / \(imageLoader.images.count))"
+            let url = URL(fileURLWithPath: imageLoader.currentSourcePath)
+            let isDirectory = (try? url.resourceValues(forKeys: [.isDirectoryKey]))?.isDirectory ?? false
+            let displayPath = isDirectory ? url.path : url.lastPathComponent
+            return "\(displayPath) (\(imageLoader.currentIndex + 1)/\(imageLoader.images.count))"
         }
     }
 
