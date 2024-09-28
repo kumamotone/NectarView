@@ -17,7 +17,6 @@
 		D07E8B282CA24E2F00C7E124 /* CustomSliderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D07E8B272CA24E2F00C7E124 /* CustomSliderView.swift */; };
 		D07E8B2A2CA2597400C7E124 /* AppSettings.swift in Sources */ = {isa = PBXBuildFile; fileRef = D07E8B292CA2597400C7E124 /* AppSettings.swift */; };
 		D07E8B2C2CA2598E00C7E124 /* SettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D07E8B2B2CA2598E00C7E124 /* SettingsView.swift */; };
-		D0AABEC22CA22D0E00878C45 /* NectarViewApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = D0AABEC12CA22D0E00878C45 /* NectarViewApp.swift */; };
 		D0AABEC42CA22D0E00878C45 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D0AABEC32CA22D0E00878C45 /* ContentView.swift */; };
 		D0AABEC62CA22D0E00878C45 /* Item.swift in Sources */ = {isa = PBXBuildFile; fileRef = D0AABEC52CA22D0E00878C45 /* Item.swift */; };
 		D0AABEC82CA22D0F00878C45 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = D0AABEC72CA22D0F00878C45 /* Assets.xcassets */; };
@@ -54,7 +53,6 @@
 		D07E8B292CA2597400C7E124 /* AppSettings.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AppSettings.swift; sourceTree = "<group>"; };
 		D07E8B2B2CA2598E00C7E124 /* SettingsView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SettingsView.swift; sourceTree = "<group>"; };
 		D0AABEBE2CA22D0E00878C45 /* NectarView.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = NectarView.app; sourceTree = BUILT_PRODUCTS_DIR; };
-		D0AABEC12CA22D0E00878C45 /* NectarViewApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NectarViewApp.swift; sourceTree = "<group>"; };
 		D0AABEC32CA22D0E00878C45 /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
 		D0AABEC52CA22D0E00878C45 /* Item.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Item.swift; sourceTree = "<group>"; };
 		D0AABEC72CA22D0F00878C45 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
@@ -117,7 +115,6 @@
 		D0AABEC02CA22D0E00878C45 /* NectarView */ = {
 			isa = PBXGroup;
 			children = (
-				D0AABEC12CA22D0E00878C45 /* NectarViewApp.swift */,
 				D07E8B292CA2597400C7E124 /* AppSettings.swift */,
 				D0AABEC32CA22D0E00878C45 /* ContentView.swift */,
 				D07E8B1D2CA249D600C7E124 /* ContentView+Menus.swift */,
@@ -301,7 +298,6 @@
 				D0AABEC42CA22D0E00878C45 /* ContentView.swift in Sources */,
 				D0AABEC62CA22D0E00878C45 /* Item.swift in Sources */,
 				D07E8B2A2CA2597400C7E124 /* AppSettings.swift in Sources */,
-				D0AABEC22CA22D0E00878C45 /* NectarViewApp.swift in Sources */,
 				D07E8B1E2CA249D600C7E124 /* KeyboardHandler.swift in Sources */,
 				D07E8B282CA24E2F00C7E124 /* CustomSliderView.swift in Sources */,
 				D07E8B232CA249D600C7E124 /* NectarViewApp.swift in Sources */,

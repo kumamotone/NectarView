@@ -131,7 +131,7 @@ struct ContentView: View {
             startMouseTracking()
             imageLoader.prefetchImages()
         }
-        .onChange(of: imageLoader.currentIndex) { _ in
+        .onChange(of: imageLoader.currentIndex) { oldValue, newValue in
             imageLoader.updateLastOpenedIndex()
         }
         .onDisappear {
