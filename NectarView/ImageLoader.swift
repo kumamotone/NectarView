@@ -88,6 +88,12 @@ class ImageLoader: ObservableObject {
         } catch {
             print("ZIPアーカイブを開く際のエラー: \(error.localizedDescription)")
             showAlert(message: "ZIPファイルの展開中にエラーが発生しました: \(error.localizedDescription)")
+            // エラーが発生した場合、画像リストをクリアし、インデックスをリセット
+            DispatchQueue.main.async {
+                self.images = []
+                self.currentIndex = 0
+                self.currentImageURL = nil
+            }
         }
     }
     
@@ -147,12 +153,15 @@ class ImageLoader: ObservableObject {
     }
     
     private func preloadAdjacentImages() {
+        guard !images.isEmpty else { return }
+        
         let adjacentIndices = [
             max(0, currentIndex - 1),
             min(images.count - 1, currentIndex + 1)
         ]
         
         for index in adjacentIndices {
+            guard index >= 0 && index < images.count else { continue }
             let url = images[index]
             preloadQueue.async { [weak self] in
                 guard let self = self else { return }
