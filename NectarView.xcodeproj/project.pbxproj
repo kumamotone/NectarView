@@ -11,7 +11,6 @@
 		D07E8B162CA2449000C7E124 /* ZIPFoundation in Frameworks */ = {isa = PBXBuildFile; productRef = D07E8B152CA2449000C7E124 /* ZIPFoundation */; };
 		D07E8B1E2CA249D600C7E124 /* KeyboardHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = D07E8B172CA249D600C7E124 /* KeyboardHandler.swift */; };
 		D07E8B1F2CA249D600C7E124 /* SliderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D07E8B182CA249D600C7E124 /* SliderView.swift */; };
-		D07E8B202CA249D600C7E124 /* Item.swift in Sources */ = {isa = PBXBuildFile; fileRef = D07E8B192CA249D600C7E124 /* Item.swift */; };
 		D07E8B222CA249D600C7E124 /* ImageLoader.swift in Sources */ = {isa = PBXBuildFile; fileRef = D07E8B1B2CA249D600C7E124 /* ImageLoader.swift */; };
 		D07E8B232CA249D600C7E124 /* NectarViewApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = D07E8B1C2CA249D600C7E124 /* NectarViewApp.swift */; };
 		D07E8B242CA249D600C7E124 /* ContentView+Menus.swift in Sources */ = {isa = PBXBuildFile; fileRef = D07E8B1D2CA249D600C7E124 /* ContentView+Menus.swift */; };
@@ -48,7 +47,6 @@
 /* Begin PBXFileReference section */
 		D07E8B172CA249D600C7E124 /* KeyboardHandler.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = KeyboardHandler.swift; sourceTree = "<group>"; };
 		D07E8B182CA249D600C7E124 /* SliderView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SliderView.swift; sourceTree = "<group>"; };
-		D07E8B192CA249D600C7E124 /* Item.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Item.swift; sourceTree = "<group>"; };
 		D07E8B1B2CA249D600C7E124 /* ImageLoader.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ImageLoader.swift; sourceTree = "<group>"; };
 		D07E8B1C2CA249D600C7E124 /* NectarViewApp.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NectarViewApp.swift; sourceTree = "<group>"; };
 		D07E8B1D2CA249D600C7E124 /* ContentView+Menus.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "ContentView+Menus.swift"; sourceTree = "<group>"; };
@@ -127,7 +125,6 @@
 				D07E8B272CA24E2F00C7E124 /* CustomSliderView.swift */,
 				D07E8B1B2CA249D600C7E124 /* ImageLoader.swift */,
 				D0AABEC52CA22D0E00878C45 /* Item.swift */,
-				D07E8B192CA249D600C7E124 /* Item.swift */,
 				D07E8B172CA249D600C7E124 /* KeyboardHandler.swift */,
 				D07E8B1C2CA249D600C7E124 /* NectarViewApp.swift */,
 				D07E8B182CA249D600C7E124 /* SliderView.swift */,
@@ -307,7 +304,6 @@
 				D0AABEC22CA22D0E00878C45 /* NectarViewApp.swift in Sources */,
 				D07E8B1E2CA249D600C7E124 /* KeyboardHandler.swift in Sources */,
 				D07E8B282CA24E2F00C7E124 /* CustomSliderView.swift in Sources */,
-				D07E8B202CA249D600C7E124 /* Item.swift in Sources */,
 				D07E8B232CA249D600C7E124 /* NectarViewApp.swift in Sources */,
 				D07E8B242CA249D600C7E124 /* ContentView+Menus.swift in Sources */,
 				D07E8B222CA249D600C7E124 /* ImageLoader.swift in Sources */,
@@ -472,6 +468,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				ASSETCATALOG_COMPILER_INCLUDE_ALL_APPICON_ASSETS = NO;
 				CODE_SIGN_ENTITLEMENTS = NectarView/NectarView.entitlements;
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
@@ -500,6 +497,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				ASSETCATALOG_COMPILER_INCLUDE_ALL_APPICON_ASSETS = NO;
 				CODE_SIGN_ENTITLEMENTS = NectarView/NectarView.entitlements;
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
