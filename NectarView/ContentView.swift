@@ -21,6 +21,9 @@ struct ContentView: View {
     @State private var isAutoScrolling: Bool = false
     @State private var autoScrollInterval: Double = 3.0
     @State private var autoScrollTimer: Timer?
+    @State private var isTopControlsVisible: Bool = true
+    @State private var topControlsTimer: Timer?
+    @State private var isInitialDisplay: Bool = true
 
     var body: some View {
         GeometryReader { geometry in
@@ -57,46 +60,49 @@ struct ContentView: View {
                 }
                 
                 VStack {
-                    HStack {
-                        Spacer()
-                        // 自動ページめくりコントロール
+                    if isTopControlsVisible {
                         HStack {
-                            Button(action: toggleAutoScroll) {
-                                Image(systemName: isAutoScrolling ? "pause.circle" : "play.circle")
+                            Spacer()
+                            // 自動ページめくりコントロール
+                            HStack {
+                                Button(action: toggleAutoScroll) {
+                                    Image(systemName: isAutoScrolling ? "pause.circle" : "play.circle")
+                                        .foregroundColor(.white)
+                                }
+                                .buttonStyle(PlainButtonStyle())
+
+                                Slider(value: $autoScrollInterval, in: 0.5...30.0, step: 0.5)
+                                    .frame(width: 100)
+                                Text(String(format: "%.1f秒", autoScrollInterval))
                                     .foregroundColor(.white)
                             }
-                            .buttonStyle(PlainButtonStyle())
+                            .padding(8)
+                            .background(Color.black.opacity(0.5))
+                            .cornerRadius(8)
 
-                            Slider(value: $autoScrollInterval, in: 0.5...30.0, step: 0.5)
-                                .frame(width: 100)
-                            Text(String(format: "%.1f秒", autoScrollInterval))
-                                .foregroundColor(.white)
+                            Button(action: {
+                                appSettings.isSpreadViewEnabled.toggle()
+                            }) {
+                                Image(systemName: appSettings.isSpreadViewEnabled ? "book.closed" : "book.open")
+                                    .foregroundColor(.white)
+                                    .padding(8)
+                                    .background(Color.black.opacity(0.5))
+                                    .cornerRadius(8)
+                            }
+                            Button(action: {
+                                appSettings.isRightToLeftReading.toggle()
+                            }) {
+                                Image(systemName: appSettings.isRightToLeftReading ? "arrow.left" : "arrow.right")
+                                    .foregroundColor(.white)
+                                    .padding(8)
+                                    .background(Color.black.opacity(0.5))
+                                    .cornerRadius(8)
+                            }
                         }
-                        .padding(8)
-                        .background(Color.black.opacity(0.5))
-                        .cornerRadius(8)
-
-                        Button(action: {
-                            appSettings.isSpreadViewEnabled.toggle()
-                        }) {
-                            Image(systemName: appSettings.isSpreadViewEnabled ? "book.closed" : "book.open")
-                                .foregroundColor(.white)
-                                .padding(8)
-                                .background(Color.black.opacity(0.5))
-                                .cornerRadius(8)
-                        }
-                        Button(action: {
-                            appSettings.isRightToLeftReading.toggle()
-                        }) {
-                            Image(systemName: appSettings.isRightToLeftReading ? "arrow.left" : "arrow.right")
-                                .foregroundColor(.white)
-                                .padding(8)
-                                .background(Color.black.opacity(0.5))
-                                .cornerRadius(8)
-                        }
+                        .padding(.top, 10)
+                        .padding(.trailing, 10)
+                        .transition(.move(edge: .top))
                     }
-                    .padding(.top, 10)
-                    .padding(.trailing, 10)
 
                     Spacer()
 
@@ -175,7 +181,7 @@ struct ContentView: View {
             .gesture(
                 DragGesture()
                     .onChanged { value in
-                        if !isControlBarHovered {
+                        if !isControlBarHovered && !isTopControlsVisible {
                             let newDragOffset = CGSize(
                                 width: value.translation.width + self.dragOffset.width,
                                 height: value.translation.height + self.dragOffset.height
@@ -228,10 +234,12 @@ struct ContentView: View {
                 return event
             }
             startMouseTracking()
+            startTopControlsTimer()
         }
         .onDisappear {
             stopMouseTracking()
             stopAutoScroll()
+            stopTopControlsTimer()
         }
         .navigationTitle(currentImageInfo)
         .sheet(isPresented: $isSettingsPresented) {
@@ -259,31 +267,24 @@ struct ContentView: View {
     private func startMouseTracking() {
         timer = Timer.scheduledTimer(withTimeInterval: 0.1, repeats: true) { timer in
             if let window = NSApplication.shared.windows.first {
-                // グローバルなマウス位置を取
                 let mouseLocation = NSEvent.mouseLocation
-                
-                // ウィンドウの位置とサイズを取得
                 let windowFrame = window.frame
                 
-                // マウスがウィンドウ内にあるかチェック
                 if NSPointInRect(mouseLocation, windowFrame) {
-                    // ウィンドウ内のローカル座標に変換
                     let localMouseLocation = window.convertFromScreen(NSRect(origin: mouseLocation, size: .zero)).origin
 
-                    // 画面下部100px以内にマウスがあるかをチェック
-                    if localMouseLocation.y < 100 {
-                        withAnimation {
-                            isControlsVisible = true
-                        }
-                    } else {
-                        withAnimation {
-                            isControlsVisible = false
+                    withAnimation {
+                        isControlsVisible = localMouseLocation.y < 100
+                        if !isInitialDisplay {
+                            isTopControlsVisible = localMouseLocation.y > windowFrame.size.height - 100
                         }
                     }
                 } else {
-                    // マウスがウィンドウ外にある場合はコントロールを非表示にす
                     withAnimation {
                         isControlsVisible = false
+                        if !isInitialDisplay {
+                            isTopControlsVisible = false
+                        }
                     }
                 }
             }
@@ -324,6 +325,22 @@ struct ContentView: View {
         isAutoScrolling = false
         autoScrollTimer?.invalidate()
         autoScrollTimer = nil
+    }
+
+    private func startTopControlsTimer() {
+        isTopControlsVisible = true
+        isInitialDisplay = true
+        topControlsTimer = Timer.scheduledTimer(withTimeInterval: 2.0, repeats: false) { _ in
+            withAnimation {
+                self.isTopControlsVisible = false
+                self.isInitialDisplay = false
+            }
+        }
+    }
+
+    private func stopTopControlsTimer() {
+        topControlsTimer?.invalidate()
+        topControlsTimer = nil
     }
 }
 
