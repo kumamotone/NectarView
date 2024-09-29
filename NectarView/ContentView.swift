@@ -18,6 +18,9 @@ struct ContentView: View {
     @State private var sliderHoverIndex: Int = 0
     @State private var sliderHoverLocation: CGFloat = 0
     @State private var isSliderHovering: Bool = false
+    @State private var isAutoScrolling: Bool = false
+    @State private var autoScrollInterval: Double = 3.0
+    @State private var autoScrollTimer: Timer?
 
     var body: some View {
         GeometryReader { geometry in
@@ -56,6 +59,23 @@ struct ContentView: View {
                 VStack {
                     HStack {
                         Spacer()
+                        // 自動ページめくりコントロール
+                        HStack {
+                            Button(action: toggleAutoScroll) {
+                                Image(systemName: isAutoScrolling ? "pause.circle" : "play.circle")
+                                    .foregroundColor(.white)
+                            }
+                            .buttonStyle(PlainButtonStyle())
+
+                            Slider(value: $autoScrollInterval, in: 0.5...10.0, step: 0.1)
+                                .frame(width: 100)
+                            Text(String(format: "%.1f秒", autoScrollInterval))
+                                .foregroundColor(.white)
+                        }
+                        .padding(8)
+                        .background(Color.black.opacity(0.5))
+                        .cornerRadius(8)
+
                         Button(action: {
                             appSettings.isSpreadViewEnabled.toggle()
                         }) {
@@ -74,15 +94,17 @@ struct ContentView: View {
                                 .background(Color.black.opacity(0.5))
                                 .cornerRadius(8)
                         }
-                        .padding(.top, 10)
-                        .padding(.trailing, 10)
                     }
+                    .padding(.top, 10)
+                    .padding(.trailing, 10)
+
                     Spacer()
+
                     if isControlsVisible && !imageLoader.images.isEmpty {
                         HStack {
                             Text("\(imageLoader.currentIndex + 1) / \(imageLoader.images.count)")
                                 .font(.caption)
-                                .padding(.leading)
+                                .padding(.leading, 10)
                             
                             if imageLoader.images.count > 1 {
                                 CustomSliderView(
@@ -100,12 +122,14 @@ struct ContentView: View {
                                     isHovering: $isSliderHovering
                                 )
                                 .frame(maxWidth: geometry.size.width * 0.8)
+                                .padding(.horizontal, 10)
                             }
                         }
-                        .padding()
+                        .padding(.vertical, 8)
                         .background(appSettings.controlBarColor)
                         .cornerRadius(10)
-                        .padding(.bottom)
+                        .padding(.horizontal, 20)
+                        .padding(.bottom, 10)
                         .transition(.move(edge: .bottom))
                         .onHover { hovering in
                             isControlBarHovered = hovering
@@ -207,6 +231,7 @@ struct ContentView: View {
         }
         .onDisappear {
             stopMouseTracking()
+            stopAutoScroll()
         }
         .navigationTitle(currentImageInfo)
         .sheet(isPresented: $isSettingsPresented) {
@@ -274,6 +299,31 @@ struct ContentView: View {
         if let window = NSApplication.shared.windows.first {
             window.toggleFullScreen(nil)
         }
+    }
+
+    private func toggleAutoScroll() {
+        if isAutoScrolling {
+            stopAutoScroll()
+        } else {
+            startAutoScroll()
+        }
+    }
+
+    private func startAutoScroll() {
+        isAutoScrolling = true
+        autoScrollTimer = Timer.scheduledTimer(withTimeInterval: autoScrollInterval, repeats: true) { _ in
+            if appSettings.isSpreadViewEnabled {
+                imageLoader.showNextSpread(isRightToLeftReading: appSettings.isRightToLeftReading)
+            } else {
+                imageLoader.showNextImage()
+            }
+        }
+    }
+
+    private func stopAutoScroll() {
+        isAutoScrolling = false
+        autoScrollTimer?.invalidate()
+        autoScrollTimer = nil
     }
 }
 
