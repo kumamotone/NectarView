@@ -66,7 +66,7 @@ struct ContentView: View {
             stopAutoScroll()
             stopTopControlsTimer()
         }
-        .navigationTitle(currentImageInfo)
+        .navigationTitle(imageLoader.currentImageInfo)
         .sheet(isPresented: $isSettingsPresented) {
             SettingsView(appSettings: appSettings)
                 .frame(width: 300, height: 150)

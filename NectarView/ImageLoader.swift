@@ -11,6 +11,7 @@ class ImageLoader: ObservableObject {
             currentImageURL = images.isEmpty ? nil : images[currentIndex]
             updateCurrentFileName()
             preloadAdjacentImages()
+            updateCurrentImageInfo()
         }
     }
     @Published var currentImageURL: URL? = nil
@@ -21,6 +22,7 @@ class ImageLoader: ObservableObject {
     @Published var currentSpreadIndices: (Int?, Int?) = (nil, nil)
     @Published var currentZipFileName: String?
     @Published var currentZipEntryFileName: String?
+    @Published var currentImageInfo: String = NSLocalizedString("NoImagesLoaded", comment: "画像がロードされていません")
     
     private let imageExtensions = ["png", "jpg", "jpeg", "gif", "bmp", "tiff", "webp"]
     private var imageCache = NSCache<NSURL, NSImage>()
@@ -70,6 +72,7 @@ class ImageLoader: ObservableObject {
                 self.preloadNextImage()
             }
         }
+        updateCurrentImageInfo()
     }
     
     private func updateCurrentFolderAndFileName(url: URL) {
@@ -321,6 +324,7 @@ class ImageLoader: ObservableObject {
         } else {
             playSound()
         }
+        updateCurrentImageInfo()
     }
     
     func showPreviousImage() {
@@ -329,6 +333,7 @@ class ImageLoader: ObservableObject {
         } else {
             playSound()
         }
+        updateCurrentImageInfo()
     }
     
     private func playSound() {
@@ -372,6 +377,7 @@ class ImageLoader: ObservableObject {
         
         // 現在のインデックスが変更されたことを通知
         objectWillChange.send()
+        updateCurrentImageInfo()
     }
     
     func showNextSpread(isRightToLeftReading: Bool) {
@@ -393,6 +399,7 @@ class ImageLoader: ObservableObject {
             }
         }
         updateSpreadIndices(isSpreadViewEnabled: true, isRightToLeftReading: isRightToLeftReading)
+        updateCurrentImageInfo()
     }
     
     func showPreviousSpread(isRightToLeftReading: Bool) {
@@ -414,6 +421,7 @@ class ImageLoader: ObservableObject {
             }
         }
         updateSpreadIndices(isSpreadViewEnabled: true, isRightToLeftReading: isRightToLeftReading)
+        updateCurrentImageInfo()
     }
     
     func showNextSpreadSimple() {
@@ -425,6 +433,7 @@ class ImageLoader: ObservableObject {
             playSound()
         }
         updateSpreadIndices(isSpreadViewEnabled: true, isRightToLeftReading: false)
+        updateCurrentImageInfo()
     }
     
     func showPreviousSpreadSimple() {
@@ -436,6 +445,7 @@ class ImageLoader: ObservableObject {
             playSound()
         }
         updateSpreadIndices(isSpreadViewEnabled: true, isRightToLeftReading: false)
+        updateCurrentImageInfo()
     }
     
     private func preloadNextImage() {
@@ -472,5 +482,24 @@ class ImageLoader: ObservableObject {
                 completion(false)
             }
         }
+    }
+
+    func updateCurrentImageInfo() {
+        if images.isEmpty {
+            currentImageInfo = NSLocalizedString("NoImagesLoaded", comment: "画像がロードされていません")
+        } else {
+            let currentFileInfo: String
+            if let zipFileName = currentZipFileName {
+                if let entryFileName = currentZipEntryFileName {
+                    currentFileInfo = "\(zipFileName) - \(entryFileName)"
+                } else {
+                    currentFileInfo = zipFileName
+                }
+            } else {
+                currentFileInfo = "\(currentFolderPath)/\(currentFileName)"
+            }
+            currentImageInfo = "\(currentFileInfo) (\(currentIndex + 1)/\(images.count))"
+        }
+        objectWillChange.send()
     }
 }
