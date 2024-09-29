@@ -61,43 +61,46 @@ struct ContentView: View {
                 
                 VStack {
                     if isTopControlsVisible {
-                        HStack {
+                        HStack(spacing: 15) {
                             Spacer()
                             // 自動ページめくりコントロール
-                            HStack {
+                            HStack(spacing: 10) {
                                 Button(action: toggleAutoScroll) {
-                                    Image(systemName: isAutoScrolling ? "pause.circle" : "play.circle")
+                                    Image(systemName: isAutoScrolling ? "pause.fill" : "play.fill")
                                         .foregroundColor(.white)
+                                        .frame(width: 20, height: 20)
                                 }
                                 .buttonStyle(PlainButtonStyle())
 
                                 Slider(value: $autoScrollInterval, in: 0.5...30.0, step: 0.5)
-                                    .frame(width: 100)
+                                    .frame(width: 80)
+                                    .accentColor(.white)
                                 Text(String(format: "%.1f秒", autoScrollInterval))
                                     .foregroundColor(.white)
+                                    .font(.system(size: 12))
                             }
-                            .padding(8)
-                            .background(Color.black.opacity(0.5))
-                            .cornerRadius(8)
+                            .padding(.horizontal, 10)
+                            .padding(.vertical, 5)
+                            .background(Color.black.opacity(0.6))
+                            .cornerRadius(15)
 
                             Button(action: {
                                 appSettings.isSpreadViewEnabled.toggle()
                             }) {
-                                Image(systemName: appSettings.isSpreadViewEnabled ? "book.closed" : "book.open")
+                                Image(systemName: appSettings.isSpreadViewEnabled ? "book.fill" : "doc.text.fill")
                                     .foregroundColor(.white)
-                                    .padding(8)
-                                    .background(Color.black.opacity(0.5))
-                                    .cornerRadius(8)
+                                    .frame(width: 20, height: 20)
                             }
+                            .buttonStyle(TopControlButtonStyle())
+
                             Button(action: {
                                 appSettings.isRightToLeftReading.toggle()
                             }) {
                                 Image(systemName: appSettings.isRightToLeftReading ? "arrow.left" : "arrow.right")
                                     .foregroundColor(.white)
-                                    .padding(8)
-                                    .background(Color.black.opacity(0.5))
-                                    .cornerRadius(8)
+                                    .frame(width: 20, height: 20)
                             }
+                            .buttonStyle(TopControlButtonStyle())
                         }
                         .padding(.top, 10)
                         .padding(.trailing, 10)
@@ -341,6 +344,16 @@ struct ContentView: View {
     private func stopTopControlsTimer() {
         topControlsTimer?.invalidate()
         topControlsTimer = nil
+    }
+}
+
+struct TopControlButtonStyle: ButtonStyle {
+    func makeBody(configuration: Configuration) -> some View {
+        configuration.label
+            .padding(8)
+            .background(Color.black.opacity(0.6))
+            .cornerRadius(10)
+            .scaleEffect(configuration.isPressed ? 0.95 : 1.0)
     }
 }
 
