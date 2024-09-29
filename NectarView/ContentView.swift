@@ -67,7 +67,7 @@ struct ContentView: View {
                             }
                             .buttonStyle(PlainButtonStyle())
 
-                            Slider(value: $autoScrollInterval, in: 0.5...10.0, step: 0.1)
+                            Slider(value: $autoScrollInterval, in: 0.5...30.0, step: 0.5)
                                 .frame(width: 100)
                             Text(String(format: "%.1f秒", autoScrollInterval))
                                 .foregroundColor(.white)
