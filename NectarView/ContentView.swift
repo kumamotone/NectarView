@@ -1,6 +1,8 @@
 import SwiftUI
 import SDWebImageSwiftUI
 
+let dropImagesMessage = NSLocalizedString("DropYourImagesHere", comment: "DropYourImagesHere")
+
 struct ContentView: View {
     @StateObject private var imageLoader = ImageLoader()
     @EnvironmentObject private var appSettings: AppSettings
@@ -219,20 +221,27 @@ struct SpreadView: View {
     let geometry: GeometryProxy
 
     var body: some View {
-        HStack(spacing: 0) {
-            Spacer(minLength: 0)
-            ForEach([imageLoader.currentSpreadIndices.0, imageLoader.currentSpreadIndices.1].compactMap { $0 }, id: \.self) { index in
-                if index < imageLoader.images.count,
-                   let image = imageLoader.getImage(for: imageLoader.images[index]) {
-                    Image(nsImage: image)
-                        .resizable()
-                        .scaledToFit()
-                        .frame(maxWidth: min(geometry.size.width / 2, geometry.size.height * (image.size.width / image.size.height)), maxHeight: geometry.size.height)
+        if imageLoader.images.isEmpty {
+            Text(dropImagesMessage)
+                .font(.headline)
+                .foregroundColor(.gray)
+                .frame(maxWidth: .infinity, maxHeight: .infinity)
+        } else {
+            HStack(spacing: 0) {
+                Spacer(minLength: 0)
+                ForEach([imageLoader.currentSpreadIndices.0, imageLoader.currentSpreadIndices.1].compactMap { $0 }, id: \.self) { index in
+                    if index < imageLoader.images.count,
+                       let image = imageLoader.getImage(for: imageLoader.images[index]) {
+                        Image(nsImage: image)
+                            .resizable()
+                            .scaledToFit()
+                            .frame(maxWidth: min(geometry.size.width / 2, geometry.size.height * (image.size.width / image.size.height)), maxHeight: geometry.size.height)
+                    }
                 }
+                Spacer(minLength: 0)
             }
-            Spacer(minLength: 0)
+            .frame(maxWidth: .infinity)
         }
-        .frame(maxWidth: .infinity)
     }
 }
 
@@ -248,7 +257,7 @@ struct SinglePageView: View {
                     .scaledToFit()
                     .frame(maxWidth: .infinity, maxHeight: .infinity)
             } else {
-                Text(NSLocalizedString("DropYourImagesHere", comment: "DropYourImagesHere"))
+                Text(dropImagesMessage)
                     .font(.headline)
                     .foregroundColor(.gray)
             }
@@ -450,6 +459,7 @@ extension View {
                             DispatchQueue.main.async {
                                 imageLoader.loadImages(from: url)
                             }
+
                         }
                     }
                     return true
