@@ -47,6 +47,10 @@ class ImageLoader: ObservableObject {
         zipFileURL = nil
         zipEntryPaths.removeAll()
         
+        // ZIPファイル関連の情報をクリア
+        currentZipFileName = nil
+        currentZipEntryFileName = nil
+        
         // キャッシュをクリア
         imageCache.removeAllObjects()
         prefetchedImages.removeAll()
@@ -491,12 +495,12 @@ class ImageLoader: ObservableObject {
             let currentFileInfo: String
             if let zipFileName = currentZipFileName {
                 if let entryFileName = currentZipEntryFileName {
-                    currentFileInfo = "\(zipFileName) - \(entryFileName)"
+                    currentFileInfo = "ZIP: \(zipFileName) - \(entryFileName)"
                 } else {
-                    currentFileInfo = zipFileName
+                    currentFileInfo = "ZIP: \(zipFileName)"
                 }
             } else {
-                currentFileInfo = "\(currentFolderPath)/\(currentFileName)"
+                currentFileInfo = "File: \(currentFolderPath)/\(currentFileName)"
             }
             currentImageInfo = "\(currentFileInfo) (\(currentIndex + 1)/\(images.count))"
         }
