@@ -34,6 +34,7 @@ struct ContentView: View {
     @State private var dragStartOffset: CGSize = .zero
     @State private var isDraggingImage: Bool = false
     @State private var isBookmarkListPresented: Bool = false
+    @State private var isSliderVisible: Bool = false
 
     var body: some View {
         GeometryReader { geometry in
@@ -121,10 +122,10 @@ struct ContentView: View {
 
                     Spacer()
 
-                    BottomControlsView(isVisible: $isControlsVisible, imageLoader: imageLoader, appSettings: appSettings, geometry: geometry, isControlBarHovered: $isControlBarHovered, isControlBarDragging: $isControlBarDragging, sliderHoverIndex: $sliderHoverIndex, sliderHoverLocation: $sliderHoverLocation, isSliderHovering: $isSliderHovering)
+                    BottomControlsView(isVisible: $isControlsVisible, imageLoader: imageLoader, appSettings: appSettings, geometry: geometry, isControlBarHovered: $isControlBarHovered, isControlBarDragging: $isControlBarDragging, sliderHoverIndex: $sliderHoverIndex, sliderHoverLocation: $sliderHoverLocation, isSliderHovering: $isSliderHovering, isSliderVisible: $isSliderVisible)
                 }
 
-                SliderPreviewView(isSliderHovering: isSliderHovering, imageLoader: imageLoader, sliderHoverIndex: sliderHoverIndex, sliderHoverLocation: sliderHoverLocation, geometry: geometry)
+                SliderPreviewView(isSliderHovering: isSliderHovering && isSliderVisible, imageLoader: imageLoader, sliderHoverIndex: sliderHoverIndex, sliderHoverLocation: sliderHoverLocation, geometry: geometry)
             }
             .frame(maxWidth: .infinity, maxHeight: .infinity)
             .contentShape(Rectangle())
@@ -641,6 +642,7 @@ struct BottomControlsView: View {
     @Binding var sliderHoverIndex: Int
     @Binding var sliderHoverLocation: CGFloat
     @Binding var isSliderHovering: Bool
+    @Binding var isSliderVisible: Bool
 
     var body: some View {
         if isVisible && !imageLoader.images.isEmpty {
@@ -667,6 +669,8 @@ struct BottomControlsView: View {
                     )
                     .frame(maxWidth: geometry.size.width * 0.8)
                     .padding(.horizontal, 10)
+                    .onAppear { isSliderVisible = true }
+                    .onDisappear { isSliderVisible = false }
                 }
             }
             .padding(.vertical, 8)
