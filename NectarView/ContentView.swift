@@ -1,20 +1,14 @@
 import SwiftUI
 import SDWebImageSwiftUI
 
-let dropImagesMessage = NSLocalizedString("DropYourImagesHere", comment: "DropYourImagesHere")
-
 struct ContentView: View {
     @ObservedObject var imageLoader: ImageLoader
     @EnvironmentObject private var appSettings: AppSettings
     @State private var isControlsVisible: Bool = false
     @State private var timer: Timer?
-    @State private var isFullscreen: Bool = false
     @State var isSettingsPresented: Bool = false
     @Environment(\.presentationMode) var presentationMode
-    @State private var isDragging: Bool = false
     @State private var isControlBarDragging: Bool = false
-    @State private var dragStartLocation: NSPoint?
-    @State private var windowStartLocation: NSPoint?
     @State private var dragOffset: CGSize = .zero
     @State private var isControlBarHovered: Bool = false
     @State private var sliderHoverIndex: Int = 0
@@ -67,7 +61,6 @@ struct ContentView: View {
                             }
                     )
                 
-                // 画像切り替え用のHStackをここに移動
                 HStack(spacing: 0) {
                     LinearGradient(gradient: Gradient(colors: [Color.white.opacity(isLeftHovered ? 0.2 : 0), Color.clear]), startPoint: .leading, endPoint: .trailing)
                         .frame(width: geometry.size.width * 0.15)
@@ -500,7 +493,7 @@ struct SpreadView: View {
 
     var body: some View {
         if imageLoader.images.isEmpty {
-            Text(dropImagesMessage)
+            Text(NSLocalizedString("DropYourImagesHere", comment: "DropYourImagesHere"))
                 .font(.headline)
                 .foregroundColor(.gray)
                 .frame(maxWidth: .infinity, maxHeight: .infinity)
