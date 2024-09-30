@@ -3,7 +3,7 @@ import SDWebImageSwiftUI
 
 struct ContentView: View {
     @ObservedObject var imageLoader: ImageLoader
-    @EnvironmentObject private var appSettings: AppSettings
+    @EnvironmentObject var appSettings: AppSettings
     @State private var isControlsVisible: Bool = false
     @State private var timer: Timer?
     @State var isSettingsPresented: Bool = false
@@ -245,7 +245,7 @@ struct ContentView: View {
         })
         .applyContentViewModifiers(appSettings: appSettings, imageLoader: imageLoader, isSettingsPresented: $isSettingsPresented)
         .onAppear {
-            setupKeyboardHandler()
+            KeyboardHandler.setupKeyboardHandler(for: self)
             startMouseTracking()
             startTopControlsTimer()
         }
@@ -356,27 +356,6 @@ struct ContentView: View {
         topControlsTimer = nil
     }
 
-    private func setupKeyboardHandler() {
-        NSEvent.addLocalMonitorForEvents(matching: .keyDown) { event in
-            if event.modifierFlags.contains(.command) {
-                switch event.charactersIgnoringModifiers {
-                case "+", "=":
-                    self.zoom(by: 1.25)
-                    return nil
-                case "-":
-                    self.zoom(by: 0.8)
-                    return nil
-                case "0":
-                    self.resetZoom()
-                    return nil
-                default:
-                    break
-                }
-            }
-            return KeyboardHandler.handleKeyPress(event: event, imageLoader: imageLoader, appSettings: appSettings) ? nil : event
-        }
-    }
-
     private func setViewMode(_ mode: ImageLoader.ViewMode) {
         imageLoader.viewMode = mode
         switch mode {
@@ -408,7 +387,7 @@ struct ContentView: View {
         }
     }
 
-    private func zoom(by factor: CGFloat) {
+    func zoom(by factor: CGFloat) {
         withAnimation(.spring()) {
             let newScale = self.scale * factor
             self.scale = min(max(newScale, 1.0), 5.0)
@@ -418,7 +397,7 @@ struct ContentView: View {
         }
     }
 
-    private func zoom(to newScale: CGFloat) {
+    func zoom(to newScale: CGFloat) {
         withAnimation(.spring()) {
             self.scale = min(max(newScale, 1.0), 5.0)
             if self.scale == 1.0 {
@@ -427,7 +406,7 @@ struct ContentView: View {
         }
     }
 
-    private func resetZoom() {
+    func resetZoom() {
         withAnimation(.spring()) {
             self.scale = 1.0
             self.offset = .zero
@@ -530,7 +509,7 @@ struct SinglePageView: View {
                     .scaledToFit()
                     .frame(maxWidth: .infinity, maxHeight: .infinity)
             } else {
-                Text(dropImagesMessage)
+                Text(NSLocalizedString("DropYourImagesHere", comment: "DropYourImagesHere"))
                     .font(.headline)
                     .foregroundColor(.gray)
             }

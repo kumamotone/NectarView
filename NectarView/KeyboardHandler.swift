@@ -1,11 +1,36 @@
 import Foundation
 import AppKit
+import SwiftUI
 
 class KeyboardHandler {
-    static func handleKeyPress(event: NSEvent, imageLoader: ImageLoader, appSettings: AppSettings) -> Bool {
+    static func setupKeyboardHandler(for contentView: ContentView) {
+        NSEvent.addLocalMonitorForEvents(matching: .keyDown) { event in
+            handleKeyPress(event: event, contentView: contentView)
+        }
+    }
+
+    private static func handleKeyPress(event: NSEvent, contentView: ContentView) -> NSEvent? {
+        let imageLoader = contentView.imageLoader
+        let appSettings = contentView.appSettings
         let isLeftRightReversed = appSettings.isLeftRightKeyReversed
         let isSpreadView = appSettings.isSpreadViewEnabled
         let isRightToLeftReading = appSettings.isRightToLeftReading
+
+        if event.modifierFlags.contains(.command) {
+            switch event.charactersIgnoringModifiers {
+            case "+", "=":
+                contentView.zoom(by: 1.25)
+                return nil
+            case "-":
+                contentView.zoom(by: 0.8)
+                return nil
+            case "0":
+                contentView.resetZoom()
+                return nil
+            default:
+                break
+            }
+        }
 
         switch event.keyCode {
         case 126: // 上矢印キー
@@ -14,14 +39,14 @@ class KeyboardHandler {
             } else {
                 imageLoader.showPreviousImage()
             }
-            return true
+            return nil
         case 125: // 下矢印キー
             if isSpreadView {
                 imageLoader.showNextSpread(isRightToLeftReading: isRightToLeftReading)
             } else {
                 imageLoader.showNextImage()
             }
-            return true
+            return nil
         case 123: // 左矢印キー
             if isSpreadView {
                 if isRightToLeftReading {
@@ -36,7 +61,7 @@ class KeyboardHandler {
                     imageLoader.showPreviousImage()
                 }
             }
-            return true
+            return nil
         case 124: // 右矢印キー
             if isSpreadView {
                 if isRightToLeftReading {
@@ -51,9 +76,9 @@ class KeyboardHandler {
                     imageLoader.showNextImage()
                 }
             }
-            return true
+            return nil
         default:
-            return false
+            return event
         }
     }
 }
