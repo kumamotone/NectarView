@@ -12,6 +12,7 @@ import SwiftData
 struct NectarViewApp: App {
     @NSApplicationDelegateAdaptor(AppDelegate.self) var appDelegate
     @State private var isSettingsPresented = false
+    @State private var isBookmarkListPresented = false
     @StateObject private var appSettings = AppSettings()
     @StateObject private var imageLoader = ImageLoader()
 
@@ -26,6 +27,9 @@ struct NectarViewApp: App {
                 .sheet(isPresented: $isSettingsPresented) {
                     SettingsView(appSettings: appSettings)
                         .frame(width: 300, height: 300)
+                }
+                .sheet(isPresented: $isBookmarkListPresented) {
+                    BookmarkListView(imageLoader: imageLoader, isPresented: $isBookmarkListPresented)
                 }
         }
         .commands {
@@ -62,8 +66,29 @@ struct NectarViewApp: App {
                 }
                 .keyboardShortcut("3", modifiers: .command)
             }
-            CommandGroup(replacing: .undoRedo) {}
-            CommandGroup(replacing: .pasteboard) {}
+            CommandMenu("ブックマーク") {
+                Button("ブックマークを追加/削除") {
+                    imageLoader.toggleBookmark()
+                }
+                .keyboardShortcut("b", modifiers: .command)
+                
+                Button("次のブックマークへ") {
+                    imageLoader.goToNextBookmark()
+                }
+                .keyboardShortcut("]", modifiers: .command)
+                
+                Button("前のブックマークへ") {
+                    imageLoader.goToPreviousBookmark()
+                }
+                .keyboardShortcut("[", modifiers: .command)
+                
+                Divider()
+                
+                Button("ブックマークリストを表示") {
+                    isBookmarkListPresented = true
+                }
+                .keyboardShortcut("l", modifiers: .command)
+            }
         }
     }
 }
