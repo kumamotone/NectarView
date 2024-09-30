@@ -722,13 +722,13 @@ struct SliderPreviewView: View {
 extension View {
     func applyContentViewModifiers(appSettings: AppSettings, imageLoader: ImageLoader, isSettingsPresented: Binding<Bool>) -> some View {
         self
-            .onChange(of: appSettings.isSpreadViewEnabled) { _ in
+            .onChange(of: appSettings.isSpreadViewEnabled) { _, _ in
                 imageLoader.updateSpreadIndices(isSpreadViewEnabled: appSettings.isSpreadViewEnabled, isRightToLeftReading: appSettings.isRightToLeftReading)
             }
-            .onChange(of: appSettings.isRightToLeftReading) { _ in
+            .onChange(of: appSettings.isRightToLeftReading) { _, _ in
                 imageLoader.updateSpreadIndices(isSpreadViewEnabled: appSettings.isSpreadViewEnabled, isRightToLeftReading: appSettings.isRightToLeftReading)
             }
-            .onChange(of: imageLoader.currentIndex) { _ in
+            .onChange(of: imageLoader.currentIndex) { _, _ in
                 imageLoader.updateSpreadIndices(isSpreadViewEnabled: appSettings.isSpreadViewEnabled, isRightToLeftReading: appSettings.isRightToLeftReading)
             }
             .onDrop(of: [.fileURL], isTargeted: nil) { providers in
