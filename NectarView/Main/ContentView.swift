@@ -9,8 +9,7 @@ struct ContentView: View {
     // MARK: - State Properties
     @State private var isControlsVisible: Bool = false
     @State private var timer: Timer?
-    @State var isSettingsPresented: Bool = false
-    @Environment(\.presentationMode) var presentationMode
+    @State private var isSettingsPresented: Bool = false
     @State private var isControlBarDragging: Bool = false
     @State private var dragOffset: CGSize = .zero
     @State private var isControlBarHovered: Bool = false
