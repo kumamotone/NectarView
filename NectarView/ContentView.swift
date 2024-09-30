@@ -63,7 +63,6 @@ struct ContentView: View {
                     showInFinder()
                 }) {
                     Text("Finder に表示")
-                    Image(systemName: "finder")
                 }
                 .keyboardShortcut("r", modifiers: .command)
 
@@ -92,6 +91,16 @@ struct ContentView: View {
                     Image(systemName: "book.closed")
                 }
                 .keyboardShortcut("6", modifiers: [])
+
+                Divider()
+
+                Button(action: {
+                    isSettingsPresented = true
+                }) {
+                    Text("設定")
+                    Image(systemName: "gear")
+                }
+                .keyboardShortcut(",", modifiers: .command)
             }
         }
         .frame(minWidth: 400, minHeight: 400)
