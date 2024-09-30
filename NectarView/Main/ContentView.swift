@@ -7,29 +7,44 @@ struct ContentView: View {
     @EnvironmentObject var appSettings: AppSettings
     
     // MARK: - State Properties
+    // 一定時間後に自動的に画面上部のコントロールを隠す機能
+    @State private var isTopControlsVisible: Bool = true
+    @State private var topControlsTimer: Timer?
+    @State private var isInitialDisplay: Bool = true
+    
+    // 自動めくり用の機能
+    @State private var isAutoScrolling: Bool = false
+    @State private var autoScrollInterval: Double = 3.0
+    @State private var autoScrollTimer: Timer?
+    
+    // 画面下部のコントロール絡みのState
     @State private var isBottomControlVisible: Bool = false
-    @State private var dragOffset: CGSize = .zero
     @State private var isControlBarHovered: Bool = false
     @State private var sliderHoverIndex: Int = 0
     @State private var sliderHoverLocation: CGFloat = 0
     @State private var isSliderHovering: Bool = false
-    @State private var isAutoScrolling: Bool = false
-    @State private var autoScrollInterval: Double = 3.0
-    @State private var autoScrollTimer: Timer?
-    @State private var isTopControlsVisible: Bool = true
-    @State private var topControlsTimer: Timer?
-    @State private var isInitialDisplay: Bool = true
-    @State private var isLeftHovered: Bool = false
-    @State private var isRightHovered: Bool = false
+    @State private var isSliderVisible: Bool = false
+    
+    // マウスで左右切り替え用のコントロール
+    @State private var isLeftCursorHovered: Bool = false
+    @State private var isRightCursorHovered: Bool = false
+     
+    // 拡大縮小と表示位置
     @State private var scale: CGFloat = 1.0
     @State private var offset: CGSize = .zero
     @State private var dragStartOffset: CGSize = .zero
+    
+    // ドラッグでウィンドウ位置の調整
+    @State private var dragOffset: CGSize = .zero
+    
+    // ドラッグ中かどうか
     @State private var isDraggingImage: Bool = false
-    @State private var isSliderVisible: Bool = false
-
+    
+    // モーダルの表示非表示
     @State private var isSettingsPresented: Bool = false
     @State private var isBookmarkListPresented: Bool = false
 
+    // マウスを定期的に監視 なんでもいい
     @State private var mouseTrackingTimer: Timer?
     
     var body: some View {
@@ -65,7 +80,7 @@ struct ContentView: View {
                     )
                 
                 HStack(spacing: 0) {
-                    LinearGradient(gradient: Gradient(colors: [Color.white.opacity(isLeftHovered ? 0.2 : 0), Color.clear]), startPoint: .leading, endPoint: .trailing)
+                    LinearGradient(gradient: Gradient(colors: [Color.white.opacity(isLeftCursorHovered ? 0.2 : 0), Color.clear]), startPoint: .leading, endPoint: .trailing)
                         .frame(width: geometry.size.width * 0.15)
                         .contentShape(Rectangle())
                         .onTapGesture {
@@ -77,18 +92,18 @@ struct ContentView: View {
                         }
                         .onHover { hovering in
                             withAnimation(.easeInOut(duration: 0.2)) {
-                                isLeftHovered = hovering
+                                isLeftCursorHovered = hovering
                             }
                         }
                         .overlay(
                             Image(systemName: "chevron.left")
                                 .font(.system(size: 30))
                                 .foregroundColor(.white)
-                                .opacity(isLeftHovered ? 0.6 : 0)
+                                .opacity(isLeftCursorHovered ? 0.6 : 0)
                                 .padding(.leading, 5)
                         )
                     Spacer()
-                    LinearGradient(gradient: Gradient(colors: [Color.clear, Color.white.opacity(isRightHovered ? 0.2 : 0)]), startPoint: .leading, endPoint: .trailing)
+                    LinearGradient(gradient: Gradient(colors: [Color.clear, Color.white.opacity(isRightCursorHovered ? 0.2 : 0)]), startPoint: .leading, endPoint: .trailing)
                         .frame(width: geometry.size.width * 0.15)
                         .contentShape(Rectangle())
                         .onTapGesture {
@@ -100,14 +115,14 @@ struct ContentView: View {
                         }
                         .onHover { hovering in
                             withAnimation(.easeInOut(duration: 0.2)) {
-                                isRightHovered = hovering
+                                isRightCursorHovered = hovering
                             }
                         }
                         .overlay(
                             Image(systemName: "chevron.right")
                                 .font(.system(size: 30))
                                 .foregroundColor(.white)
-                                .opacity(isRightHovered ? 0.6 : 0)
+                                .opacity(isRightCursorHovered ? 0.6 : 0)
                                 .padding(.trailing, 5)
                         )
                 }
@@ -167,7 +182,7 @@ struct ContentView: View {
     }
 
     private func startMouseTracking() {
-        mouseTrackingTimer = Timer.scheduledTimer(withTimeInterval: 0.1, repeats: true) { timer in
+        mouseTrackingTimer = Timer.scheduledTimer(withTimeInterval: 0.16, repeats: true) { timer in
             if let window = NSApplication.shared.windows.first {
                 let mouseLocation = NSEvent.mouseLocation
                 let windowFrame = window.frame
