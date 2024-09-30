@@ -66,8 +66,19 @@ class KeyboardHandler {
             imageLoader.toggleViewMode(.single)
             appSettings.isSpreadViewEnabled = false
             return true
+        case 15: // R key
+            if event.modifierFlags.contains(.command) {
+                imageLoader.rotateImage(by: 90)
+                return true
+            }
+        case 37: // L key
+            if event.modifierFlags.contains(.command) {
+                imageLoader.rotateImage(by: -90)
+                return true
+            }
         default:
             return false
         }
+        return false
     }
 }

@@ -21,6 +21,9 @@
         }
       }
     },
+    "90度回転" : {
+
+    },
     "BackgroundColor" : {
       "comment" : "BackgroundColor",
       "localizations" : {
@@ -279,6 +282,9 @@
 
     },
     "単ページ表示" : {
+
+    },
+    "反時計回りに90度回転" : {
 
     },
     "次のブックマークへ" : {

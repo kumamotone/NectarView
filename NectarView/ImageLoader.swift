@@ -195,7 +195,7 @@ class ImageLoader: ObservableObject {
                         if let selectedIndex = self.images.firstIndex(of: url) {
                             self.currentIndex = selectedIndex
                         } else {
-                            // 選択されたファイルが見つからない��合、最初の画像を表示
+                            // 選択されたファイルが見つからない合、最初の画像を表示
                             self.currentIndex = 0
                         }
                     }
@@ -566,5 +566,12 @@ class ImageLoader: ObservableObject {
                 self.loadImages(from: url)
             }
         }
+    }
+
+    func rotateImage(by degrees: Double) {
+        // 回転処理を実装
+        // 注意: この実装は単純な例です。実際には回転状態を保存し、
+        // 画像の表示時に適用する必要があるかもしれません。
+        print("画像を\(degrees)度回転")
     }
 }
