@@ -57,7 +57,7 @@ struct ContentView: View {
                     Text("開く")
                     Image(systemName: "folder")
                 }
-                .keyboardShortcut("o", modifiers: [])
+                .keyboardShortcut("o", modifiers: .command)
 
                 Button(action: {
                     showInFinder()
@@ -74,7 +74,7 @@ struct ContentView: View {
                     Text("単ページ表示")
                     Image(systemName: "doc.text")
                 }
-                .keyboardShortcut("8", modifiers: [])
+                .keyboardShortcut("1", modifiers: .command)
 
                 Button(action: {
                     setViewMode(.spreadLeftToRight)
@@ -82,7 +82,7 @@ struct ContentView: View {
                     Text("見開き表示 (左→右)")
                     Image(systemName: "book")
                 }
-                .keyboardShortcut("7", modifiers: [])
+                .keyboardShortcut("2", modifiers: .command)
 
                 Button(action: {
                     setViewMode(.spreadRightToLeft)
@@ -90,7 +90,7 @@ struct ContentView: View {
                     Text("見開き表示 (右→左)")
                     Image(systemName: "book.closed")
                 }
-                .keyboardShortcut("6", modifiers: [])
+                .keyboardShortcut("3", modifiers: .command)
 
                 Divider()
 
@@ -303,7 +303,7 @@ struct ContentView: View {
             // 通常のファイルの場合、現在の画像を表示
             NSWorkspace.shared.activateFileViewerSelecting([currentImageURL])
         } else {
-            // 画像が読み込まれていない場合
+            // 画像が読み込��れていない場合
             print("表示できる画像またはZIPファイルがありません")
         }
     }
