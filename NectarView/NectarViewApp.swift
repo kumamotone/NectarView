@@ -99,7 +99,7 @@ struct NectarViewApp: App {
                 Button("ブックマークリストを表示") {
                     isBookmarkListPresented = true
                 }
-                .keyboardShortcut("l", modifiers: .command)
+                .keyboardShortcut("e", modifiers: .command)
             }
         }
     }
