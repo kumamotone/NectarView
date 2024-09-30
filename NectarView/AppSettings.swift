@@ -1,39 +1,25 @@
 import SwiftUI
 
 class AppSettings: ObservableObject {
-    @Published var backgroundColor: Color {
-        didSet {
-            UserDefaults.standard.setColor(backgroundColor, forKey: "backgroundColor")
-        }
-    }
-    @Published var controlBarColor: Color {
-        didSet {
-            UserDefaults.standard.setColor(controlBarColor, forKey: "controlBarColor")
-        }
-    }
+    @AppStorage("backgroundColor") var backgroundColor: Color = .black
+    @AppStorage("controlBarColor") var controlBarColor: Color = Color.black.opacity(0.6)
+    @AppStorage("isSpreadViewEnabled") var isSpreadViewEnabled: Bool = false
+    @AppStorage("isRightToLeftReading") var isRightToLeftReading: Bool = false
+    @AppStorage("isLeftRightKeyReversed") var isLeftRightKeyReversed: Bool = true
     
-    @Published var isSpreadViewEnabled: Bool {
-        didSet {
-            UserDefaults.standard.set(isSpreadViewEnabled, forKey: "isSpreadViewEnabled")
+    var body: some View {
+        VStack {
+            ColorPicker("Background Color", selection: $backgroundColor)
+            ColorPicker("Control Bar Color", selection: $controlBarColor)
+            Toggle("Enable Spread View", isOn: $isSpreadViewEnabled)
+            Toggle("Right to Left Reading", isOn: $isRightToLeftReading)
+            Toggle("Reverse Left/Right Keys", isOn: $isLeftRightKeyReversed)
+            
+            Button("Reset to Defaults") { [self] in
+                resetToDefaults()
+            }
         }
-    }
-    @Published var isRightToLeftReading: Bool {
-        didSet {
-            UserDefaults.standard.set(isRightToLeftReading, forKey: "isRightToLeftReading")
-        }
-    }
-    @Published var isLeftRightKeyReversed: Bool {
-        didSet {
-            UserDefaults.standard.set(isLeftRightKeyReversed, forKey: "isLeftRightKeyReversed")
-        }
-    }
-    
-    init() {
-        self.backgroundColor = UserDefaults.standard.color(forKey: "backgroundColor") ?? .black
-        self.controlBarColor = UserDefaults.standard.color(forKey: "controlBarColor") ?? Color.black.opacity(0.6)
-        self.isSpreadViewEnabled = UserDefaults.standard.bool(forKey: "isSpreadViewEnabled")
-        self.isRightToLeftReading = UserDefaults.standard.bool(forKey: "isRightToLeftReading")
-        self.isLeftRightKeyReversed = UserDefaults.standard.bool(forKey: "isLeftRightKeyReversed", defaultValue: true)
+        .padding()
     }
     
     func resetToDefaults() {
@@ -45,23 +31,3 @@ class AppSettings: ObservableObject {
     }
 }
 
-extension UserDefaults {
-    func setColor(_ color: Color, forKey key: String) {
-        let components = NSColor(color).cgColor.components
-        set(components, forKey: key)
-    }
-    
-    func color(forKey key: String) -> Color? {
-        guard let components = object(forKey: key) as? [CGFloat], components.count >= 3 else {
-            return nil
-        }
-        return Color(.sRGB, red: components[0], green: components[1], blue: components[2], opacity: components[3])
-    }
-    
-    func bool(forKey key: String, defaultValue: Bool) -> Bool {
-        if object(forKey: key) == nil {
-            return defaultValue
-        }
-        return bool(forKey: key)
-    }
-}
