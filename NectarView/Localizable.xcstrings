@@ -143,9 +143,6 @@
     "NectarView" : {
       "comment" : "NectarView"
     },
-    "NoImagesLoaded" : {
-      "comment" : "画像がロードされていません"
-    },
     "OpenTemporaryDirectory" : {
       "comment" : "OpenTemporaryDirectory",
       "localizations" : {

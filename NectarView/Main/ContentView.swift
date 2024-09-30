@@ -2,8 +2,11 @@ import SwiftUI
 import SDWebImageSwiftUI
 
 struct ContentView: View {
+    // MARK: - Observed Objects
     @ObservedObject var imageLoader: ImageLoader
     @EnvironmentObject var appSettings: AppSettings
+    
+    // MARK: - State Properties
     @State private var isControlsVisible: Bool = false
     @State private var timer: Timer?
     @State var isSettingsPresented: Bool = false
@@ -163,22 +166,6 @@ struct ContentView: View {
         }
     }
 
-    private var currentImageInfo: String {
-        if let zipFileName = imageLoader.currentZipFileName {
-            if let entryFileName = imageLoader.currentZipEntryFileName {
-                return "\(zipFileName) - \(entryFileName) (\(imageLoader.currentIndex + 1)/\(imageLoader.images.count))"
-            } else {
-                return "\(zipFileName) (\(imageLoader.currentIndex + 1)/\(imageLoader.images.count))"
-            }
-        } else if imageLoader.images.isEmpty {
-            return NSLocalizedString("NoImagesLoaded", comment: "画像がロードされていません")
-        } else {
-            let folderInfo = imageLoader.currentFolderPath
-            let fileInfo = imageLoader.currentFileName
-            return "\(folderInfo)/\(fileInfo) (\(imageLoader.currentIndex + 1)/\(imageLoader.images.count))"
-        }
-    }
-
     private func startMouseTracking() {
         timer = Timer.scheduledTimer(withTimeInterval: 0.1, repeats: true) { timer in
             if let window = NSApplication.shared.windows.first {
@@ -258,6 +245,7 @@ struct ContentView: View {
         topControlsTimer = nil
     }
 
+    // MARK: - Zoom Functions
     func zoom(by factor: CGFloat) {
         withAnimation(.spring()) {
             let newScale = self.scale * factor
@@ -284,6 +272,7 @@ struct ContentView: View {
         }
     }
 
+    // MARK: - Offset and Dragging Functions
     private func limitOffset(_ offset: CGSize, in size: CGSize) -> CGSize {
         let maxOffsetX = max(0, (size.width * scale - size.width) / 2)
         let maxOffsetY = max(0, (size.height * scale - size.height) / 2)
