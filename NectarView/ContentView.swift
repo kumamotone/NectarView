@@ -127,6 +127,15 @@ struct ContentView: View {
             }
             .frame(maxWidth: .infinity, maxHeight: .infinity)
             .contentShape(Rectangle())
+            .gesture(
+                DragGesture()
+                    .onChanged { value in
+                        self.handleWindowDrag(value)
+                    }
+                    .onEnded { _ in
+                        self.dragOffset = .zero
+                    }
+            )
             .onTapGesture(count: 2) {
                 toggleFullscreen()
             }
