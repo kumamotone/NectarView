@@ -195,7 +195,7 @@ class ImageLoader: ObservableObject {
                         if let selectedIndex = self.images.firstIndex(of: url) {
                             self.currentIndex = selectedIndex
                         } else {
-                            // 選択されたファイルが見つからない場合、最初の画像を表示
+                            // 選択されたファイルが見つからない��合、最初の画像を表示
                             self.currentIndex = 0
                         }
                     }
@@ -229,7 +229,7 @@ class ImageLoader: ObservableObject {
             case NSFileReadNoPermissionError:
                 showAlert(message: "ファイルへのアクセス権限がありん。アプリケーションの権限設定を確認してください。\nファイルパス: \(url.path)")
             case NSFileReadUnknownError:
-                showAlert(message: "ファイルの読み込に��敗しました。ファイルが存在するか確認してください。\nファイルパス: \(url.path)")
+                showAlert(message: "ファイルの読み込に敗しました。ファイルが存在するか確認してください。\nファイルパス: \(url.path)")
             default:
                 showAlert(message: "予期せぬエラーが発生しました: \(nsError.localizedDescription)\nファイルパス: \(url.path)")
             }
@@ -551,6 +551,20 @@ class ImageLoader: ObservableObject {
             currentIndex = previousBookmark
         } else if let lastBookmark = bookmarks.last, lastBookmark > currentIndex {
             currentIndex = lastBookmark
+        }
+    }
+
+    public func openFile() {
+        let panel = NSOpenPanel()
+        panel.allowsMultipleSelection = false
+        panel.canChooseDirectories = true
+        panel.canChooseFiles = true
+        panel.allowedContentTypes = [.folder, .image, .archive]
+
+        if panel.runModal() == .OK {
+            if let url = panel.url {
+                self.loadImages(from: url)
+            }
         }
     }
 }

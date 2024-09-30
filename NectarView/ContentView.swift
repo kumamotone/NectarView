@@ -4,7 +4,7 @@ import SDWebImageSwiftUI
 let dropImagesMessage = NSLocalizedString("DropYourImagesHere", comment: "DropYourImagesHere")
 
 struct ContentView: View {
-    @StateObject private var imageLoader = ImageLoader()
+    @ObservedObject var imageLoader: ImageLoader
     @EnvironmentObject private var appSettings: AppSettings
     @State private var isControlsVisible: Bool = false
     @State private var timer: Timer?
@@ -291,18 +291,8 @@ struct ContentView: View {
         }
     }
 
-    private func openFile() {
-        let panel = NSOpenPanel()
-        panel.allowsMultipleSelection = false
-        panel.canChooseDirectories = true
-        panel.canChooseFiles = true
-        panel.allowedContentTypes = [.folder, .image, .archive]
-
-        if panel.runModal() == .OK {
-            if let url = panel.url {
-                imageLoader.loadImages(from: url)
-            }
-        }
+    public func openFile() {
+        imageLoader.openFile()
     }
 
     private func showInFinder() {

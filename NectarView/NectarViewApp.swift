@@ -10,9 +10,10 @@ import SwiftData
 
 @main
 struct NectarViewApp: App {
-    @StateObject private var appSettings = AppSettings()
     @NSApplicationDelegateAdaptor(AppDelegate.self) var appDelegate
     @State private var isSettingsPresented = false
+    @StateObject private var appSettings = AppSettings()
+    @StateObject private var imageLoader = ImageLoader()
 
     init() {
         NSWindow.allowsAutomaticWindowTabbing = false
@@ -20,7 +21,7 @@ struct NectarViewApp: App {
 
     var body: some Scene {
         WindowGroup {
-            ContentView()
+            ContentView(imageLoader: imageLoader)
                 .environmentObject(appSettings)
                 .sheet(isPresented: $isSettingsPresented) {
                     SettingsView(appSettings: appSettings)
@@ -34,7 +35,12 @@ struct NectarViewApp: App {
                 }
                 .keyboardShortcut(",", modifiers: .command)
             }
-            CommandGroup(replacing: .newItem) { }
+            CommandGroup(replacing: .newItem) {
+                Button("開く") {
+                    imageLoader.openFile()
+                }
+                .keyboardShortcut("o", modifiers: .command)
+            }
         }
     }
 }

@@ -109,6 +109,7 @@
     },
     "File" : {
       "comment" : "File",
+      "extractionState" : "stale",
       "localizations" : {
         "en" : {
           "stringUnit" : {

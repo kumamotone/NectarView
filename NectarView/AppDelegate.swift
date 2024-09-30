@@ -4,7 +4,7 @@ import SwiftUI
 class AppDelegate: NSObject, NSApplicationDelegate {
     func applicationDidFinishLaunching(_ notification: Notification) {
         print("アプリケーションが起動しました")
-        let rmMenuTitles = Set([NSLocalizedString("File", comment: "File"), NSLocalizedString("Edit", comment: "Edit")])
+        let rmMenuTitles = Set([NSLocalizedString("Edit", comment: "Edit")])
 
         if let mainMenu = NSApp.mainMenu {
             let menus = mainMenu.items.filter { item in
