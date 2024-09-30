@@ -6,7 +6,6 @@ struct BottomControlsView: View {
     @ObservedObject var appSettings: AppSettings
     let geometry: GeometryProxy
     @Binding var isControlBarHovered: Bool
-    @Binding var isControlBarDragging: Bool
     @Binding var sliderHoverIndex: Int
     @Binding var sliderHoverLocation: CGFloat
     @Binding var isSliderHovering: Bool
@@ -49,15 +48,6 @@ struct BottomControlsView: View {
             .onHover { hovering in
                 isControlBarHovered = hovering
             }
-            .gesture(
-                DragGesture()
-                    .onChanged { _ in
-                        isControlBarDragging = true
-                    }
-                    .onEnded { _ in
-                        isControlBarDragging = false
-                    }
-            )
         }
     }
 }

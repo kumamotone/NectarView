@@ -10,7 +10,6 @@ struct ContentView: View {
     @State private var isControlsVisible: Bool = false
     @State private var timer: Timer?
     @State private var isSettingsPresented: Bool = false
-    @State private var isControlBarDragging: Bool = false
     @State private var dragOffset: CGSize = .zero
     @State private var isControlBarHovered: Bool = false
     @State private var sliderHoverIndex: Int = 0
@@ -116,7 +115,7 @@ struct ContentView: View {
 
                     Spacer()
 
-                    BottomControlsView(isVisible: $isControlsVisible, imageLoader: imageLoader, appSettings: appSettings, geometry: geometry, isControlBarHovered: $isControlBarHovered, isControlBarDragging: $isControlBarDragging, sliderHoverIndex: $sliderHoverIndex, sliderHoverLocation: $sliderHoverLocation, isSliderHovering: $isSliderHovering, isSliderVisible: $isSliderVisible)
+                    BottomControlsView(isVisible: $isBottomControlVisible, imageLoader: imageLoader, appSettings: appSettings, geometry: geometry, isControlBarHovered: $isControlBarHovered, sliderHoverIndex: $sliderHoverIndex, sliderHoverLocation: $sliderHoverLocation, isSliderHovering: $isSliderHovering, isSliderVisible: $isSliderVisible)
                 }
 
                 SliderPreviewView(isSliderHovering: isSliderHovering && isSliderVisible, imageLoader: imageLoader, sliderHoverIndex: sliderHoverIndex, sliderHoverLocation: sliderHoverLocation, geometry: geometry)
