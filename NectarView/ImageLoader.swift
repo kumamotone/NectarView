@@ -193,7 +193,7 @@ class ImageLoader: ObservableObject {
                     if url.hasDirectoryPath {
                         self.currentIndex = 0
                     } else {
-                        // 単一ファイルが選択された場合、そのファイルのインデックスを見つける
+                        // 単一ファイルが選択れた場合、そのファイルのインデックスを見つける
                         if let selectedIndex = self.images.firstIndex(of: url) {
                             self.currentIndex = selectedIndex
                         } else {
@@ -369,6 +369,7 @@ class ImageLoader: ObservableObject {
 
         if isSpreadViewEnabled {
             if isRightToLeftReading {
+                // 右→左読みの場合
                 if safeCurrentIndex == images.count - 1 {
                     // 最後のページの場合、1ページだけ表示
                     currentSpreadIndices = (nil, safeCurrentIndex)
@@ -378,10 +379,12 @@ class ImageLoader: ObservableObject {
                     currentSpreadIndices = (leftIndex, rightIndex)
                 }
             } else {
-                // 左→右読みの場合（新しいロジック）
+                // 左→右読みの場合
                 if safeCurrentIndex == 0 {
-                    // 最初のページの場合、1ページだけ表示
-                    currentSpreadIndices = (nil, safeCurrentIndex)
+                    // 最初のページの場合、2ページ表示（可能な場合）
+                    let leftIndex = 0
+                    let rightIndex = 1 < images.count ? 1 : nil
+                    currentSpreadIndices = (leftIndex, rightIndex)
                 } else {
                     let leftIndex = safeCurrentIndex - 1
                     let rightIndex = safeCurrentIndex
@@ -409,8 +412,10 @@ class ImageLoader: ObservableObject {
                 playSound()
             }
         } else {
-            if currentIndex < images.count - 1 {
-                currentIndex += 1
+            if currentIndex < images.count - 2 {
+                currentIndex += 2
+            } else if currentIndex == images.count - 2 {
+                currentIndex = images.count - 1
             } else {
                 playSound()
             }
@@ -421,14 +426,18 @@ class ImageLoader: ObservableObject {
     
     func showPreviousSpread(isRightToLeftReading: Bool) {
         if isRightToLeftReading {
-            if currentIndex < images.count - 1 {
-                currentIndex += 1
+            if currentIndex < images.count - 2 {
+                currentIndex += 2
+            } else if currentIndex == images.count - 2 {
+                currentIndex = images.count - 1
             } else {
                 playSound()
             }
         } else {
-            if currentIndex > 0 {
-                currentIndex -= 1
+            if currentIndex > 1 {
+                currentIndex -= 2
+            } else if currentIndex == 1 {
+                currentIndex = 0
             } else {
                 playSound()
             }
