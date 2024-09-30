@@ -24,6 +24,9 @@
     "90度回転" : {
 
     },
+    "Background Color" : {
+
+    },
     "BackgroundColor" : {
       "comment" : "BackgroundColor",
       "localizations" : {
@@ -40,6 +43,9 @@
           }
         }
       }
+    },
+    "Control Bar Color" : {
+
     },
     "ControlBarColor" : {
       "comment" : "ControlBarColor",
@@ -110,6 +116,9 @@
         }
       }
     },
+    "Enable Spread View" : {
+
+    },
     "File" : {
       "comment" : "File",
       "extractionState" : "stale",
@@ -154,6 +163,9 @@
         }
       }
     },
+    "Reset to Defaults" : {
+
+    },
     "ResetSettings" : {
       "comment" : "ResetSettings",
       "localizations" : {
@@ -170,6 +182,9 @@
           }
         }
       }
+    },
+    "Reverse Left/Right Keys" : {
+
     },
     "ReverseKeyboardDirection" : {
       "comment" : "Reverse keyboard direction",
@@ -241,6 +256,9 @@
           }
         }
       }
+    },
+    "Right to Left Reading" : {
+
     },
     "Settings" : {
       "comment" : "Settings",
