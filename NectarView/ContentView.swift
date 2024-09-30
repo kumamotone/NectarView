@@ -698,7 +698,9 @@ struct SliderPreviewView: View {
     let geometry: GeometryProxy
 
     var body: some View {
-        if isSliderHovering, let previewImage = imageLoader.getImage(for: imageLoader.images[sliderHoverIndex]) {
+        if isSliderHovering, 
+           sliderHoverIndex >= 0 && sliderHoverIndex < imageLoader.images.count,
+           let previewImage = imageLoader.getImage(for: imageLoader.images[sliderHoverIndex]) {
             VStack {
                 Image(nsImage: previewImage)
                     .resizable()
