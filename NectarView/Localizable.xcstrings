@@ -131,6 +131,9 @@
     "Finder に表示" : {
 
     },
+    "NectarView" : {
+      "comment" : "NectarView"
+    },
     "NoImagesLoaded" : {
       "comment" : "画像がロードされていません"
     },
