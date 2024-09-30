@@ -1,5 +1,67 @@
 import SwiftUI
 
+struct BottomControlsView: View {
+    @Binding var isVisible: Bool
+    @ObservedObject var imageLoader: ImageLoader
+    @ObservedObject var appSettings: AppSettings
+    let geometry: GeometryProxy
+    @Binding var isControlBarHovered: Bool
+    @Binding var isControlBarDragging: Bool
+    @Binding var sliderHoverIndex: Int
+    @Binding var sliderHoverLocation: CGFloat
+    @Binding var isSliderHovering: Bool
+    @Binding var isSliderVisible: Bool
+
+    var body: some View {
+        if isVisible && !imageLoader.images.isEmpty {
+            HStack {
+                Text("\(imageLoader.currentIndex + 1) / \(imageLoader.images.count)")
+                    .font(.caption)
+                    .padding(.leading, 10)
+                    .foregroundColor(.white)
+                
+                if imageLoader.images.count > 1 {
+                    CustomSliderView(
+                        currentIndex: $imageLoader.currentIndex,
+                        totalImages: imageLoader.images.count,
+                        onHover: { index in
+                            // ホバーの処理（必要に応じて）
+                        },
+                        onClick: { index in
+                            imageLoader.updateSafeCurrentIndex(index)
+                            imageLoader.prefetchImages()
+                        },
+                        hoverIndex: $sliderHoverIndex,
+                        hoverLocation: $sliderHoverLocation,
+                        isHovering: $isSliderHovering
+                    )
+                    .frame(maxWidth: geometry.size.width * 0.8)
+                    .padding(.horizontal, 10)
+                    .onAppear { isSliderVisible = true }
+                    .onDisappear { isSliderVisible = false }
+                }
+            }
+            .padding(.vertical, 8)
+            .background(appSettings.controlBarColor)
+            .cornerRadius(10)
+            .padding(.horizontal, 20)
+            .padding(.bottom, 10)
+            .onHover { hovering in
+                isControlBarHovered = hovering
+            }
+            .gesture(
+                DragGesture()
+                    .onChanged { _ in
+                        isControlBarDragging = true
+                    }
+                    .onEnded { _ in
+                        isControlBarDragging = false
+                    }
+            )
+        }
+    }
+}
+
 struct CustomSliderView: View {
     @Binding var currentIndex: Int
     let totalImages: Int

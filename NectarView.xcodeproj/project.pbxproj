@@ -13,10 +13,12 @@
 		D07E8B1E2CA249D600C7E124 /* KeyboardHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = D07E8B172CA249D600C7E124 /* KeyboardHandler.swift */; };
 		D07E8B222CA249D600C7E124 /* ImageLoader.swift in Sources */ = {isa = PBXBuildFile; fileRef = D07E8B1B2CA249D600C7E124 /* ImageLoader.swift */; };
 		D07E8B232CA249D600C7E124 /* NectarViewApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = D07E8B1C2CA249D600C7E124 /* NectarViewApp.swift */; };
-		D07E8B282CA24E2F00C7E124 /* CustomSliderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D07E8B272CA24E2F00C7E124 /* CustomSliderView.swift */; };
 		D07E8B2A2CA2597400C7E124 /* AppSettings.swift in Sources */ = {isa = PBXBuildFile; fileRef = D07E8B292CA2597400C7E124 /* AppSettings.swift */; };
 		D07E8B2C2CA2598E00C7E124 /* SettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D07E8B2B2CA2598E00C7E124 /* SettingsView.swift */; };
 		D08EF19C2CAB142F00301FA8 /* NSColor+.swift in Sources */ = {isa = PBXBuildFile; fileRef = D08EF19B2CAB142F00301FA8 /* NSColor+.swift */; };
+		D08EF1CE2CAB228200301FA8 /* BottomControlView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D08EF1CD2CAB228200301FA8 /* BottomControlView.swift */; };
+		D08EF1D02CAB22B000301FA8 /* TopControlsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D08EF1CF2CAB22B000301FA8 /* TopControlsView.swift */; };
+		D08EF1D22CAB22D200301FA8 /* ImageDisplayView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D08EF1D12CAB22D200301FA8 /* ImageDisplayView.swift */; };
 		D0AABEC42CA22D0E00878C45 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D0AABEC32CA22D0E00878C45 /* ContentView.swift */; };
 		D0AABEC82CA22D0F00878C45 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = D0AABEC72CA22D0F00878C45 /* Assets.xcassets */; };
 		D0AABECB2CA22D0F00878C45 /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = D0AABECA2CA22D0F00878C45 /* Preview Assets.xcassets */; };
@@ -51,10 +53,12 @@
 		D07E8B172CA249D600C7E124 /* KeyboardHandler.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = KeyboardHandler.swift; sourceTree = "<group>"; };
 		D07E8B1B2CA249D600C7E124 /* ImageLoader.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ImageLoader.swift; sourceTree = "<group>"; };
 		D07E8B1C2CA249D600C7E124 /* NectarViewApp.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NectarViewApp.swift; sourceTree = "<group>"; };
-		D07E8B272CA24E2F00C7E124 /* CustomSliderView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CustomSliderView.swift; sourceTree = "<group>"; };
 		D07E8B292CA2597400C7E124 /* AppSettings.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AppSettings.swift; sourceTree = "<group>"; };
 		D07E8B2B2CA2598E00C7E124 /* SettingsView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SettingsView.swift; sourceTree = "<group>"; };
 		D08EF19B2CAB142F00301FA8 /* NSColor+.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "NSColor+.swift"; sourceTree = "<group>"; };
+		D08EF1CD2CAB228200301FA8 /* BottomControlView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BottomControlView.swift; sourceTree = "<group>"; };
+		D08EF1CF2CAB22B000301FA8 /* TopControlsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TopControlsView.swift; sourceTree = "<group>"; };
+		D08EF1D12CAB22D200301FA8 /* ImageDisplayView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageDisplayView.swift; sourceTree = "<group>"; };
 		D0AABEBE2CA22D0E00878C45 /* NectarView.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = NectarView.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		D0AABEC32CA22D0E00878C45 /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
 		D0AABEC72CA22D0F00878C45 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
@@ -106,6 +110,45 @@
 			path = Foundation;
 			sourceTree = "<group>";
 		};
+		D08EF1D32CAB22E100301FA8 /* Main */ = {
+			isa = PBXGroup;
+			children = (
+				D08EF1D62CAB235C00301FA8 /* Views */,
+				D0AABEC32CA22D0E00878C45 /* ContentView.swift */,
+				D07E8B1B2CA249D600C7E124 /* ImageLoader.swift */,
+				D07E8B172CA249D600C7E124 /* KeyboardHandler.swift */,
+			);
+			path = Main;
+			sourceTree = "<group>";
+		};
+		D08EF1D42CAB22F600301FA8 /* Settings */ = {
+			isa = PBXGroup;
+			children = (
+				D07E8B292CA2597400C7E124 /* AppSettings.swift */,
+				D07E8B2B2CA2598E00C7E124 /* SettingsView.swift */,
+			);
+			path = Settings;
+			sourceTree = "<group>";
+		};
+		D08EF1D62CAB235C00301FA8 /* Views */ = {
+			isa = PBXGroup;
+			children = (
+				D08EF1CF2CAB22B000301FA8 /* TopControlsView.swift */,
+				D08EF1D12CAB22D200301FA8 /* ImageDisplayView.swift */,
+				D08EF1CD2CAB228200301FA8 /* BottomControlView.swift */,
+				D0C282412CA8D6E50095D414 /* InstantTooltip.swift */,
+			);
+			path = Views;
+			sourceTree = "<group>";
+		};
+		D08EF1D72CAB236F00301FA8 /* Bookmarks */ = {
+			isa = PBXGroup;
+			children = (
+				D0C282472CAA61F50095D414 /* BookmarkListView.swift */,
+			);
+			path = Bookmarks;
+			sourceTree = "<group>";
+		};
 		D0AABEB52CA22D0E00878C45 = {
 			isa = PBXGroup;
 			children = (
@@ -130,17 +173,12 @@
 			isa = PBXGroup;
 			children = (
 				D08EF19D2CAB143800301FA8 /* Foundation */,
-				D0C2823F2CA865300095D414 /* Localizable.xcstrings */,
-				D0C282472CAA61F50095D414 /* BookmarkListView.swift */,
-				D07E8B292CA2597400C7E124 /* AppSettings.swift */,
-				D0C2823B2CA85B5F0095D414 /* AppDelegate.swift */,
-				D0AABEC32CA22D0E00878C45 /* ContentView.swift */,
-				D0C282412CA8D6E50095D414 /* InstantTooltip.swift */,
-				D07E8B2B2CA2598E00C7E124 /* SettingsView.swift */,
-				D07E8B272CA24E2F00C7E124 /* CustomSliderView.swift */,
-				D07E8B1B2CA249D600C7E124 /* ImageLoader.swift */,
-				D07E8B172CA249D600C7E124 /* KeyboardHandler.swift */,
+				D08EF1D32CAB22E100301FA8 /* Main */,
+				D08EF1D42CAB22F600301FA8 /* Settings */,
+				D08EF1D72CAB236F00301FA8 /* Bookmarks */,
 				D07E8B1C2CA249D600C7E124 /* NectarViewApp.swift */,
+				D0C2823B2CA85B5F0095D414 /* AppDelegate.swift */,
+				D0C2823F2CA865300095D414 /* Localizable.xcstrings */,
 				D0AABEC72CA22D0F00878C45 /* Assets.xcassets */,
 				D0AABECC2CA22D0F00878C45 /* NectarView.entitlements */,
 				D0AABEC92CA22D0F00878C45 /* Preview Content */,
@@ -316,11 +354,13 @@
 			files = (
 				D0C282422CA8D6E50095D414 /* InstantTooltip.swift in Sources */,
 				D0AABEC42CA22D0E00878C45 /* ContentView.swift in Sources */,
+				D08EF1D02CAB22B000301FA8 /* TopControlsView.swift in Sources */,
 				D07E8B2A2CA2597400C7E124 /* AppSettings.swift in Sources */,
 				D08EF19C2CAB142F00301FA8 /* NSColor+.swift in Sources */,
 				D07E8B1E2CA249D600C7E124 /* KeyboardHandler.swift in Sources */,
-				D07E8B282CA24E2F00C7E124 /* CustomSliderView.swift in Sources */,
+				D08EF1D22CAB22D200301FA8 /* ImageDisplayView.swift in Sources */,
 				D0C282482CAA61F50095D414 /* BookmarkListView.swift in Sources */,
+				D08EF1CE2CAB228200301FA8 /* BottomControlView.swift in Sources */,
 				D07E8B232CA249D600C7E124 /* NectarViewApp.swift in Sources */,
 				D07E8B222CA249D600C7E124 /* ImageLoader.swift in Sources */,
 				D0C2823C2CA85B5F0095D414 /* AppDelegate.swift in Sources */,
