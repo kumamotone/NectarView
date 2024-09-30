@@ -53,7 +53,11 @@ struct ContentView: View {
                         .contentShape(Rectangle())
                         .frame(width: geometry.size.width * 0.2)
                         .onTapGesture {
-                            imageLoader.showPreviousImage()
+                            if appSettings.isSpreadViewEnabled {
+                                imageLoader.showPreviousSpread(isRightToLeftReading: appSettings.isRightToLeftReading)
+                            } else {
+                                imageLoader.showPreviousImage()
+                            }
                         }
                         .onHover { hovering in
                             withAnimation(.easeInOut(duration: 0.2)) {
@@ -72,7 +76,11 @@ struct ContentView: View {
                         .contentShape(Rectangle())
                         .frame(width: geometry.size.width * 0.2)
                         .onTapGesture {
-                            imageLoader.showNextImage()
+                            if appSettings.isSpreadViewEnabled {
+                                imageLoader.showNextSpread(isRightToLeftReading: appSettings.isRightToLeftReading)
+                            } else {
+                                imageLoader.showNextImage()
+                            }
                         }
                         .onHover { hovering in
                             withAnimation(.easeInOut(duration: 0.2)) {
@@ -545,7 +553,7 @@ struct BottomControlsView: View {
                         currentIndex: $imageLoader.currentIndex,
                         totalImages: imageLoader.images.count,
                         onHover: { index in
-                            // ホバー��の処理（必要に応じて）
+                            // ホバーの処理（必要に応じて）
                         },
                         onClick: { index in
                             imageLoader.currentIndex = index
