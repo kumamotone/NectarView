@@ -1,10 +1,3 @@
-//
-//  NectarViewApp.swift
-//  NectarView
-//
-//  Created by 熊本和正 on 2024/09/24.
-//
-
 import SwiftUI
 import SwiftData
 
