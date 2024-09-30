@@ -26,6 +26,7 @@ struct ContentView: View {
     @State private var isTopControlsVisible: Bool = true
     @State private var topControlsTimer: Timer?
     @State private var isInitialDisplay: Bool = true
+    @State private var isBookmarkListPresented = false
 
     var body: some View {
         GeometryReader { geometry in
@@ -41,6 +42,20 @@ struct ContentView: View {
 
                     BottomControlsView(isVisible: $isControlsVisible, imageLoader: imageLoader, appSettings: appSettings, geometry: geometry, isControlBarHovered: $isControlBarHovered, isControlBarDragging: $isControlBarDragging, sliderHoverIndex: $sliderHoverIndex, sliderHoverLocation: $sliderHoverLocation, isSliderHovering: $isSliderHovering)
                 }
+
+                BookmarkButton(imageLoader: imageLoader)
+
+                Button(action: {
+                    isBookmarkListPresented = true
+                }) {
+                    Image(systemName: "list.bullet")
+                        .foregroundColor(.white)
+                        .padding(10)
+                        .background(Color.black.opacity(0.5))
+                        .clipShape(Circle())
+                }
+                .padding()
+                .position(x: geometry.size.width - 50, y: 50)
 
                 SliderPreviewView(isSliderHovering: isSliderHovering, imageLoader: imageLoader, sliderHoverIndex: sliderHoverIndex, sliderHoverLocation: sliderHoverLocation, geometry: geometry)
             }
@@ -101,6 +116,32 @@ struct ContentView: View {
                     Image(systemName: "gear")
                 }
                 .keyboardShortcut(",", modifiers: .command)
+
+                Divider()
+
+                Button(action: {
+                    imageLoader.toggleBookmark()
+                }) {
+                    Text(imageLoader.isCurrentPageBookmarked() ? "ブックマークを解除" : "ブックマークを追加")
+                    Image(systemName: imageLoader.isCurrentPageBookmarked() ? "bookmark.fill" : "bookmark")
+                }
+                .keyboardShortcut("b", modifiers: .command)
+
+                Button(action: {
+                    imageLoader.goToNextBookmark()
+                }) {
+                    Text("次のブックマークへ")
+                    Image(systemName: "arrow.right.to.line")
+                }
+                .keyboardShortcut("]", modifiers: .command)
+
+                Button(action: {
+                    imageLoader.goToPreviousBookmark()
+                }) {
+                    Text("前のブックマークへ")
+                    Image(systemName: "arrow.left.to.line")
+                }
+                .keyboardShortcut("[", modifiers: .command)
             }
         }
         .frame(minWidth: 400, minHeight: 400)
@@ -122,6 +163,9 @@ struct ContentView: View {
         .sheet(isPresented: $isSettingsPresented) {
             SettingsView(appSettings: appSettings)
                 .frame(width: 300, height: 150)
+        }
+        .sheet(isPresented: $isBookmarkListPresented) {
+            BookmarkListView(imageLoader: imageLoader, isPresented: $isBookmarkListPresented)
         }
     }
 
@@ -529,6 +573,29 @@ struct SliderPreviewView: View {
             .cornerRadius(10)
             .shadow(radius: 5)
             .position(x: sliderHoverLocation + 100, y: geometry.size.height - 200)
+        }
+    }
+}
+
+struct BookmarkButton: View {
+    @ObservedObject var imageLoader: ImageLoader
+
+    var body: some View {
+        VStack {
+            Spacer()
+            HStack {
+                Spacer()
+                Button(action: {
+                    imageLoader.toggleBookmark()
+                }) {
+                    Image(systemName: imageLoader.isCurrentPageBookmarked() ? "bookmark.fill" : "bookmark")
+                        .foregroundColor(.white)
+                        .padding(10)
+                        .background(Color.black.opacity(0.5))
+                        .clipShape(Circle())
+                }
+                .padding()
+            }
         }
     }
 }

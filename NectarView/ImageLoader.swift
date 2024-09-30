@@ -40,6 +40,8 @@ class ImageLoader: ObservableObject {
     @Published var zipFileURL: URL?
     private var zipEntryPaths: [String] = []
 
+    @Published var bookmarks: [Int] = []
+
     enum ViewMode {
         case single
         case spreadLeftToRight
@@ -227,7 +229,7 @@ class ImageLoader: ObservableObject {
             case NSFileReadNoPermissionError:
                 showAlert(message: "ファイルへのアクセス権限がありん。アプリケーションの権限設定を確認してください。\nファイルパス: \(url.path)")
             case NSFileReadUnknownError:
-                showAlert(message: "ファイルの読み込��に失敗しました。ファイルが存在するか確認してください。\nファイルパス: \(url.path)")
+                showAlert(message: "ファイルの読み込に��敗しました。ファイルが存在するか確認してください。\nファイルパス: \(url.path)")
             default:
                 showAlert(message: "予期せぬエラーが発生しました: \(nsError.localizedDescription)\nファイルパス: \(url.path)")
             }
@@ -521,5 +523,34 @@ class ImageLoader: ObservableObject {
     func toggleViewMode(_ mode: ViewMode) {
         viewMode = mode
         updateCurrentImageInfo()
+    }
+
+    func toggleBookmark() {
+        if bookmarks.contains(currentIndex) {
+            bookmarks.removeAll { $0 == currentIndex }
+        } else {
+            bookmarks.append(currentIndex)
+            bookmarks.sort()
+        }
+    }
+
+    func isCurrentPageBookmarked() -> Bool {
+        return bookmarks.contains(currentIndex)
+    }
+
+    func goToNextBookmark() {
+        if let nextBookmark = bookmarks.first(where: { $0 > currentIndex }) {
+            currentIndex = nextBookmark
+        } else if let firstBookmark = bookmarks.first, firstBookmark < currentIndex {
+            currentIndex = firstBookmark
+        }
+    }
+
+    func goToPreviousBookmark() {
+        if let previousBookmark = bookmarks.last(where: { $0 < currentIndex }) {
+            currentIndex = previousBookmark
+        } else if let lastBookmark = bookmarks.last, lastBookmark > currentIndex {
+            currentIndex = lastBookmark
+        }
     }
 }

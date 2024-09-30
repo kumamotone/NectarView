@@ -26,6 +26,7 @@
 		D0C2823C2CA85B5F0095D414 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = D0C2823B2CA85B5F0095D414 /* AppDelegate.swift */; };
 		D0C282402CA865300095D414 /* Localizable.xcstrings in Resources */ = {isa = PBXBuildFile; fileRef = D0C2823F2CA865300095D414 /* Localizable.xcstrings */; };
 		D0C282422CA8D6E50095D414 /* InstantTooltip.swift in Sources */ = {isa = PBXBuildFile; fileRef = D0C282412CA8D6E50095D414 /* InstantTooltip.swift */; };
+		D0C282482CAA61F50095D414 /* BookmarkListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D0C282472CAA61F50095D414 /* BookmarkListView.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -67,6 +68,7 @@
 		D0C2823B2CA85B5F0095D414 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		D0C2823F2CA865300095D414 /* Localizable.xcstrings */ = {isa = PBXFileReference; lastKnownFileType = text.json.xcstrings; path = Localizable.xcstrings; sourceTree = "<group>"; };
 		D0C282412CA8D6E50095D414 /* InstantTooltip.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = InstantTooltip.swift; sourceTree = "<group>"; };
+		D0C282472CAA61F50095D414 /* BookmarkListView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BookmarkListView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -120,6 +122,7 @@
 			isa = PBXGroup;
 			children = (
 				D0C2823F2CA865300095D414 /* Localizable.xcstrings */,
+				D0C282472CAA61F50095D414 /* BookmarkListView.swift */,
 				D07E8B292CA2597400C7E124 /* AppSettings.swift */,
 				D0C2823B2CA85B5F0095D414 /* AppDelegate.swift */,
 				D0AABEC32CA22D0E00878C45 /* ContentView.swift */,
@@ -309,6 +312,7 @@
 				D07E8B2A2CA2597400C7E124 /* AppSettings.swift in Sources */,
 				D07E8B1E2CA249D600C7E124 /* KeyboardHandler.swift in Sources */,
 				D07E8B282CA24E2F00C7E124 /* CustomSliderView.swift in Sources */,
+				D0C282482CAA61F50095D414 /* BookmarkListView.swift in Sources */,
 				D07E8B232CA249D600C7E124 /* NectarViewApp.swift in Sources */,
 				D07E8B222CA249D600C7E124 /* ImageLoader.swift in Sources */,
 				D07E8B1F2CA249D600C7E124 /* SliderView.swift in Sources */,
