@@ -564,6 +564,7 @@ extension Archive {
         _ = try self.extract(entry) { data in
             archiveData.append(data)
         }
-        return try Archive(data: archiveData, accessMode: .read)
+        let archive = try Archive(data: archiveData, accessMode: .read)
+        return archive
     }
 }
