@@ -23,7 +23,12 @@ class ImageLoader: ObservableObject {
     @Published var currentZipFileName: String?
     @Published var currentZipEntryFileName: String?
     @Published var currentImageInfo: String = NSLocalizedString("NoImagesLoaded", comment: "画像がロードされていません")
-    
+    @Published var viewMode: ViewMode = .single {
+        didSet {
+            updateSpreadIndices(isSpreadViewEnabled: viewMode != .single, isRightToLeftReading: viewMode == .spreadRightToLeft)
+        }
+    }
+
     private let imageExtensions = ["png", "jpg", "jpeg", "gif", "bmp", "tiff", "webp"]
     private var imageCache = NSCache<NSURL, NSImage>()
     private let preloadQueue = DispatchQueue(label: "com.nectarview.imagepreload", qos: .utility)
@@ -34,6 +39,12 @@ class ImageLoader: ObservableObject {
     private var zipImageEntries: [Entry] = []
     private var zipFileURL: URL?
     private var zipEntryPaths: [String] = []
+
+    enum ViewMode {
+        case single
+        case spreadLeftToRight
+        case spreadRightToLeft
+    }
 
     func loadImages(from url: URL) {
         // 既存のデータをクリア
@@ -505,5 +516,10 @@ class ImageLoader: ObservableObject {
             currentImageInfo = "\(currentFileInfo) (\(currentIndex + 1)/\(images.count))"
         }
         objectWillChange.send()
+    }
+
+    func toggleViewMode(_ mode: ViewMode) {
+        viewMode = mode
+        updateCurrentImageInfo()
     }
 }

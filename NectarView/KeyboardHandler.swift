@@ -52,6 +52,20 @@ class KeyboardHandler {
                 }
             }
             return true
+        case 22: // 6キー
+            imageLoader.toggleViewMode(.spreadRightToLeft)
+            appSettings.isSpreadViewEnabled = true
+            appSettings.isRightToLeftReading = true
+            return true
+        case 26: // 7キー
+            imageLoader.toggleViewMode(.spreadLeftToRight)
+            appSettings.isSpreadViewEnabled = true
+            appSettings.isRightToLeftReading = false
+            return true
+        case 28: // 8キー
+            imageLoader.toggleViewMode(.single)
+            appSettings.isSpreadViewEnabled = false
+            return true
         default:
             return false
         }
