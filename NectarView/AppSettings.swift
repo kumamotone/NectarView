@@ -30,7 +30,7 @@ class AppSettings: ObservableObject {
     
     init() {
         self.backgroundColor = UserDefaults.standard.color(forKey: "backgroundColor") ?? .black
-        self.controlBarColor = UserDefaults.standard.color(forKey: "controlBarColor") ?? Color(red: 0.9, green: 0.9, blue: 0.9, opacity: 0.4)
+        self.controlBarColor = UserDefaults.standard.color(forKey: "controlBarColor") ?? Color.black.opacity(0.6)
         self.isSpreadViewEnabled = UserDefaults.standard.bool(forKey: "isSpreadViewEnabled")
         self.isRightToLeftReading = UserDefaults.standard.bool(forKey: "isRightToLeftReading")
         self.isLeftRightKeyReversed = UserDefaults.standard.bool(forKey: "isLeftRightKeyReversed", defaultValue: true)

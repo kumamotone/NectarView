@@ -477,6 +477,7 @@ struct BottomControlsView: View {
                 Text("\(imageLoader.currentIndex + 1) / \(imageLoader.images.count)")
                     .font(.caption)
                     .padding(.leading, 10)
+                    .foregroundColor(.white)
                 
                 if imageLoader.images.count > 1 {
                     CustomSliderView(
@@ -537,7 +538,7 @@ struct SliderPreviewView: View {
                 Text("\(sliderHoverIndex + 1)/\(imageLoader.images.count)")
                     .font(.caption)
                     .padding(4)
-                    .background(Color.black.opacity(0.7))
+                    .background(Color.black.opacity(0.6))
                     .foregroundColor(.white)
                     .cornerRadius(4)
             }
