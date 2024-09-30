@@ -59,6 +59,14 @@ struct ContentView: View {
                 }
                 .keyboardShortcut("o", modifiers: [])
 
+                Button(action: {
+                    showInFinder()
+                }) {
+                    Text("Finder に表示")
+                    Image(systemName: "finder")
+                }
+                .keyboardShortcut("r", modifiers: .command)
+
                 Divider()
 
                 Button(action: {
@@ -259,6 +267,12 @@ struct ContentView: View {
             if let url = panel.url {
                 imageLoader.loadImages(from: url)
             }
+        }
+    }
+
+    private func showInFinder() {
+        if let currentImageURL = imageLoader.currentImageURL {
+            NSWorkspace.shared.activateFileViewerSelecting([currentImageURL])
         }
     }
 }
