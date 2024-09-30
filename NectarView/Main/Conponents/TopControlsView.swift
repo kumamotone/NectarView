@@ -1,5 +1,6 @@
 import SwiftUI
 
+// 上部のコントロール群
 struct TopControlsView: View {
     @Binding var isVisible: Bool
     @ObservedObject var appSettings: AppSettings
@@ -23,6 +24,7 @@ struct TopControlsView: View {
     }
 }
 
+// 自動ページめくりのコントロール
 struct AutoScrollControls: View {
     @Binding var isAutoScrolling: Bool
     @Binding var autoScrollInterval: Double
@@ -54,6 +56,7 @@ struct AutoScrollControls: View {
     }
 }
 
+// 見開き/単ページのコントロール
 struct ViewModeButton: View {
     @ObservedObject var appSettings: AppSettings
 
@@ -70,6 +73,7 @@ struct ViewModeButton: View {
     }
 }
 
+// 読み込み方向のコントロール
 struct ReadingDirectionButton: View {
     @ObservedObject var appSettings: AppSettings
 
@@ -86,6 +90,7 @@ struct ReadingDirectionButton: View {
     }
 }
 
+// 上部のボタンのスタイル
 struct TopControlButtonStyle: ButtonStyle {
     func makeBody(configuration: Configuration) -> some View {
         configuration.label

@@ -1,5 +1,7 @@
 import SwiftUI
 
+// 画像表示領域
+// 設定によって、単一ページと見開きページが切り替わる
 struct ImageDisplayView: View {
     @ObservedObject var imageLoader: ImageLoader
     @ObservedObject var appSettings: AppSettings
@@ -18,6 +20,30 @@ struct ImageDisplayView: View {
     }
 }
 
+// 単一ページ
+struct SinglePageView: View {
+    @ObservedObject var imageLoader: ImageLoader
+    let scale: CGFloat
+    let offset: CGSize
+
+    var body: some View {
+        Group {
+            if let currentImageURL = imageLoader.currentImageURL,
+               let image = imageLoader.getImage(for: currentImageURL) {
+                Image(nsImage: image)
+                    .resizable()
+                    .scaledToFit()
+                    .frame(maxWidth: .infinity, maxHeight: .infinity)
+            } else {
+                Text(NSLocalizedString("DropYourImagesHere", comment: "DropYourImagesHere"))
+                    .font(.headline)
+                    .foregroundColor(.gray)
+            }
+        }
+    }
+}
+
+// 見開きページ
 struct SpreadView: View {
     @ObservedObject var imageLoader: ImageLoader
     let geometry: GeometryProxy
@@ -45,28 +71,6 @@ struct SpreadView: View {
                 Spacer(minLength: 0)
             }
             .frame(maxWidth: .infinity)
-        }
-    }
-}
-
-struct SinglePageView: View {
-    @ObservedObject var imageLoader: ImageLoader
-    let scale: CGFloat
-    let offset: CGSize
-
-    var body: some View {
-        Group {
-            if let currentImageURL = imageLoader.currentImageURL,
-               let image = imageLoader.getImage(for: currentImageURL) {
-                Image(nsImage: image)
-                    .resizable()
-                    .scaledToFit()
-                    .frame(maxWidth: .infinity, maxHeight: .infinity)
-            } else {
-                Text(NSLocalizedString("DropYourImagesHere", comment: "DropYourImagesHere"))
-                    .font(.headline)
-                    .foregroundColor(.gray)
-            }
         }
     }
 }

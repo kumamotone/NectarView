@@ -1,5 +1,8 @@
 import SwiftUI
 
+// ボタンの説明をするためのツールチップ
+// ボタンの上にマウスを置くと表示される
+// .help()でも説明が出せるが、出るのが遅いため
 struct InstantTooltip: View {
     let text: String
     

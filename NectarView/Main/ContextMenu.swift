@@ -1,5 +1,6 @@
 import SwiftUI
 
+// コンテキスト(右クリック)メニュー
 struct ContextMenuContent: View {
     @ObservedObject var imageLoader: ImageLoader
     @Binding var isSettingsPresented: Bool

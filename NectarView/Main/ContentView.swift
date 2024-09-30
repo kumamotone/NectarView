@@ -181,6 +181,7 @@ struct ContentView: View {
         }
     }
 
+    // マウスを定期的に監視
     private func startMouseTracking() {
         mouseTrackingTimer = Timer.scheduledTimer(withTimeInterval: 0.16, repeats: true) { timer in
             if let window = NSApplication.shared.windows.first {
@@ -208,17 +209,20 @@ struct ContentView: View {
         }
     }
 
+    // マウスの監視を停止
     private func stopMouseTracking() {
         mouseTrackingTimer?.invalidate()
         mouseTrackingTimer = nil
     }
 
+    // フルスクリーンの切り替え
     private func toggleFullscreen() {
         if let window = NSApplication.shared.windows.first {
             window.toggleFullScreen(nil)
         }
     }
 
+    // 自動ページめくりの切り替え
     private func toggleAutoScroll() {
         if isAutoScrolling {
             stopAutoScroll()
@@ -227,6 +231,7 @@ struct ContentView: View {
         }
     }
 
+    // 自動ページめくりの開始
     private func startAutoScroll() {
         isAutoScrolling = true
         autoScrollTimer = Timer.scheduledTimer(withTimeInterval: autoScrollInterval, repeats: true) { _ in
@@ -238,12 +243,14 @@ struct ContentView: View {
         }
     }
 
+    // 自動ページめくりの停止
     private func stopAutoScroll() {
         isAutoScrolling = false
         autoScrollTimer?.invalidate()
         autoScrollTimer = nil
     }
 
+    // 上部のコントロールのタイマーの開始
     private func startTopControlsTimer() {
         isTopControlsVisible = true
         isInitialDisplay = true
@@ -255,6 +262,7 @@ struct ContentView: View {
         }
     }
 
+    // 上部のコントロールのタイマーの停止
     private func stopTopControlsTimer() {
         topControlsTimer?.invalidate()
         topControlsTimer = nil
@@ -271,6 +279,7 @@ struct ContentView: View {
         }
     }
 
+    // 拡大縮小の変更
     func zoom(to newScale: CGFloat) {
         withAnimation(.spring()) {
             self.scale = min(max(newScale, 1.0), 5.0)
@@ -280,6 +289,7 @@ struct ContentView: View {
         }
     }
 
+    // 拡大縮小のリセット
     func resetZoom() {
         withAnimation(.spring()) {
             self.scale = 1.0
@@ -298,12 +308,14 @@ struct ContentView: View {
         )
     }
 
+    // 画像のドラッグの可否
     private func isImageDraggable(in size: CGSize) -> Bool {
         let scaledWidth = size.width * scale
         let scaledHeight = size.height * scale
         return scaledWidth > size.width + 1 || scaledHeight > size.height + 1
     }
 
+    // ウィンドウのドラッグ
     private func handleWindowDrag(_ value: DragGesture.Value) {
         if !isControlBarHovered && !isTopControlsVisible {
             let newDragOffset = CGSize(

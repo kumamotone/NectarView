@@ -1,5 +1,6 @@
 import SwiftUI
 
+// 下部のコントロール
 struct BottomControlsView: View {
     @Binding var isVisible: Bool
     @ObservedObject var imageLoader: ImageLoader
@@ -52,6 +53,7 @@ struct BottomControlsView: View {
     }
 }
 
+// 画像選択スライダー
 struct CustomSliderView: View {
     @Binding var currentIndex: Int
     let totalImages: Int

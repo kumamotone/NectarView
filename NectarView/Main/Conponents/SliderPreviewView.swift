@@ -1,5 +1,6 @@
 import SwiftUI
 
+// スライダーの上にマウスを置いたときに、その画像を表示するための領域
 struct SliderPreviewView: View {
     let isSliderHovering: Bool
     @ObservedObject var imageLoader: ImageLoader

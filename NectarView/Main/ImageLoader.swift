@@ -15,7 +15,7 @@ class ImageLoader: ObservableObject {
         }
     }
     @Published var currentImageURL: URL? = nil
-    @Published var currentTitle: String = "NectarView"
+    @Published var currentTitle: String = ""
     @Published var currentSourcePath: String = ""
     @Published var currentFolderPath: String = ""
     @Published var currentFileName: String = ""
