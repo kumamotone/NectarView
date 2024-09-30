@@ -50,6 +50,9 @@ class ImageLoader: ObservableObject {
         case spreadRightToLeft
     }
 
+    private var nestedArchives: [String: Archive] = [:]
+    private var nestedImageEntries: [String: [Entry]] = [:]
+
     func loadImages(from url: URL) {
         // 既存のデータをクリア
         images = []
@@ -120,7 +123,13 @@ class ImageLoader: ObservableObject {
     private func updateCurrentZipEntryFileName() {
         if let currentZipArchive = currentZipArchive,
            currentIndex < zipEntryPaths.count {
-            currentZipEntryFileName = (zipEntryPaths[currentIndex] as NSString).lastPathComponent
+            let entryPath = zipEntryPaths[currentIndex]
+            let pathComponents = entryPath.split(separator: "|")
+            if pathComponents.count == 2 {
+                currentZipEntryFileName = String(pathComponents[1])
+            } else {
+                currentZipEntryFileName = (entryPath as NSString).lastPathComponent
+            }
         } else {
             currentZipEntryFileName = nil
         }
@@ -147,10 +156,30 @@ class ImageLoader: ObservableObject {
                 let entryPathExtension = (entryPath as NSString).pathExtension.lowercased()
                 return !entryPath.hasPrefix("__MACOSX") &&
                        !(entryPath as NSString).lastPathComponent.hasPrefix("._") &&
-                       imageExtensions.contains(entryPathExtension)
+                       (imageExtensions.contains(entryPathExtension) || entryPathExtension == "zip")
             }.sorted { $0.path.localizedStandardCompare($1.path) == .orderedAscending }
 
-            zipEntryPaths = zipImageEntries.map { $0.path }
+            // 書庫内書庫の処理
+            for entry in zipImageEntries where (entry.path as NSString).pathExtension.lowercased() == "zip" {
+                if let nestedArchive = try? archive.extractArchive(entry) {
+                    nestedArchives[entry.path] = nestedArchive
+                    let nestedEntries = nestedArchive.filter { nestedEntry in
+                        let nestedEntryPath = nestedEntry.path
+                        let nestedEntryPathExtension = (nestedEntryPath as NSString).pathExtension.lowercased()
+                        return imageExtensions.contains(nestedEntryPathExtension)
+                    }.sorted { $0.path.localizedStandardCompare($1.path) == .orderedAscending }
+                    nestedImageEntries[entry.path] = nestedEntries
+                }
+            }
+
+            zipEntryPaths = zipImageEntries.flatMap { entry -> [String] in
+                if (entry.path as NSString).pathExtension.lowercased() == "zip",
+                   let nestedEntries = nestedImageEntries[entry.path] {
+                    return nestedEntries.map { "\(entry.path)|\($0.path)" }
+                } else {
+                    return [entry.path]
+                }
+            }
 
             DispatchQueue.main.async {
                 self.images = self.zipEntryPaths.indices.map { URL(fileURLWithPath: "zip://\($0)") }
@@ -304,23 +333,42 @@ class ImageLoader: ObservableObject {
         }
         
         if let zipArchive = currentZipArchive, zipFileURL != nil {
-            // ZIPファイル内の画像の場合
             let index = images.firstIndex(of: url) ?? -1
             if index >= 0 && index < zipEntryPaths.count {
                 let entryPath = zipEntryPaths[index]
-                guard let entry = zipImageEntries.first(where: { $0.path == entryPath }) else {
-                    return nil
-                }
+                let pathComponents = entryPath.split(separator: "|")
                 
                 do {
-                    var imageData = Data()
-                    _ = try zipArchive.extract(entry) { data in
-                        imageData.append(data)
-                    }
-                    
-                    if let image = NSImage(data: imageData) {
-                        imageCache.setObject(image, forKey: url as NSURL)
-                        return image
+                    if pathComponents.count == 2 {
+                        // 書庫内書庫の画像
+                        let outerZipPath = String(pathComponents[0])
+                        let innerImagePath = String(pathComponents[1])
+                        if let nestedArchive = nestedArchives[outerZipPath],
+                           let nestedEntry = nestedArchive[innerImagePath] {
+                            var imageData = Data()
+                            _ = try nestedArchive.extract(nestedEntry) { data in
+                                imageData.append(data)
+                            }
+                            
+                            if let image = NSImage(data: imageData) {
+                                imageCache.setObject(image, forKey: url as NSURL)
+                                return image
+                            }
+                        }
+                    } else {
+                        // 通常の画像ファイル
+                        guard let entry = zipImageEntries.first(where: { $0.path == entryPath }) else {
+                            return nil
+                        }
+                        var imageData = Data()
+                        _ = try zipArchive.extract(entry) { data in
+                            imageData.append(data)
+                        }
+                        
+                        if let image = NSImage(data: imageData) {
+                            imageCache.setObject(image, forKey: url as NSURL)
+                            return image
+                        }
                     }
                 } catch {
                     print("画像の展開中にエラーが発生しました: \(error.localizedDescription)")
@@ -490,7 +538,7 @@ class ImageLoader: ObservableObject {
         openPanel.canChooseDirectories = true
         openPanel.canChooseFiles = false
         openPanel.prompt = "フォルダへのアクセスを許可"
-        openPanel.message = "このフォルダ内の画像を表示するには、アクセス権��が必要です。"
+        openPanel.message = "このフォルダ内の画像を表示するには、アクセス権が必要です。"
 
         openPanel.begin { result in
             if result == .OK {
@@ -575,5 +623,15 @@ class ImageLoader: ObservableObject {
     func rotateImage(by degrees: Int) {
         currentRotation = currentRotation + .degrees(Double(degrees))
         objectWillChange.send()
+    }
+}
+
+extension Archive {
+    func extractArchive(_ entry: Entry) throws -> Archive? {
+        var archiveData = Data()
+        _ = try self.extract(entry) { data in
+            archiveData.append(data)
+        }
+        return try Archive(data: archiveData, accessMode: .read)
     }
 }
