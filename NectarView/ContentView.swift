@@ -573,7 +573,6 @@ struct BottomControlsView: View {
             .cornerRadius(10)
             .padding(.horizontal, 20)
             .padding(.bottom, 10)
-            .transition(.move(edge: .bottom))
             .onHover { hovering in
                 isControlBarHovered = hovering
             }
