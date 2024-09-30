@@ -50,6 +50,31 @@ struct ContentView: View {
                 toggleFullscreen()
             }
             .gesture(createDragGesture())
+            .contextMenu {
+                Button(action: {
+                    setViewMode(.single)
+                }) {
+                    Text("単ページ表示")
+                    Image(systemName: "doc.text")
+                }
+                .keyboardShortcut("8", modifiers: [])
+
+                Button(action: {
+                    setViewMode(.spreadLeftToRight)
+                }) {
+                    Text("見開き表示 (左→右)")
+                    Image(systemName: "book")
+                }
+                .keyboardShortcut("7", modifiers: [])
+
+                Button(action: {
+                    setViewMode(.spreadRightToLeft)
+                }) {
+                    Text("見開き表示 (右→左)")
+                    Image(systemName: "book.closed")
+                }
+                .keyboardShortcut("6", modifiers: [])
+            }
         }
         .frame(minWidth: 400, minHeight: 400)
         .background(WindowAccessor { window in
@@ -196,6 +221,20 @@ struct ContentView: View {
                 return nil
             }
             return event
+        }
+    }
+
+    private func setViewMode(_ mode: ImageLoader.ViewMode) {
+        imageLoader.viewMode = mode
+        switch mode {
+        case .single:
+            appSettings.isSpreadViewEnabled = false
+        case .spreadLeftToRight:
+            appSettings.isSpreadViewEnabled = true
+            appSettings.isRightToLeftReading = false
+        case .spreadRightToLeft:
+            appSettings.isSpreadViewEnabled = true
+            appSettings.isRightToLeftReading = true
         }
     }
 }
