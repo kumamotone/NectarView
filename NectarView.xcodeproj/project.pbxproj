@@ -19,6 +19,8 @@
 		D08EF1CE2CAB228200301FA8 /* BottomControlView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D08EF1CD2CAB228200301FA8 /* BottomControlView.swift */; };
 		D08EF1D02CAB22B000301FA8 /* TopControlsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D08EF1CF2CAB22B000301FA8 /* TopControlsView.swift */; };
 		D08EF1D22CAB22D200301FA8 /* ImageDisplayView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D08EF1D12CAB22D200301FA8 /* ImageDisplayView.swift */; };
+		D08EF1DA2CAB25F100301FA8 /* SliderPreviewView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D08EF1D92CAB25F100301FA8 /* SliderPreviewView.swift */; };
+		D08EF1DC2CAB261B00301FA8 /* WindowAccessor.swift in Sources */ = {isa = PBXBuildFile; fileRef = D08EF1DB2CAB261B00301FA8 /* WindowAccessor.swift */; };
 		D0AABEC42CA22D0E00878C45 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D0AABEC32CA22D0E00878C45 /* ContentView.swift */; };
 		D0AABEC82CA22D0F00878C45 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = D0AABEC72CA22D0F00878C45 /* Assets.xcassets */; };
 		D0AABED62CA22D0F00878C45 /* NectarViewTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D0AABED52CA22D0F00878C45 /* NectarViewTests.swift */; };
@@ -56,6 +58,8 @@
 		D08EF1CD2CAB228200301FA8 /* BottomControlView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BottomControlView.swift; sourceTree = "<group>"; };
 		D08EF1CF2CAB22B000301FA8 /* TopControlsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TopControlsView.swift; sourceTree = "<group>"; };
 		D08EF1D12CAB22D200301FA8 /* ImageDisplayView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageDisplayView.swift; sourceTree = "<group>"; };
+		D08EF1D92CAB25F100301FA8 /* SliderPreviewView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SliderPreviewView.swift; sourceTree = "<group>"; };
+		D08EF1DB2CAB261B00301FA8 /* WindowAccessor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WindowAccessor.swift; sourceTree = "<group>"; };
 		D0AABEBE2CA22D0E00878C45 /* NectarView.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = NectarView.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		D0AABEC32CA22D0E00878C45 /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
 		D0AABEC72CA22D0F00878C45 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
@@ -100,6 +104,7 @@
 			isa = PBXGroup;
 			children = (
 				D08EF19B2CAB142F00301FA8 /* NSColor+.swift */,
+				D08EF1DB2CAB261B00301FA8 /* WindowAccessor.swift */,
 			);
 			path = Foundation;
 			sourceTree = "<group>";
@@ -107,7 +112,7 @@
 		D08EF1D32CAB22E100301FA8 /* Main */ = {
 			isa = PBXGroup;
 			children = (
-				D08EF1D62CAB235C00301FA8 /* Views */,
+				D08EF1D62CAB235C00301FA8 /* Conponents */,
 				D0AABEC32CA22D0E00878C45 /* ContentView.swift */,
 				D07E8B1B2CA249D600C7E124 /* ImageLoader.swift */,
 				D07E8B172CA249D600C7E124 /* KeyboardHandler.swift */,
@@ -124,15 +129,16 @@
 			path = Settings;
 			sourceTree = "<group>";
 		};
-		D08EF1D62CAB235C00301FA8 /* Views */ = {
+		D08EF1D62CAB235C00301FA8 /* Conponents */ = {
 			isa = PBXGroup;
 			children = (
 				D08EF1CF2CAB22B000301FA8 /* TopControlsView.swift */,
 				D08EF1D12CAB22D200301FA8 /* ImageDisplayView.swift */,
 				D08EF1CD2CAB228200301FA8 /* BottomControlView.swift */,
+				D08EF1D92CAB25F100301FA8 /* SliderPreviewView.swift */,
 				D0C282412CA8D6E50095D414 /* InstantTooltip.swift */,
 			);
-			path = Views;
+			path = Conponents;
 			sourceTree = "<group>";
 		};
 		D08EF1D72CAB236F00301FA8 /* Bookmarks */ = {
@@ -326,6 +332,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				D08EF1DA2CAB25F100301FA8 /* SliderPreviewView.swift in Sources */,
 				D0C282422CA8D6E50095D414 /* InstantTooltip.swift in Sources */,
 				D0AABEC42CA22D0E00878C45 /* ContentView.swift in Sources */,
 				D08EF1D02CAB22B000301FA8 /* TopControlsView.swift in Sources */,
@@ -337,6 +344,7 @@
 				D08EF1CE2CAB228200301FA8 /* BottomControlView.swift in Sources */,
 				D07E8B232CA249D600C7E124 /* App.swift in Sources */,
 				D07E8B222CA249D600C7E124 /* ImageLoader.swift in Sources */,
+				D08EF1DC2CAB261B00301FA8 /* WindowAccessor.swift in Sources */,
 				D0C2823C2CA85B5F0095D414 /* AppDelegate.swift in Sources */,
 				D07E8B2C2CA2598E00C7E124 /* SettingsView.swift in Sources */,
 			);

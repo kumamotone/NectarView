@@ -86,3 +86,12 @@ struct ReadingDirectionButton: View {
     }
 }
 
+struct TopControlButtonStyle: ButtonStyle {
+    func makeBody(configuration: Configuration) -> some View {
+        configuration.label
+            .padding(8)
+            .background(Color.black.opacity(0.6))
+            .cornerRadius(10)
+            .scaleEffect(configuration.isPressed ? 0.95 : 1.0)
+    }
+}
