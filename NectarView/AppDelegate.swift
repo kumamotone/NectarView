@@ -4,14 +4,14 @@ import SwiftUI
 class AppDelegate: NSObject, NSApplicationDelegate {
     func applicationDidFinishLaunching(_ notification: Notification) {
         print("アプリケーションが起動しました")
-        let rmMenuTitles = Set([NSLocalizedString("View", comment: "View"), NSLocalizedString("Edit", comment: "Edit")])
+        let removeMenuTitles = Set([NSLocalizedString("View", comment: "View"), NSLocalizedString("Edit", comment: "Edit")])
 
         if let mainMenu = NSApp.mainMenu {
             let menus = mainMenu.items.filter { item in
-                return rmMenuTitles.contains(item.title)
+                return removeMenuTitles.contains(item.title)
             }
-            for i in menus {
-                mainMenu.removeItem(i)
+            for menu in menus {
+                mainMenu.removeItem(menu)
             }
         }
     }
