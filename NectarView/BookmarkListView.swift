@@ -22,7 +22,7 @@ struct BookmarkListView: View {
             List {
                 ForEach(imageLoader.bookmarks, id: \.self) { index in
                     Button(action: {
-                        imageLoader.currentIndex = index
+                        imageLoader.updateSafeCurrentIndex(index)
                         isPresented = false
                     }) {
                         HStack {

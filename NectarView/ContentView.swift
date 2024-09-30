@@ -658,7 +658,7 @@ struct BottomControlsView: View {
                             // ホバーの処理（必要に応じて）
                         },
                         onClick: { index in
-                            imageLoader.currentIndex = index
+                            imageLoader.updateSafeCurrentIndex(index)
                             imageLoader.prefetchImages()
                         },
                         hoverIndex: $sliderHoverIndex,

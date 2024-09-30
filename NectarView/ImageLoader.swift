@@ -384,9 +384,13 @@ class ImageLoader: ObservableObject {
         return nil
     }
     
+    func updateSafeCurrentIndex(_ newIndex: Int) {
+        currentIndex = max(0, min(newIndex, images.count - 1))
+    }
+
     func showNextImage() {
         if currentIndex < images.count - 1 {
-            currentIndex += 1
+            updateSafeCurrentIndex(currentIndex + 1)
         } else {
             playSound()
         }
@@ -395,7 +399,7 @@ class ImageLoader: ObservableObject {
     
     func showPreviousImage() {
         if currentIndex > 0 {
-            currentIndex -= 1
+            updateSafeCurrentIndex(currentIndex - 1)
         } else {
             playSound()
         }
