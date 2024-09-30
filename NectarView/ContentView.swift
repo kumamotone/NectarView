@@ -33,6 +33,7 @@ struct ContentView: View {
     @State private var dragStartLocation2: CGPoint = .zero
     @State private var dragStartOffset: CGSize = .zero
     @State private var isDraggingImage: Bool = false
+    @State private var isBookmarkListPresented: Bool = false
 
     var body: some View {
         GeometryReader { geometry in
@@ -216,6 +217,14 @@ struct ContentView: View {
                     Image(systemName: "arrow.left.to.line")
                 }
                 .keyboardShortcut("[", modifiers: .command)
+
+                Button(action: {
+                    isBookmarkListPresented = true
+                }) {
+                    Text("ブックマークリストを表示")
+                    Image(systemName: "list.bullet")
+                }
+                .keyboardShortcut("l", modifiers: .command)
 
                 Divider()
 
