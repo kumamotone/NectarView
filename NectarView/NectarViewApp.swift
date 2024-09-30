@@ -52,20 +52,20 @@ struct NectarViewApp: App {
                 }
                 .keyboardShortcut("1", modifiers: .command)
 
-                Button("見開き表示 (左→右)") {
-                    imageLoader.toggleViewMode(.spreadLeftToRight)
-                    appSettings.isSpreadViewEnabled = true
-                    appSettings.isRightToLeftReading = false
-                }
-                .keyboardShortcut("2", modifiers: .command)
-
                 Button("見開き表示 (右→左)") {
                     imageLoader.toggleViewMode(.spreadRightToLeft)
                     appSettings.isSpreadViewEnabled = true
                     appSettings.isRightToLeftReading = true
                 }
-                .keyboardShortcut("3", modifiers: .command)
+                .keyboardShortcut("2", modifiers: .command)
 
+                Button("見開き表示 (左→右)") {
+                    imageLoader.toggleViewMode(.spreadLeftToRight)
+                    appSettings.isSpreadViewEnabled = true
+                    appSettings.isRightToLeftReading = false
+                }
+                .keyboardShortcut("3", modifiers: .command)
+                
                 Divider()
 
                 Button("90度回転") {

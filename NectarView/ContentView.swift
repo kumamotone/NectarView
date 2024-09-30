@@ -167,18 +167,19 @@ struct ContentView: View {
                 .keyboardShortcut("1", modifiers: .command)
 
                 Button(action: {
-                    setViewMode(.spreadLeftToRight)
-                }) {
-                    Text("見開き表示 (左→右)")
-                    Image(systemName: "book")
-                }
-                .keyboardShortcut("2", modifiers: .command)
-
-                Button(action: {
                     setViewMode(.spreadRightToLeft)
                 }) {
                     Text("見開き表示 (右→左)")
                     Image(systemName: "book.closed")
+                }
+                .keyboardShortcut("2", modifiers: .command)
+
+                
+                Button(action: {
+                    setViewMode(.spreadLeftToRight)
+                }) {
+                    Text("見開き表示 (左→右)")
+                    Image(systemName: "book")
                 }
                 .keyboardShortcut("3", modifiers: .command)
 
