@@ -52,6 +52,16 @@ struct ContentView: View {
             .gesture(createDragGesture())
             .contextMenu {
                 Button(action: {
+                    openFile()
+                }) {
+                    Text("開く")
+                    Image(systemName: "folder")
+                }
+                .keyboardShortcut("o", modifiers: [])
+
+                Divider()
+
+                Button(action: {
                     setViewMode(.single)
                 }) {
                     Text("単ページ表示")
@@ -235,6 +245,20 @@ struct ContentView: View {
         case .spreadRightToLeft:
             appSettings.isSpreadViewEnabled = true
             appSettings.isRightToLeftReading = true
+        }
+    }
+
+    private func openFile() {
+        let panel = NSOpenPanel()
+        panel.allowsMultipleSelection = false
+        panel.canChooseDirectories = true
+        panel.canChooseFiles = true
+        panel.allowedContentTypes = [.folder, .image, .archive]
+
+        if panel.runModal() == .OK {
+            if let url = panel.url {
+                imageLoader.loadImages(from: url)
+            }
         }
     }
 }
