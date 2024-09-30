@@ -271,8 +271,15 @@ struct ContentView: View {
     }
 
     private func showInFinder() {
-        if let currentImageURL = imageLoader.currentImageURL {
+        if let zipFileURL = imageLoader.zipFileURL {
+            // ZIPファイルの場合、ZIPファイル自体を表示
+            NSWorkspace.shared.activateFileViewerSelecting([zipFileURL])
+        } else if let currentImageURL = imageLoader.currentImageURL {
+            // 通常のファイルの場合、現在の画像を表示
             NSWorkspace.shared.activateFileViewerSelecting([currentImageURL])
+        } else {
+            // 画像が読み込まれていない場合
+            print("表示できる画像またはZIPファイルがありません")
         }
     }
 }

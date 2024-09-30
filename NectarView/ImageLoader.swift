@@ -37,7 +37,7 @@ class ImageLoader: ObservableObject {
     
     private var currentZipArchive: Archive?
     private var zipImageEntries: [Entry] = []
-    private var zipFileURL: URL?
+    @Published var zipFileURL: URL?
     private var zipEntryPaths: [String] = []
 
     enum ViewMode {
@@ -227,7 +227,7 @@ class ImageLoader: ObservableObject {
             case NSFileReadNoPermissionError:
                 showAlert(message: "ファイルへのアクセス権限がありん。アプリケーションの権限設定を確認してください。\nファイルパス: \(url.path)")
             case NSFileReadUnknownError:
-                showAlert(message: "ファイルの読み込みに失敗しました。ファイルが存在するか確認してください。\nファイルパス: \(url.path)")
+                showAlert(message: "ファイルの読み込��に失敗しました。ファイルが存在するか確認してください。\nファイルパス: \(url.path)")
             default:
                 showAlert(message: "予期せぬエラーが発生しました: \(nsError.localizedDescription)\nファイルパス: \(url.path)")
             }
