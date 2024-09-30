@@ -39,10 +39,9 @@ struct ContentView: View {
                 
                 // 画像切り替え用のHStackをここに移動
                 HStack(spacing: 0) {
-                    Rectangle()
-                        .fill(Color.white.opacity(isLeftHovered ? 0.2 : 0))
+                    LinearGradient(gradient: Gradient(colors: [Color.white.opacity(isLeftHovered ? 0.2 : 0), Color.clear]), startPoint: .leading, endPoint: .trailing)
+                        .frame(width: geometry.size.width * 0.15)
                         .contentShape(Rectangle())
-                        .frame(width: geometry.size.width * 0.2)
                         .onTapGesture {
                             if appSettings.isSpreadViewEnabled {
                                 imageLoader.showPreviousSpread(isRightToLeftReading: appSettings.isRightToLeftReading)
@@ -59,13 +58,13 @@ struct ContentView: View {
                             Image(systemName: "chevron.left")
                                 .font(.system(size: 30))
                                 .foregroundColor(.white)
-                                .opacity(isLeftHovered ? 1 : 0)
+                                .opacity(isLeftHovered ? 0.6 : 0)
+                                .padding(.leading, 5)
                         )
                     Spacer()
-                    Rectangle()
-                        .fill(Color.white.opacity(isRightHovered ? 0.2 : 0))
+                    LinearGradient(gradient: Gradient(colors: [Color.clear, Color.white.opacity(isRightHovered ? 0.2 : 0)]), startPoint: .leading, endPoint: .trailing)
+                        .frame(width: geometry.size.width * 0.15)
                         .contentShape(Rectangle())
-                        .frame(width: geometry.size.width * 0.2)
                         .onTapGesture {
                             if appSettings.isSpreadViewEnabled {
                                 imageLoader.showNextSpread(isRightToLeftReading: appSettings.isRightToLeftReading)
@@ -82,7 +81,8 @@ struct ContentView: View {
                             Image(systemName: "chevron.right")
                                 .font(.system(size: 30))
                                 .foregroundColor(.white)
-                                .opacity(isRightHovered ? 1 : 0)
+                                .opacity(isRightHovered ? 0.6 : 0)
+                                .padding(.trailing, 5)
                         )
                 }
                 
