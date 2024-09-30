@@ -26,6 +26,8 @@ struct ContentView: View {
     @State private var isTopControlsVisible: Bool = true
     @State private var topControlsTimer: Timer?
     @State private var isInitialDisplay: Bool = true
+    @State private var isLeftHovered: Bool = false
+    @State private var isRightHovered: Bool = false
 
     var body: some View {
         GeometryReader { geometry in
@@ -47,20 +49,42 @@ struct ContentView: View {
 
                 HStack(spacing: 0) {
                     Rectangle()
-                        .fill(Color.clear)
+                        .fill(Color.white.opacity(isLeftHovered ? 0.2 : 0))
                         .contentShape(Rectangle())
                         .frame(width: geometry.size.width * 0.2)
                         .onTapGesture {
                             imageLoader.showPreviousImage()
                         }
+                        .onHover { hovering in
+                            withAnimation(.easeInOut(duration: 0.2)) {
+                                isLeftHovered = hovering
+                            }
+                        }
+                        .overlay(
+                            Image(systemName: "chevron.left")
+                                .font(.system(size: 30))
+                                .foregroundColor(.white)
+                                .opacity(isLeftHovered ? 1 : 0)
+                        )
                     Spacer()
                     Rectangle()
-                        .fill(Color.clear)
+                        .fill(Color.white.opacity(isRightHovered ? 0.2 : 0))
                         .contentShape(Rectangle())
                         .frame(width: geometry.size.width * 0.2)
                         .onTapGesture {
                             imageLoader.showNextImage()
                         }
+                        .onHover { hovering in
+                            withAnimation(.easeInOut(duration: 0.2)) {
+                                isRightHovered = hovering
+                            }
+                        }
+                        .overlay(
+                            Image(systemName: "chevron.right")
+                                .font(.system(size: 30))
+                                .foregroundColor(.white)
+                                .opacity(isRightHovered ? 1 : 0)
+                        )
                 }
             }
             .frame(maxWidth: .infinity, maxHeight: .infinity)
@@ -521,7 +545,7 @@ struct BottomControlsView: View {
                         currentIndex: $imageLoader.currentIndex,
                         totalImages: imageLoader.images.count,
                         onHover: { index in
-                            // ホバー時の処理（必要に応じて）
+                            // ホバー��の処理（必要に応じて）
                         },
                         onClick: { index in
                             imageLoader.currentIndex = index
