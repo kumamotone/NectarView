@@ -28,14 +28,43 @@ struct ContentView: View {
     @State private var isInitialDisplay: Bool = true
     @State private var isLeftHovered: Bool = false
     @State private var isRightHovered: Bool = false
+    @State private var scale: CGFloat = 1.0
+    @State private var offset: CGSize = .zero
+    @State private var dragStartLocation2: CGPoint = .zero
+    @State private var dragStartOffset: CGSize = .zero
+    @State private var isDraggingImage: Bool = false
 
     var body: some View {
         GeometryReader { geometry in
             ZStack {
                 appSettings.backgroundColor.edgesIgnoringSafeArea(.all)
                 
-                ImageDisplayView(imageLoader: imageLoader, appSettings: appSettings, geometry: geometry)
+                ImageDisplayView(imageLoader: imageLoader, appSettings: appSettings, geometry: geometry, scale: scale, offset: offset)
                     .rotationEffect(imageLoader.currentRotation)
+                    .scaleEffect(scale)
+                    .offset(offset)
+                    .gesture(
+                        DragGesture()
+                            .onChanged { value in
+                                if self.scale > 1.0 && self.isImageDraggable(in: geometry.size) {
+                                    if !self.isDraggingImage {
+                                        self.isDraggingImage = true
+                                        self.dragStartOffset = self.offset
+                                    }
+                                    let translation = CGSize(
+                                        width: value.translation.width + self.dragStartOffset.width,
+                                        height: value.translation.height + self.dragStartOffset.height
+                                    )
+                                    self.offset = limitOffset(translation, in: geometry.size)
+                                } else {
+                                    self.handleWindowDrag(value)
+                                }
+                            }
+                            .onEnded { _ in
+                                self.isDraggingImage = false
+                                self.dragOffset = .zero
+                            }
+                    )
                 
                 // 画像切り替え用のHStackをここに移動
                 HStack(spacing: 0) {
@@ -101,7 +130,6 @@ struct ContentView: View {
             .onTapGesture(count: 2) {
                 toggleFullscreen()
             }
-            .gesture(createDragGesture())
             .contextMenu {
                 Button(action: {
                     openFile()
@@ -316,34 +344,24 @@ struct ContentView: View {
         topControlsTimer = nil
     }
 
-    private func createDragGesture() -> some Gesture {
-        DragGesture()
-            .onChanged { value in
-                if !isControlBarHovered && !isTopControlsVisible {
-                    let newDragOffset = CGSize(
-                        width: value.translation.width + self.dragOffset.width,
-                        height: value.translation.height + self.dragOffset.height
-                    )
-                    if let window = NSApp.mainWindow {
-                        window.setFrameOrigin(NSPoint(
-                            x: window.frame.origin.x + newDragOffset.width - self.dragOffset.width,
-                            y: window.frame.origin.y - newDragOffset.height + self.dragOffset.height
-                        ))
-                    }
-                    self.dragOffset = newDragOffset
-                }
-            }
-            .onEnded { _ in
-                self.dragOffset = .zero
-            }
-    }
-
     private func setupKeyboardHandler() {
         NSEvent.addLocalMonitorForEvents(matching: .keyDown) { event in
-            if KeyboardHandler.handleKeyPress(event: event, imageLoader: imageLoader, appSettings: appSettings) {
-                return nil
+            if event.modifierFlags.contains(.command) {
+                switch event.charactersIgnoringModifiers {
+                case "+", "=":
+                    self.zoom(by: 1.25)
+                    return nil
+                case "-":
+                    self.zoom(by: 0.8)
+                    return nil
+                case "0":
+                    self.resetZoom()
+                    return nil
+                default:
+                    break
+                }
             }
-            return event
+            return KeyboardHandler.handleKeyPress(event: event, imageLoader: imageLoader, appSettings: appSettings) ? nil : event
         }
     }
 
@@ -377,19 +395,79 @@ struct ContentView: View {
             print("表示できる画像またはZIPファイルがありません")
         }
     }
+
+    private func zoom(by factor: CGFloat) {
+        withAnimation(.spring()) {
+            let newScale = self.scale * factor
+            self.scale = min(max(newScale, 1.0), 5.0)
+            if self.scale == 1.0 {
+                self.offset = .zero
+            }
+        }
+    }
+
+    private func zoom(to newScale: CGFloat) {
+        withAnimation(.spring()) {
+            self.scale = min(max(newScale, 1.0), 5.0)
+            if self.scale == 1.0 {
+                self.offset = .zero
+            }
+        }
+    }
+
+    private func resetZoom() {
+        withAnimation(.spring()) {
+            self.scale = 1.0
+            self.offset = .zero
+        }
+    }
+
+    private func limitOffset(_ offset: CGSize, in size: CGSize) -> CGSize {
+        let maxOffsetX = max(0, (size.width * scale - size.width) / 2)
+        let maxOffsetY = max(0, (size.height * scale - size.height) / 2)
+        
+        return CGSize(
+            width: min(max(offset.width, -maxOffsetX), maxOffsetX),
+            height: min(max(offset.height, -maxOffsetY), maxOffsetY)
+        )
+    }
+
+    private func isImageDraggable(in size: CGSize) -> Bool {
+        let scaledWidth = size.width * scale
+        let scaledHeight = size.height * scale
+        return scaledWidth > size.width + 1 || scaledHeight > size.height + 1
+    }
+
+    private func handleWindowDrag(_ value: DragGesture.Value) {
+        if !isControlBarHovered && !isTopControlsVisible {
+            let newDragOffset = CGSize(
+                width: value.translation.width + self.dragOffset.width,
+                height: value.translation.height + self.dragOffset.height
+            )
+            if let window = NSApp.mainWindow {
+                window.setFrameOrigin(NSPoint(
+                    x: window.frame.origin.x + newDragOffset.width - self.dragOffset.width,
+                    y: window.frame.origin.y - newDragOffset.height + self.dragOffset.height
+                ))
+            }
+            self.dragOffset = newDragOffset
+        }
+    }
 }
 
 struct ImageDisplayView: View {
     @ObservedObject var imageLoader: ImageLoader
     @ObservedObject var appSettings: AppSettings
     let geometry: GeometryProxy
+    let scale: CGFloat
+    let offset: CGSize
 
     var body: some View {
         Group {
             if appSettings.isSpreadViewEnabled {
-                SpreadView(imageLoader: imageLoader, geometry: geometry)
+                SpreadView(imageLoader: imageLoader, geometry: geometry, scale: scale, offset: offset)
             } else {
-                SinglePageView(imageLoader: imageLoader)
+                SinglePageView(imageLoader: imageLoader, scale: scale, offset: offset)
             }
         }
     }
@@ -398,6 +476,8 @@ struct ImageDisplayView: View {
 struct SpreadView: View {
     @ObservedObject var imageLoader: ImageLoader
     let geometry: GeometryProxy
+    let scale: CGFloat
+    let offset: CGSize
 
     var body: some View {
         if imageLoader.images.isEmpty {
@@ -426,6 +506,8 @@ struct SpreadView: View {
 
 struct SinglePageView: View {
     @ObservedObject var imageLoader: ImageLoader
+    let scale: CGFloat
+    let offset: CGSize
 
     var body: some View {
         Group {
