@@ -44,6 +44,24 @@ struct ContentView: View {
                 }
 
                 SliderPreviewView(isSliderHovering: isSliderHovering, imageLoader: imageLoader, sliderHoverIndex: sliderHoverIndex, sliderHoverLocation: sliderHoverLocation, geometry: geometry)
+
+                HStack(spacing: 0) {
+                    Rectangle()
+                        .fill(Color.clear)
+                        .contentShape(Rectangle())
+                        .frame(width: geometry.size.width * 0.2)
+                        .onTapGesture {
+                            imageLoader.showPreviousImage()
+                        }
+                    Spacer()
+                    Rectangle()
+                        .fill(Color.clear)
+                        .contentShape(Rectangle())
+                        .frame(width: geometry.size.width * 0.2)
+                        .onTapGesture {
+                            imageLoader.showNextImage()
+                        }
+                }
             }
             .frame(maxWidth: .infinity, maxHeight: .infinity)
             .contentShape(Rectangle())
