@@ -17,24 +17,24 @@ class AppDelegate: NSObject, NSApplicationDelegate {
     }
     
     func applicationWillTerminate(_ notification: Notification) {
-        print("アプリケーションが終了します")
+        // print("アプリケーションが終了します")
     }
     
     func applicationDidBecomeActive(_ notification: Notification) {
-        print("アプリケーションがアクティブになりました")
+        // print("アプリケーションがアクティブになりました")
     }
     
     func applicationWillResignActive(_ notification: Notification) {
-        print("アプリケーションが非アクティブになります")
+        // print("アプリケーションが非アクティブになります")
     }
     
     func applicationShouldTerminateAfterLastWindowClosed(_ sender: NSApplication) -> Bool {
-        print("最後のウィンドウが閉じられました")
+        // print("最後のウィンドウが閉じられました")
         return true
     }
     
     func application(_ application: NSApplication, open urls: [URL]) {
-        print("ファイルが開かれました: \(urls)")
+        // print("ファイルが開かれました: \(urls)")
         // ここでファイルを処理するロジックを追加できます
     }
 }
