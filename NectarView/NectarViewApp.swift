@@ -65,6 +65,18 @@ struct NectarViewApp: App {
                     appSettings.isRightToLeftReading = true
                 }
                 .keyboardShortcut("3", modifiers: .command)
+
+                Divider()
+
+                Button("90度回転") {
+                    imageLoader.rotateImage(by: 90)
+                }
+                .keyboardShortcut("r", modifiers: .command)
+
+                Button("反時計回りに90度回転") {
+                    imageLoader.rotateImage(by: -90)
+                }
+                .keyboardShortcut("l", modifiers: .command)
             }
             CommandMenu("ブックマーク") {
                 Button("ブックマークを追加/削除") {

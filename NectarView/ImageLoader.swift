@@ -42,6 +42,8 @@ class ImageLoader: ObservableObject {
 
     @Published var bookmarks: [Int] = []
 
+    @Published var currentRotation: Angle = .degrees(0)
+
     enum ViewMode {
         case single
         case spreadLeftToRight
@@ -229,7 +231,7 @@ class ImageLoader: ObservableObject {
             case NSFileReadNoPermissionError:
                 showAlert(message: "ファイルへのアクセス権限がありん。アプリケーションの権限設定を確認してください。\nファイルパス: \(url.path)")
             case NSFileReadUnknownError:
-                showAlert(message: "ファイルの読み込に敗しました。ファイルが存在するか確認してください。\nファイルパス: \(url.path)")
+                showAlert(message: "ファイルの読み込に敗しました。ファイル���存在するか確認してください。\nファイルパス: \(url.path)")
             default:
                 showAlert(message: "予期せぬエラーが発生しました: \(nsError.localizedDescription)\nファイルパス: \(url.path)")
             }
@@ -568,10 +570,8 @@ class ImageLoader: ObservableObject {
         }
     }
 
-    func rotateImage(by degrees: Double) {
-        // 回転処理を実装
-        // 注意: この実装は単純な例です。実際には回転状態を保存し、
-        // 画像の表示時に適用する必要があるかもしれません。
-        print("画像を\(degrees)度回転")
+    func rotateImage(by degrees: Int) {
+        currentRotation = currentRotation + .degrees(Double(degrees))
+        objectWillChange.send()
     }
 }

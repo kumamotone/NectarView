@@ -26,17 +26,17 @@ struct ContentView: View {
     @State private var isTopControlsVisible: Bool = true
     @State private var topControlsTimer: Timer?
     @State private var isInitialDisplay: Bool = true
-    @State private var rotation: Double = 0 // 回転角度を追加
 
     var body: some View {
         GeometryReader { geometry in
             ZStack {
                 appSettings.backgroundColor.edgesIgnoringSafeArea(.all)
                 
-                ImageDisplayView(imageLoader: imageLoader, appSettings: appSettings, geometry: geometry, rotation: rotation)
+                ImageDisplayView(imageLoader: imageLoader, appSettings: appSettings, geometry: geometry)
+                    .rotationEffect(imageLoader.currentRotation)
                 
                 VStack {
-                    TopControlsView(isVisible: $isTopControlsVisible, appSettings: appSettings, imageLoader: imageLoader, isAutoScrolling: $isAutoScrolling, autoScrollInterval: $autoScrollInterval, toggleAutoScroll: toggleAutoScroll, rotation: $rotation)
+                    TopControlsView(isVisible: $isTopControlsVisible, appSettings: appSettings, imageLoader: imageLoader, isAutoScrolling: $isAutoScrolling, autoScrollInterval: $autoScrollInterval, toggleAutoScroll: toggleAutoScroll)
 
                     Spacer()
 
@@ -132,7 +132,7 @@ struct ContentView: View {
                 Divider()
 
                 Button(action: {
-                    rotateImage(by: 90)
+                    imageLoader.rotateImage(by: 90)
                 }) {
                     Text("90度回転")
                     Image(systemName: "rotate.right")
@@ -140,7 +140,7 @@ struct ContentView: View {
                 .keyboardShortcut("r", modifiers: .command)
 
                 Button(action: {
-                    rotateImage(by: -90)
+                    imageLoader.rotateImage(by: -90)
                 }) {
                     Text("反時計回りに90度回転")
                     Image(systemName: "rotate.left")
@@ -322,17 +322,8 @@ struct ContentView: View {
             // 通常のファイルの場合、現在の画像を表示
             NSWorkspace.shared.activateFileViewerSelecting([currentImageURL])
         } else {
-            // 画像が読み込れていない場合
+            // 画像が読み込めていない場合
             print("表示できる画像またはZIPファイルがありません")
-        }
-    }
-
-    private func rotateImage(by degrees: Double) {
-        rotation += degrees
-        if rotation >= 360 {
-            rotation -= 360
-        } else if rotation < 0 {
-            rotation += 360
         }
     }
 }
@@ -341,14 +332,13 @@ struct ImageDisplayView: View {
     @ObservedObject var imageLoader: ImageLoader
     @ObservedObject var appSettings: AppSettings
     let geometry: GeometryProxy
-    let rotation: Double
 
     var body: some View {
         Group {
             if appSettings.isSpreadViewEnabled {
-                SpreadView(imageLoader: imageLoader, geometry: geometry, rotation: rotation)
+                SpreadView(imageLoader: imageLoader, geometry: geometry)
             } else {
-                SinglePageView(imageLoader: imageLoader, rotation: rotation)
+                SinglePageView(imageLoader: imageLoader)
             }
         }
     }
@@ -357,7 +347,6 @@ struct ImageDisplayView: View {
 struct SpreadView: View {
     @ObservedObject var imageLoader: ImageLoader
     let geometry: GeometryProxy
-    let rotation: Double
 
     var body: some View {
         if imageLoader.images.isEmpty {
@@ -374,7 +363,6 @@ struct SpreadView: View {
                         Image(nsImage: image)
                             .resizable()
                             .scaledToFit()
-                            .rotationEffect(.degrees(rotation))
                             .frame(maxWidth: min(geometry.size.width / 2, geometry.size.height * (image.size.width / image.size.height)), maxHeight: geometry.size.height)
                     }
                 }
@@ -387,7 +375,6 @@ struct SpreadView: View {
 
 struct SinglePageView: View {
     @ObservedObject var imageLoader: ImageLoader
-    let rotation: Double
 
     var body: some View {
         Group {
@@ -396,7 +383,6 @@ struct SinglePageView: View {
                 Image(nsImage: image)
                     .resizable()
                     .scaledToFit()
-                    .rotationEffect(.degrees(rotation))
                     .frame(maxWidth: .infinity, maxHeight: .infinity)
             } else {
                 Text(dropImagesMessage)
@@ -414,7 +400,6 @@ struct TopControlsView: View {
     @Binding var isAutoScrolling: Bool
     @Binding var autoScrollInterval: Double
     let toggleAutoScroll: () -> Void
-    @Binding var rotation: Double
 
     var body: some View {
         if isVisible {
@@ -423,7 +408,6 @@ struct TopControlsView: View {
                 AutoScrollControls(isAutoScrolling: $isAutoScrolling, autoScrollInterval: $autoScrollInterval, toggleAutoScroll: toggleAutoScroll)
                 ViewModeButton(appSettings: appSettings)
                 ReadingDirectionButton(appSettings: appSettings)
-                RotationControls(rotation: $rotation)
             }
             .padding(.top, 10)
             .padding(.trailing, 10)
@@ -492,30 +476,6 @@ struct ReadingDirectionButton: View {
         }
         .buttonStyle(TopControlButtonStyle())
         .instantTooltip("方向")
-    }
-}
-
-struct RotationControls: View {
-    @Binding var rotation: Double
-
-    var body: some View {
-        HStack(spacing: 10) {
-            Button(action: { rotation = (rotation - 90).truncatingRemainder(dividingBy: 360) }) {
-                Image(systemName: "rotate.left")
-                    .foregroundColor(.white)
-                    .frame(width: 20, height: 20)
-            }
-            .buttonStyle(TopControlButtonStyle())
-            .instantTooltip("反時計回りに90度回転")
-
-            Button(action: { rotation = (rotation + 90).truncatingRemainder(dividingBy: 360) }) {
-                Image(systemName: "rotate.right")
-                    .foregroundColor(.white)
-                    .frame(width: 20, height: 20)
-            }
-            .buttonStyle(TopControlButtonStyle())
-            .instantTooltip("時計回りに90度回転")
-        }
     }
 }
 
