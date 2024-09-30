@@ -193,7 +193,7 @@ class ImageLoader: ObservableObject {
                     if url.hasDirectoryPath {
                         self.currentIndex = 0
                     } else {
-                        // 単一ファイルが選択れた場合、そのファイルのインデックスを見つける
+                        // 単一ファイルが選択合、そのファイルのインデックスを見つける
                         if let selectedIndex = self.images.firstIndex(of: url) {
                             self.currentIndex = selectedIndex
                         } else {
@@ -368,26 +368,25 @@ class ImageLoader: ObservableObject {
         let safeCurrentIndex = min(max(currentIndex, 0), images.count - 1)
 
         if isSpreadViewEnabled {
-            if isRightToLeftReading {
+            if safeCurrentIndex == 0 || safeCurrentIndex == images.count - 1 {
+                // 最初または最後のページの場合、単ページ表示
+                currentSpreadIndices = (nil, safeCurrentIndex)
+            } else if isRightToLeftReading {
                 // 右→左読みの場合
-                if safeCurrentIndex == images.count - 1 {
-                    // 最後のページの場合、1ページだけ表示
-                    currentSpreadIndices = (nil, safeCurrentIndex)
-                } else {
-                    let rightIndex = safeCurrentIndex
-                    let leftIndex = rightIndex + 1 < images.count ? rightIndex + 1 : nil
-                    currentSpreadIndices = (leftIndex, rightIndex)
-                }
+                let rightIndex = safeCurrentIndex
+                let leftIndex = rightIndex + 1 < images.count ? rightIndex + 1 : nil
+                currentSpreadIndices = (leftIndex, rightIndex)
             } else {
                 // 左→右読みの場合
-                if safeCurrentIndex == 0 {
-                    // 最初のページの場合、2ページ表示（可能な場合）
-                    let leftIndex = 0
-                    let rightIndex = 1 < images.count ? 1 : nil
-                    currentSpreadIndices = (leftIndex, rightIndex)
-                } else {
+                if safeCurrentIndex % 2 == 0 {
+                    // 偶数ページの場合、現在のページを右に配置
                     let leftIndex = safeCurrentIndex - 1
                     let rightIndex = safeCurrentIndex
+                    currentSpreadIndices = (leftIndex, rightIndex)
+                } else {
+                    // 奇数ページの場合、現在のページを左に配置
+                    let leftIndex = safeCurrentIndex
+                    let rightIndex = safeCurrentIndex + 1 < images.count ? safeCurrentIndex + 1 : nil
                     currentSpreadIndices = (leftIndex, rightIndex)
                 }
             }
@@ -404,9 +403,9 @@ class ImageLoader: ObservableObject {
     
     func showNextSpread(isRightToLeftReading: Bool) {
         if isRightToLeftReading {
-            if currentIndex > 1 {
+            if currentIndex > 2 {
                 currentIndex -= 2
-            } else if currentIndex == 1 {
+            } else if currentIndex == 2 {
                 currentIndex = 0
             } else {
                 playSound()
@@ -414,7 +413,7 @@ class ImageLoader: ObservableObject {
         } else {
             if currentIndex < images.count - 2 {
                 currentIndex += 2
-            } else if currentIndex == images.count - 2 {
+            } else if currentIndex == images.count - 2 || currentIndex == images.count - 3 {
                 currentIndex = images.count - 1
             } else {
                 playSound()
@@ -426,17 +425,17 @@ class ImageLoader: ObservableObject {
     
     func showPreviousSpread(isRightToLeftReading: Bool) {
         if isRightToLeftReading {
-            if currentIndex < images.count - 2 {
+            if currentIndex < images.count - 3 {
                 currentIndex += 2
-            } else if currentIndex == images.count - 2 {
+            } else if currentIndex == images.count - 3 || currentIndex == images.count - 2 {
                 currentIndex = images.count - 1
             } else {
                 playSound()
             }
         } else {
-            if currentIndex > 1 {
+            if currentIndex > 3 {
                 currentIndex -= 2
-            } else if currentIndex == 1 {
+            } else if currentIndex == 2 || currentIndex == 3 {
                 currentIndex = 0
             } else {
                 playSound()
@@ -491,7 +490,7 @@ class ImageLoader: ObservableObject {
         openPanel.canChooseDirectories = true
         openPanel.canChooseFiles = false
         openPanel.prompt = "フォルダへのアクセスを許可"
-        openPanel.message = "このフォルダ内の画像を表示するには、アクセス権限が必要です。"
+        openPanel.message = "このフォルダ内の画像を表示するには、アクセス権��が必要です。"
 
         openPanel.begin { result in
             if result == .OK {
