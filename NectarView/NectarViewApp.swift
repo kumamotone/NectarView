@@ -41,6 +41,29 @@ struct NectarViewApp: App {
                 }
                 .keyboardShortcut("o", modifiers: .command)
             }
+            CommandGroup(replacing: .sidebar) {
+                Button("単ページ表示") {
+                    imageLoader.toggleViewMode(.single)
+                    appSettings.isSpreadViewEnabled = false
+                }
+                .keyboardShortcut("1", modifiers: .command)
+
+                Button("見開き表示 (左→右)") {
+                    imageLoader.toggleViewMode(.spreadLeftToRight)
+                    appSettings.isSpreadViewEnabled = true
+                    appSettings.isRightToLeftReading = false
+                }
+                .keyboardShortcut("2", modifiers: .command)
+
+                Button("見開き表示 (右→左)") {
+                    imageLoader.toggleViewMode(.spreadRightToLeft)
+                    appSettings.isSpreadViewEnabled = true
+                    appSettings.isRightToLeftReading = true
+                }
+                .keyboardShortcut("3", modifiers: .command)
+            }
+            CommandGroup(replacing: .undoRedo) {}
+            CommandGroup(replacing: .pasteboard) {}
         }
     }
 }
