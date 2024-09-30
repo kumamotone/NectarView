@@ -7,9 +7,7 @@ struct ContentView: View {
     @EnvironmentObject var appSettings: AppSettings
     
     // MARK: - State Properties
-    @State private var isControlsVisible: Bool = false
-    @State private var timer: Timer?
-    @State private var isSettingsPresented: Bool = false
+    @State private var isBottomControlVisible: Bool = false
     @State private var dragOffset: CGSize = .zero
     @State private var isControlBarHovered: Bool = false
     @State private var sliderHoverIndex: Int = 0
@@ -27,9 +25,13 @@ struct ContentView: View {
     @State private var offset: CGSize = .zero
     @State private var dragStartOffset: CGSize = .zero
     @State private var isDraggingImage: Bool = false
-    @State private var isBookmarkListPresented: Bool = false
     @State private var isSliderVisible: Bool = false
 
+    @State private var isSettingsPresented: Bool = false
+    @State private var isBookmarkListPresented: Bool = false
+
+    @State private var mouseTrackingTimer: Timer?
+    
     var body: some View {
         GeometryReader { geometry in
             ZStack {
@@ -165,7 +167,7 @@ struct ContentView: View {
     }
 
     private func startMouseTracking() {
-        timer = Timer.scheduledTimer(withTimeInterval: 0.1, repeats: true) { timer in
+        mouseTrackingTimer = Timer.scheduledTimer(withTimeInterval: 0.1, repeats: true) { timer in
             if let window = NSApplication.shared.windows.first {
                 let mouseLocation = NSEvent.mouseLocation
                 let windowFrame = window.frame
@@ -174,14 +176,14 @@ struct ContentView: View {
                     let localMouseLocation = window.convertFromScreen(NSRect(origin: mouseLocation, size: .zero)).origin
 
                     withAnimation {
-                        isControlsVisible = localMouseLocation.y < 100
+                        isBottomControlVisible = localMouseLocation.y < 100
                         if !isInitialDisplay {
                             isTopControlsVisible = localMouseLocation.y > windowFrame.size.height - 100
                         }
                     }
                 } else {
                     withAnimation {
-                        isControlsVisible = false
+                        isBottomControlVisible = false
                         if !isInitialDisplay {
                             isTopControlsVisible = false
                         }
@@ -192,8 +194,8 @@ struct ContentView: View {
     }
 
     private func stopMouseTracking() {
-        timer?.invalidate()
-        timer = nil
+        mouseTrackingTimer?.invalidate()
+        mouseTrackingTimer = nil
     }
 
     private func toggleFullscreen() {
