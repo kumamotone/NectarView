@@ -120,7 +120,7 @@ class ImageLoader: ObservableObject {
     }
     
     private func updateCurrentZipEntryFileName() {
-        if let currentZipArchive = currentZipArchive,
+        if let _ = currentZipArchive,
            currentIndex < zipEntryPaths.count {
             let entryPath = zipEntryPaths[currentIndex]
             let pathComponents = entryPath.split(separator: "|")
@@ -471,7 +471,7 @@ class ImageLoader: ObservableObject {
 
         openPanel.begin { result in
             if result == .OK {
-                if let selectedURL = openPanel.url {
+                if openPanel.url != nil {
                     completion(true)
                 } else {
                     completion(false)
