@@ -30,7 +30,6 @@ struct ContentView: View {
     @State private var isRightHovered: Bool = false
     @State private var scale: CGFloat = 1.0
     @State private var offset: CGSize = .zero
-    @State private var dragStartLocation2: CGPoint = .zero
     @State private var dragStartOffset: CGSize = .zero
     @State private var isDraggingImage: Bool = false
     @State private var isBookmarkListPresented: Bool = false
