@@ -10,25 +10,21 @@ class KeyboardHandler {
         switch event.keyCode {
         case 126: // 上矢印キー
             if isSpreadView {
-                imageLoader.showPreviousSpreadSimple()
+                imageLoader.showPreviousSpread(isRightToLeftReading: isRightToLeftReading)
             } else {
                 imageLoader.showPreviousImage()
             }
             return true
         case 125: // 下矢印キー
             if isSpreadView {
-                imageLoader.showNextSpreadSimple()
+                imageLoader.showNextSpread(isRightToLeftReading: isRightToLeftReading)
             } else {
                 imageLoader.showNextImage()
             }
             return true
         case 123: // 左矢印キー
             if isSpreadView {
-                if isLeftRightReversed {
-                    imageLoader.showPreviousSpread(isRightToLeftReading: isRightToLeftReading)
-                } else {
-                    imageLoader.showNextSpread(isRightToLeftReading: isRightToLeftReading)
-                }
+                imageLoader.showPreviousSpread(isRightToLeftReading: isRightToLeftReading)
             } else {
                 if isLeftRightReversed {
                     imageLoader.showNextImage()
@@ -39,11 +35,7 @@ class KeyboardHandler {
             return true
         case 124: // 右矢印キー
             if isSpreadView {
-                if isLeftRightReversed {
-                    imageLoader.showNextSpread(isRightToLeftReading: isRightToLeftReading)
-                } else {
-                    imageLoader.showPreviousSpread(isRightToLeftReading: isRightToLeftReading)
-                }
+                imageLoader.showNextSpread(isRightToLeftReading: isRightToLeftReading)
             } else {
                 if isLeftRightReversed {
                     imageLoader.showPreviousImage()

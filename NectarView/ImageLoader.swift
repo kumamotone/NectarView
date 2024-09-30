@@ -22,7 +22,6 @@ class ImageLoader: ObservableObject {
     @Published var currentSpreadIndices: (Int?, Int?) = (nil, nil)
     @Published var currentZipFileName: String?
     @Published var currentZipEntryFileName: String?
-    @Published var currentImageInfo: String = NSLocalizedString("NoImagesLoaded", comment: "画像がロードされていません")
     @Published var viewMode: ViewMode = .single {
         didSet {
             updateSpreadIndices(isSpreadViewEnabled: viewMode != .single, isRightToLeftReading: viewMode == .spreadRightToLeft)
@@ -97,7 +96,7 @@ class ImageLoader: ObservableObject {
         updateCurrentImageInfo()
     }
     
-    private func updateCurrentFolderAndFileName(url: URL) {
+    func updateCurrentFolderAndFileName(url: URL) {
         if url.hasDirectoryPath {
             currentFolderPath = url.path
             currentFileName = ""
@@ -375,7 +374,7 @@ class ImageLoader: ObservableObject {
                 }
             }
         } else {
-            // 通常のファイルシステム上の画像の場合
+            // 通常のファイルシステム上の像の場合
             if let image = NSImage(contentsOf: url) {
                 imageCache.setObject(image, forKey: url as NSURL)
                 return image
@@ -413,87 +412,37 @@ class ImageLoader: ObservableObject {
             return
         }
 
-        let safeCurrentIndex = min(max(currentIndex, 0), images.count - 1)
-
         if isSpreadViewEnabled {
             if isRightToLeftReading {
-                // 右→左読みの場合
-                let rightIndex = safeCurrentIndex
-                let leftIndex = rightIndex + 1 < images.count ? rightIndex + 1 : nil
-                currentSpreadIndices = (leftIndex, rightIndex)
+                if currentIndex == images.count - 1 {
+                    currentSpreadIndices = (currentIndex, nil)
+                } else {
+                    currentSpreadIndices = (min(currentIndex + 1, images.count - 1), currentIndex)
+                }
             } else {
-                // 左→右読みの場合
-                let leftIndex = safeCurrentIndex
-                let rightIndex = leftIndex + 1 < images.count ? leftIndex + 1 : nil
-                currentSpreadIndices = (leftIndex, rightIndex)
+                if currentIndex == images.count - 1 {
+                    currentSpreadIndices = (currentIndex, nil)
+                } else {
+                    currentSpreadIndices = (currentIndex, min(currentIndex + 1, images.count - 1))
+                }
             }
         } else {
-            // 単ページモードの場合
-            currentSpreadIndices = (safeCurrentIndex, nil)
+            currentSpreadIndices = (currentIndex, nil)
         }
         
-        currentIndex = safeCurrentIndex
         objectWillChange.send()
         updateCurrentImageInfo()
     }
     
     func showNextSpread(isRightToLeftReading: Bool) {
-        if isRightToLeftReading {
-            if currentIndex > 0 {
-                currentIndex -= 1
-            } else {
-                playSound()
-            }
-        } else {
-            if currentIndex < images.count - 1 {
-                currentIndex += 1
-            } else {
-                playSound()
-            }
-        }
+        currentIndex = min(images.count - 1, currentIndex + 2)
         updateSpreadIndices(isSpreadViewEnabled: true, isRightToLeftReading: isRightToLeftReading)
         updateCurrentImageInfo()
     }
-    
+
     func showPreviousSpread(isRightToLeftReading: Bool) {
-        if isRightToLeftReading {
-            if currentIndex < images.count - 1 {
-                currentIndex += 1
-            } else {
-                playSound()
-            }
-        } else {
-            if currentIndex > 0 {
-                currentIndex -= 1
-            } else {
-                playSound()
-            }
-        }
+        currentIndex = max(0, currentIndex - 2)
         updateSpreadIndices(isSpreadViewEnabled: true, isRightToLeftReading: isRightToLeftReading)
-        updateCurrentImageInfo()
-    }
-    
-    func showNextSpreadSimple() {
-        if currentIndex < images.count - 2 {
-            currentIndex += 2
-        } else if currentIndex == images.count - 2 {
-            currentIndex = images.count - 1
-        } else {
-            playSound()
-        }
-        updateSpreadIndices(isSpreadViewEnabled: true, isRightToLeftReading: false)
-        updateCurrentImageInfo()
-    }
-    
-    func showPreviousSpreadSimple() {
-        if currentIndex > 1 {
-            currentIndex -= 2
-        } else if currentIndex == 1 {
-            currentIndex = 0
-        } else {
-            playSound()
-        }
-        updateSpreadIndices(isSpreadViewEnabled: true, isRightToLeftReading: false)
         updateCurrentImageInfo()
     }
     
@@ -534,21 +483,6 @@ class ImageLoader: ObservableObject {
     }
 
     func updateCurrentImageInfo() {
-        if images.isEmpty {
-            currentImageInfo = NSLocalizedString("NoImagesLoaded", comment: "画像がロードされていません")
-        } else {
-            let currentFileInfo: String
-            if let zipFileName = currentZipFileName {
-                if let entryFileName = currentZipEntryFileName {
-                    currentFileInfo = "ZIP: \(zipFileName) - \(entryFileName)"
-                } else {
-                    currentFileInfo = "ZIP: \(zipFileName)"
-                }
-            } else {
-                currentFileInfo = "File: \(currentFolderPath)/\(currentFileName)"
-            }
-            currentImageInfo = "\(currentFileInfo) (\(currentIndex + 1)/\(images.count))"
-        }
         objectWillChange.send()
     }
 
@@ -603,6 +537,24 @@ class ImageLoader: ObservableObject {
     func rotateImage(by degrees: Int) {
         currentRotation = currentRotation + .degrees(Double(degrees))
         objectWillChange.send()
+    }
+}
+
+extension ImageLoader {
+    var currentImageInfo: String {
+        if let zipFileName = currentZipFileName {
+            if let entryFileName = currentZipEntryFileName {
+                return "\(zipFileName) - \(entryFileName) (\(currentIndex + 1)/\(images.count))"
+            } else {
+                return "\(zipFileName) (\(currentIndex + 1)/\(images.count))"
+            }
+        } else if images.isEmpty {
+            return NSLocalizedString("NectarView", comment: "NectarView")
+        } else {
+            let folderInfo = currentFolderPath
+            let fileInfo = currentFileName
+            return "\(folderInfo)/\(fileInfo) (\(currentIndex + 1)/\(images.count))"
+        }
     }
 }
 
