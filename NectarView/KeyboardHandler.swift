@@ -24,7 +24,11 @@ class KeyboardHandler {
             return true
         case 123: // 左矢印キー
             if isSpreadView {
-                imageLoader.showPreviousSpread(isRightToLeftReading: isRightToLeftReading)
+                if isRightToLeftReading {
+                    imageLoader.showNextSpread(isRightToLeftReading: isRightToLeftReading)
+                } else {
+                    imageLoader.showPreviousSpread(isRightToLeftReading: isRightToLeftReading)
+                }
             } else {
                 if isLeftRightReversed {
                     imageLoader.showNextImage()
@@ -35,7 +39,11 @@ class KeyboardHandler {
             return true
         case 124: // 右矢印キー
             if isSpreadView {
-                imageLoader.showNextSpread(isRightToLeftReading: isRightToLeftReading)
+                if isRightToLeftReading {
+                    imageLoader.showPreviousSpread(isRightToLeftReading: isRightToLeftReading)
+                } else {
+                    imageLoader.showNextSpread(isRightToLeftReading: isRightToLeftReading)
+                }
             } else {
                 if isLeftRightReversed {
                     imageLoader.showPreviousImage()
