@@ -12,7 +12,7 @@
 		D07E8B162CA2449000C7E124 /* ZIPFoundation in Frameworks */ = {isa = PBXBuildFile; productRef = D07E8B152CA2449000C7E124 /* ZIPFoundation */; };
 		D07E8B1E2CA249D600C7E124 /* KeyboardHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = D07E8B172CA249D600C7E124 /* KeyboardHandler.swift */; };
 		D07E8B222CA249D600C7E124 /* ImageLoader.swift in Sources */ = {isa = PBXBuildFile; fileRef = D07E8B1B2CA249D600C7E124 /* ImageLoader.swift */; };
-		D07E8B232CA249D600C7E124 /* NectarViewApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = D07E8B1C2CA249D600C7E124 /* NectarViewApp.swift */; };
+		D07E8B232CA249D600C7E124 /* App.swift in Sources */ = {isa = PBXBuildFile; fileRef = D07E8B1C2CA249D600C7E124 /* App.swift */; };
 		D07E8B2A2CA2597400C7E124 /* AppSettings.swift in Sources */ = {isa = PBXBuildFile; fileRef = D07E8B292CA2597400C7E124 /* AppSettings.swift */; };
 		D07E8B2C2CA2598E00C7E124 /* SettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D07E8B2B2CA2598E00C7E124 /* SettingsView.swift */; };
 		D08EF19C2CAB142F00301FA8 /* NSColor+.swift in Sources */ = {isa = PBXBuildFile; fileRef = D08EF19B2CAB142F00301FA8 /* NSColor+.swift */; };
@@ -21,10 +21,7 @@
 		D08EF1D22CAB22D200301FA8 /* ImageDisplayView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D08EF1D12CAB22D200301FA8 /* ImageDisplayView.swift */; };
 		D0AABEC42CA22D0E00878C45 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D0AABEC32CA22D0E00878C45 /* ContentView.swift */; };
 		D0AABEC82CA22D0F00878C45 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = D0AABEC72CA22D0F00878C45 /* Assets.xcassets */; };
-		D0AABECB2CA22D0F00878C45 /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = D0AABECA2CA22D0F00878C45 /* Preview Assets.xcassets */; };
 		D0AABED62CA22D0F00878C45 /* NectarViewTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D0AABED52CA22D0F00878C45 /* NectarViewTests.swift */; };
-		D0AABEE02CA22D0F00878C45 /* NectarViewUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D0AABEDF2CA22D0F00878C45 /* NectarViewUITests.swift */; };
-		D0AABEE22CA22D0F00878C45 /* NectarViewUITestsLaunchTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D0AABEE12CA22D0F00878C45 /* NectarViewUITestsLaunchTests.swift */; };
 		D0C2823C2CA85B5F0095D414 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = D0C2823B2CA85B5F0095D414 /* AppDelegate.swift */; };
 		D0C282402CA865300095D414 /* Localizable.xcstrings in Resources */ = {isa = PBXBuildFile; fileRef = D0C2823F2CA865300095D414 /* Localizable.xcstrings */; };
 		D0C282422CA8D6E50095D414 /* InstantTooltip.swift in Sources */ = {isa = PBXBuildFile; fileRef = D0C282412CA8D6E50095D414 /* InstantTooltip.swift */; };
@@ -52,7 +49,7 @@
 		D04E2F472CAAEE4A000B45AD /* ImageLoaderTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ImageLoaderTests.swift; sourceTree = "<group>"; };
 		D07E8B172CA249D600C7E124 /* KeyboardHandler.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = KeyboardHandler.swift; sourceTree = "<group>"; };
 		D07E8B1B2CA249D600C7E124 /* ImageLoader.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ImageLoader.swift; sourceTree = "<group>"; };
-		D07E8B1C2CA249D600C7E124 /* NectarViewApp.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NectarViewApp.swift; sourceTree = "<group>"; };
+		D07E8B1C2CA249D600C7E124 /* App.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = App.swift; sourceTree = "<group>"; };
 		D07E8B292CA2597400C7E124 /* AppSettings.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AppSettings.swift; sourceTree = "<group>"; };
 		D07E8B2B2CA2598E00C7E124 /* SettingsView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SettingsView.swift; sourceTree = "<group>"; };
 		D08EF19B2CAB142F00301FA8 /* NSColor+.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "NSColor+.swift"; sourceTree = "<group>"; };
@@ -62,13 +59,10 @@
 		D0AABEBE2CA22D0E00878C45 /* NectarView.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = NectarView.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		D0AABEC32CA22D0E00878C45 /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
 		D0AABEC72CA22D0F00878C45 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
-		D0AABECA2CA22D0F00878C45 /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
 		D0AABECC2CA22D0F00878C45 /* NectarView.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = NectarView.entitlements; sourceTree = "<group>"; };
 		D0AABED12CA22D0F00878C45 /* NectarViewTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = NectarViewTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		D0AABED52CA22D0F00878C45 /* NectarViewTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NectarViewTests.swift; sourceTree = "<group>"; };
 		D0AABEDB2CA22D0F00878C45 /* NectarViewUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = NectarViewUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
-		D0AABEDF2CA22D0F00878C45 /* NectarViewUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NectarViewUITests.swift; sourceTree = "<group>"; };
-		D0AABEE12CA22D0F00878C45 /* NectarViewUITestsLaunchTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NectarViewUITestsLaunchTests.swift; sourceTree = "<group>"; };
 		D0C2823B2CA85B5F0095D414 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		D0C2823F2CA865300095D414 /* Localizable.xcstrings */ = {isa = PBXFileReference; lastKnownFileType = text.json.xcstrings; path = Localizable.xcstrings; sourceTree = "<group>"; };
 		D0C282412CA8D6E50095D414 /* InstantTooltip.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = InstantTooltip.swift; sourceTree = "<group>"; };
@@ -154,7 +148,6 @@
 			children = (
 				D0AABEC02CA22D0E00878C45 /* NectarView */,
 				D0AABED42CA22D0F00878C45 /* NectarViewTests */,
-				D0AABEDE2CA22D0F00878C45 /* NectarViewUITests */,
 				D0AABEBF2CA22D0E00878C45 /* Products */,
 			);
 			sourceTree = "<group>";
@@ -176,22 +169,13 @@
 				D08EF1D32CAB22E100301FA8 /* Main */,
 				D08EF1D42CAB22F600301FA8 /* Settings */,
 				D08EF1D72CAB236F00301FA8 /* Bookmarks */,
-				D07E8B1C2CA249D600C7E124 /* NectarViewApp.swift */,
+				D07E8B1C2CA249D600C7E124 /* App.swift */,
 				D0C2823B2CA85B5F0095D414 /* AppDelegate.swift */,
 				D0C2823F2CA865300095D414 /* Localizable.xcstrings */,
 				D0AABEC72CA22D0F00878C45 /* Assets.xcassets */,
 				D0AABECC2CA22D0F00878C45 /* NectarView.entitlements */,
-				D0AABEC92CA22D0F00878C45 /* Preview Content */,
 			);
 			path = NectarView;
-			sourceTree = "<group>";
-		};
-		D0AABEC92CA22D0F00878C45 /* Preview Content */ = {
-			isa = PBXGroup;
-			children = (
-				D0AABECA2CA22D0F00878C45 /* Preview Assets.xcassets */,
-			);
-			path = "Preview Content";
 			sourceTree = "<group>";
 		};
 		D0AABED42CA22D0F00878C45 /* NectarViewTests */ = {
@@ -201,15 +185,6 @@
 				D04E2F472CAAEE4A000B45AD /* ImageLoaderTests.swift */,
 			);
 			path = NectarViewTests;
-			sourceTree = "<group>";
-		};
-		D0AABEDE2CA22D0F00878C45 /* NectarViewUITests */ = {
-			isa = PBXGroup;
-			children = (
-				D0AABEDF2CA22D0F00878C45 /* NectarViewUITests.swift */,
-				D0AABEE12CA22D0F00878C45 /* NectarViewUITestsLaunchTests.swift */,
-			);
-			path = NectarViewUITests;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -325,7 +300,6 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				D0AABECB2CA22D0F00878C45 /* Preview Assets.xcassets in Resources */,
 				D0AABEC82CA22D0F00878C45 /* Assets.xcassets in Resources */,
 				D0C282402CA865300095D414 /* Localizable.xcstrings in Resources */,
 			);
@@ -361,7 +335,7 @@
 				D08EF1D22CAB22D200301FA8 /* ImageDisplayView.swift in Sources */,
 				D0C282482CAA61F50095D414 /* BookmarkListView.swift in Sources */,
 				D08EF1CE2CAB228200301FA8 /* BottomControlView.swift in Sources */,
-				D07E8B232CA249D600C7E124 /* NectarViewApp.swift in Sources */,
+				D07E8B232CA249D600C7E124 /* App.swift in Sources */,
 				D07E8B222CA249D600C7E124 /* ImageLoader.swift in Sources */,
 				D0C2823C2CA85B5F0095D414 /* AppDelegate.swift in Sources */,
 				D07E8B2C2CA2598E00C7E124 /* SettingsView.swift in Sources */,
@@ -381,8 +355,6 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				D0AABEE22CA22D0F00878C45 /* NectarViewUITestsLaunchTests.swift in Sources */,
-				D0AABEE02CA22D0F00878C45 /* NectarViewUITests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

@@ -2,7 +2,7 @@ import SwiftUI
 import SwiftData
 
 @main
-struct NectarViewApp: App {
+struct MainApp: App {
     @NSApplicationDelegateAdaptor(AppDelegate.self) var appDelegate
     @State private var isSettingsPresented = false
     @State private var isBookmarkListPresented = false
