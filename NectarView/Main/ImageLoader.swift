@@ -15,7 +15,6 @@ class ImageLoader: ObservableObject {
         }
     }
     @Published var currentImageURL: URL? = nil
-    @Published var currentTitle: String = ""
     @Published var currentSourcePath: String = ""
     @Published var currentFolderPath: String = ""
     @Published var currentFileName: String = ""
@@ -163,9 +162,7 @@ class ImageLoader: ObservableObject {
             currentZipArchive = archive
             zipFileURL = url
             
-            // ZIPファイルの名を設定
             currentZipFileName = url.lastPathComponent
-            currentTitle = url.lastPathComponent
             currentFolderPath = url.deletingLastPathComponent().path
             currentFileName = url.lastPathComponent
             
@@ -225,7 +222,6 @@ class ImageLoader: ObservableObject {
         let folderURL = url.hasDirectoryPath ? url : url.deletingLastPathComponent()
         
         // タイトルとパス情報を設定
-        currentTitle = url.hasDirectoryPath ? url.lastPathComponent : url.deletingPathExtension().lastPathComponent
         updateCurrentFolderAndFileName(url: url)
         
         do {
