@@ -62,34 +62,46 @@ class ImageLoader: ObservableObject {
 
     func loadImages(from url: URL) {
         // 既存のデータをクリア
-        images = []
-        currentIndex = 0
-        currentImageURL = nil
+        clearExistingData()
         
         // ZIPファイルの状態をクリア
-        currentZipArchive = nil
-        zipImageEntries.removeAll()
-        zipFileURL = nil
-        zipEntryPaths.removeAll()
+        clearZipData()
         
-        // ZIPファイル関連の情報をクリア
-        currentZipFileName = nil
-        currentZipEntryFileName = nil
-        
-        // キャッシュをクリア
-        imageCache.removeAllObjects()
-        prefetchedImages.removeAll()
-
+        // 画像のロード処理
         if url.pathExtension.lowercased() == "zip" {
             loadImagesFromZip(url: url)
         } else {
             loadImagesFromFileOrFolder(url: url)
         }
         
-        self.currentSourcePath = url.path
+        // 現在のフォルダとファイル名を更新
         updateCurrentFolderAndFileName(url: url)
         
-        // 画像のロード後に必ずupdateSpreadIndicesを呼び出す
+        // 画像のロード後にスプレッドインデックスを更新
+        updateSpreadIndicesAfterLoading()
+    }
+    
+    // 既存のデータをクリアするヘルパー関数
+    private func clearExistingData() {
+        images = []
+        currentIndex = 0
+        currentImageURL = nil
+    }
+    
+    // ZIPファイルの状態をクリアするヘルパー関数
+    private func clearZipData() {
+        currentZipArchive = nil
+        zipImageEntries.removeAll()
+        zipFileURL = nil
+        zipEntryPaths.removeAll()
+        currentZipFileName = nil
+        currentZipEntryFileName = nil
+        imageCache.removeAllObjects()
+        prefetchedImages.removeAll()
+    }
+    
+    // 画像のロード後にスプレッドインデックスを更新するヘルパー関数
+    private func updateSpreadIndicesAfterLoading() {
         DispatchQueue.main.async { [weak self] in
             guard let self = self else { return }
             let isSpreadViewEnabled = UserDefaults.standard.bool(forKey: "isSpreadViewEnabled")
@@ -101,7 +113,6 @@ class ImageLoader: ObservableObject {
                 self.preloadNextImage()
             }
         }
-        updateCurrentImageInfo()
     }
     
     func updateCurrentFolderAndFileName(url: URL) {
