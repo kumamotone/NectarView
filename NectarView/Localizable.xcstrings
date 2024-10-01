@@ -103,6 +103,7 @@
       }
     },
     "An error occurred: %@" : {
+      "extractionState" : "stale",
       "localizations" : {
         "en" : {
           "stringUnit" : {
@@ -300,6 +301,9 @@
           }
         }
       }
+    },
+    "Error loading ZIP file: (error.localizedDescription)" : {
+
     },
     "Failed to read the file. Please make sure the file exists." : {
       "localizations" : {

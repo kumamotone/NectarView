@@ -140,7 +140,7 @@ struct ContextMenuContent: View {
             NSWorkspace.shared.activateFileViewerSelecting([imageLoader.images[currentImageIndex]])
         } else {
             // 画像が読み込めていない場合
-            print("表示できる画像またはZIPファイルがありません")
+            print("No image or ZIP file to display")
         }
     }
 }

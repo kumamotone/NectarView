@@ -92,7 +92,7 @@ class ImageLoader: ObservableObject {
                         }
                     }
                 } catch {
-                    print("画像の展開中にエラーが発生しました: \(error.localizedDescription)")
+                    print("Error extracting image: \(error.localizedDescription)")
                 }
             }
         } else {
@@ -273,8 +273,8 @@ class ImageLoader: ObservableObject {
                 self.currentIndex = 0
             }
         } catch {
-            print("ZIPアーカイブを開く際のエラー: \(error.localizedDescription)")
-            ErrorUtil.showAlert(message: "ZIPファイルの読み込み中にエラーが発生しました: \(error.localizedDescription)")
+            print("Error loading ZIP file: \(error.localizedDescription)")
+            ErrorUtil.showAlert(message: NSLocalizedString("Error loading ZIP file: \(error.localizedDescription)", comment: ""))
             // エラーが発生した場合、画像リストをクリアし、インデックスをリセット
             DispatchQueue.main.async {
                 self.images = []
@@ -471,7 +471,7 @@ class ImageLoader: ObservableObject {
                 return NSImage(data: imageData)
             }
         } catch {
-            print("画像の展開中にエラーが発生しました: \(error.localizedDescription)")
+            print("Error extracting image: \(error.localizedDescription)")
         }
         return nil
     }

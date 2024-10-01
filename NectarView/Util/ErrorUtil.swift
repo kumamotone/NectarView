@@ -1,10 +1,7 @@
 import AppKit
 
 class ErrorUtil {
-    static func handleLoadError(url: URL, error: Error, completion: @escaping () -> Void) {
-        print(NSLocalizedString("An error occurred: %@", comment: ""), error.localizedDescription)
-        print(NSLocalizedString("Problem file path: %@", comment: ""), url.path)
-        
+    static func handleLoadError(url: URL, error: Error, completion: @escaping () -> Void) {        
         if let nsError = error as NSError? {
             switch nsError.code {
             case NSFileReadNoPermissionError:
