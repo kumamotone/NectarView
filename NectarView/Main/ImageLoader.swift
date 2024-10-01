@@ -7,8 +7,13 @@ import SwiftUI
 class ImageLoader: ObservableObject {
     // MARK: - Published properties
     @Published var images: [URL] = []
-    @Published var currentIndex: Int = 0
+    @Published var currentIndex: Int = 0 {
+        didSet {
+            updateCurrentImage()
+        }
+    }
     @Published var currentImageURL: URL? = nil
+    @Published var currentSpreadURLs: (URL?, URL?) = (nil, nil)
     @Published var currentSpreadIndices: (Int?, Int?) = (nil, nil)
     @Published var viewMode: ViewMode = .single
     @Published var zipFileURL: URL?
@@ -38,7 +43,7 @@ class ImageLoader: ObservableObject {
     private var zipEntryPaths: [String] = []
     private var nestedArchives: [String: Archive] = [:]
     private var nestedImageEntries: [String: [Entry]] = [:]
-
+    
     // MARK: - Public methods
     func loadImages(from url: URL) {
         clearExistingData()
@@ -49,9 +54,6 @@ class ImageLoader: ObservableObject {
         } else {
             loadImagesFromFileOrFolder(url: url)
         }
-        
-        updateSpreadIndicesAfterLoading()
-        updateCurrentImageInfo()
     }
 
     func getImage(for url: URL) -> NSImage? {
@@ -116,61 +118,65 @@ class ImageLoader: ObservableObject {
         currentIndex = max(0, min(newIndex, images.count - 1))
     }
 
-    func showNextImage() {
-        if currentIndex < images.count - 1 {
-            updateSafeCurrentIndex(currentIndex + 1)
-        } else {
-            NSSound.beep()
-        }
-    }
-    
     func showPreviousImage() {
-        if currentIndex > 0 {
-            updateSafeCurrentIndex(currentIndex - 1)
-        } else {
-            NSSound.beep()
+        switch viewMode {
+        case .single:
+            if currentIndex > 0 {
+                currentIndex -= 1
+            }
+        case .spreadLeftToRight, .spreadRightToLeft:
+            if currentIndex > 1 {
+                currentIndex -= 2
+            } else if currentIndex == 1 {
+                currentIndex -= 1
+            }
         }
     }
     
-    func updateSpreadIndices(isSpreadViewEnabled: Bool, isRightToLeftReading: Bool) {
+    func showNextImage() {
+        switch viewMode {
+        case .single:
+            if currentIndex < images.count - 1 {
+                currentIndex += 1
+            }
+        case .spreadLeftToRight, .spreadRightToLeft:
+            if currentIndex < images.count - 2 {
+                currentIndex += 2
+            } else if currentIndex == images.count - 2 {
+                currentIndex += 1
+            }
+        }
+    }
+    
+    func updateCurrentImage() {
         guard !images.isEmpty else {
             currentSpreadIndices = (nil, nil)
+            currentImageURL = nil
+            currentSpreadURLs = (nil, nil)
             return
         }
 
-        if isSpreadViewEnabled {
-            if isRightToLeftReading {
-                if currentIndex == images.count - 1 {
-                    currentSpreadIndices = (currentIndex, nil)
-                } else {
-                    currentSpreadIndices = (min(currentIndex + 1, images.count - 1), currentIndex)
-                }
-            } else {
-                if currentIndex == images.count - 1 {
-                    currentSpreadIndices = (currentIndex, nil)
-                } else {
-                    currentSpreadIndices = (currentIndex, min(currentIndex + 1, images.count - 1))
-                }
-            }
-        } else {
+        switch viewMode {
+        case .single:
             currentSpreadIndices = (currentIndex, nil)
+            currentImageURL = images[currentIndex]
+            currentSpreadURLs = (currentImageURL, nil)
+        case .spreadLeftToRight, .spreadRightToLeft:
+            let leftIndex = currentIndex
+            let rightIndex = currentIndex + 1
+
+            if viewMode == .spreadLeftToRight {
+                currentSpreadIndices = (leftIndex, rightIndex < images.count ? rightIndex : nil)
+            } else {
+                currentSpreadIndices = (rightIndex < images.count ? rightIndex : nil, leftIndex)
+            }
+
+            let leftURL = images[leftIndex]
+            let rightURL = rightIndex < images.count ? images[rightIndex] : nil
+            currentImageURL = leftURL
+            currentSpreadURLs = (leftURL, rightURL)
         }
         
-        updateCurrentImageInfo()
-    }
-    
-    func showNextSpread(isRightToLeftReading: Bool) {
-        currentIndex = min(images.count - 1, currentIndex + 2)
-        updateSpreadIndices(isSpreadViewEnabled: true, isRightToLeftReading: isRightToLeftReading)
-    }
-
-    func showPreviousSpread(isRightToLeftReading: Bool) {
-        currentIndex = max(0, currentIndex - 2)
-        updateSpreadIndices(isSpreadViewEnabled: true, isRightToLeftReading: isRightToLeftReading)
-    }
-
-    func toggleViewMode(_ mode: ViewMode) {
-        viewMode = mode
         updateCurrentImageInfo()
     }
 
@@ -214,6 +220,15 @@ class ImageLoader: ObservableObject {
         currentRotation = currentRotation + .degrees(Double(degrees))
     }
 
+    func updateViewMode(appSettings: AppSettings) {
+        if appSettings.isSpreadViewEnabled {
+            viewMode = appSettings.isRightToLeftReading ? .spreadRightToLeft : .spreadLeftToRight
+        } else {
+            viewMode = .single
+        }
+        updateCurrentImage()
+    }
+
     // MARK: - Private methods
     private func clearExistingData() {
         images = []
@@ -229,21 +244,7 @@ class ImageLoader: ObservableObject {
         imageCache.removeAllObjects()
         prefetchedImages.removeAll()
     }
-    
-    private func updateSpreadIndicesAfterLoading() {
-        DispatchQueue.main.async { [weak self] in
-            guard let self = self else { return }
-            let isSpreadViewEnabled = UserDefaults.standard.bool(forKey: "isSpreadViewEnabled")
-            let isRightToLeftReading = UserDefaults.standard.bool(forKey: "isRightToLeftReading")
-            self.updateSpreadIndices(isSpreadViewEnabled: isSpreadViewEnabled, isRightToLeftReading: isRightToLeftReading)
-            
-            // 見開き表示の場合、2枚目の画像も読み込む
-            if isSpreadViewEnabled {
-                self.preloadNextImage()
-            }
-        }
-    }
-    
+        
     private func loadImagesFromZip(url: URL) {
         do {
             currentZipArchive = nil

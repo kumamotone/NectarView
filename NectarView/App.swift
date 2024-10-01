@@ -17,6 +17,9 @@ struct MainApp: App {
         WindowGroup {
             ContentView(imageLoader: imageLoader)
                 .environmentObject(appSettings)
+                .onAppear {
+                    imageLoader.updateViewMode(appSettings: appSettings)
+                }
                 .sheet(isPresented: $isSettingsPresented) {
                     SettingsView(appSettings: appSettings)
                         .frame(width: 300, height: 300)
@@ -40,22 +43,22 @@ struct MainApp: App {
             }
             CommandGroup(replacing: .sidebar) {
                 Button("単ページ表示") {
-                    imageLoader.toggleViewMode(.single)
                     appSettings.isSpreadViewEnabled = false
+                    imageLoader.updateViewMode(appSettings: appSettings)
                 }
                 .keyboardShortcut("1", modifiers: .command)
 
                 Button("見開き表示 (右→左)") {
-                    imageLoader.toggleViewMode(.spreadRightToLeft)
                     appSettings.isSpreadViewEnabled = true
                     appSettings.isRightToLeftReading = true
+                    imageLoader.updateViewMode(appSettings: appSettings)
                 }
                 .keyboardShortcut("2", modifiers: .command)
 
                 Button("見開き表示 (左→右)") {
-                    imageLoader.toggleViewMode(.spreadLeftToRight)
                     appSettings.isSpreadViewEnabled = true
                     appSettings.isRightToLeftReading = false
+                    imageLoader.updateViewMode(appSettings: appSettings)
                 }
                 .keyboardShortcut("3", modifiers: .command)
                 

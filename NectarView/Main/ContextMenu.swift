@@ -114,7 +114,6 @@ struct ContextMenuContent: View {
     }
     
     private func setViewMode(_ mode: ImageLoader.ViewMode) {
-        imageLoader.viewMode = mode
         switch mode {
         case .single:
             appSettings.isSpreadViewEnabled = false
@@ -125,6 +124,7 @@ struct ContextMenuContent: View {
             appSettings.isSpreadViewEnabled = true
             appSettings.isRightToLeftReading = true
         }
+        imageLoader.updateViewMode(appSettings: appSettings)
     }
     
     private func openFile() {

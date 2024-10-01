@@ -34,25 +34,17 @@ class KeyboardHandler {
 
         switch event.keyCode {
         case 126: // 上矢印キー
-            if isSpreadView {
-                imageLoader.showPreviousSpread(isRightToLeftReading: isRightToLeftReading)
-            } else {
-                imageLoader.showPreviousImage()
-            }
+            imageLoader.showPreviousImage()
             return nil
         case 125: // 下矢印キー
-            if isSpreadView {
-                imageLoader.showNextSpread(isRightToLeftReading: isRightToLeftReading)
-            } else {
-                imageLoader.showNextImage()
-            }
+            imageLoader.showNextImage()
             return nil
         case 123: // 左矢印キー
             if isSpreadView {
                 if isRightToLeftReading {
-                    imageLoader.showNextSpread(isRightToLeftReading: isRightToLeftReading)
+                    imageLoader.showNextImage()
                 } else {
-                    imageLoader.showPreviousSpread(isRightToLeftReading: isRightToLeftReading)
+                    imageLoader.showPreviousImage()
                 }
             } else {
                 if isLeftRightReversed {
@@ -65,9 +57,9 @@ class KeyboardHandler {
         case 124: // 右矢印キー
             if isSpreadView {
                 if isRightToLeftReading {
-                    imageLoader.showPreviousSpread(isRightToLeftReading: isRightToLeftReading)
+                    imageLoader.showPreviousImage()
                 } else {
-                    imageLoader.showNextSpread(isRightToLeftReading: isRightToLeftReading)
+                    imageLoader.showNextImage()
                 }
             } else {
                 if isLeftRightReversed {

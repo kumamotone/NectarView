@@ -84,11 +84,7 @@ struct ContentView: View {
                         .frame(width: geometry.size.width * 0.15)
                         .contentShape(Rectangle())
                         .onTapGesture {
-                            if appSettings.isSpreadViewEnabled {
-                                imageLoader.showPreviousSpread(isRightToLeftReading: appSettings.isRightToLeftReading)
-                            } else {
-                                imageLoader.showPreviousImage()
-                            }
+                            imageLoader.showPreviousImage()
                         }
                         .onHover { hovering in
                             withAnimation(.easeInOut(duration: 0.2)) {
@@ -107,11 +103,7 @@ struct ContentView: View {
                         .frame(width: geometry.size.width * 0.15)
                         .contentShape(Rectangle())
                         .onTapGesture {
-                            if appSettings.isSpreadViewEnabled {
-                                imageLoader.showNextSpread(isRightToLeftReading: appSettings.isRightToLeftReading)
-                            } else {
-                                imageLoader.showNextImage()
-                            }
+                            imageLoader.showNextImage()
                         }
                         .onHover { hovering in
                             withAnimation(.easeInOut(duration: 0.2)) {
@@ -235,11 +227,7 @@ struct ContentView: View {
     private func startAutoScroll() {
         isAutoScrolling = true
         autoScrollTimer = Timer.scheduledTimer(withTimeInterval: autoScrollInterval, repeats: true) { _ in
-            if appSettings.isSpreadViewEnabled {
-                imageLoader.showNextSpread(isRightToLeftReading: appSettings.isRightToLeftReading)
-            } else {
-                imageLoader.showNextImage()
-            }
+            imageLoader.showNextImage()
         }
     }
 
@@ -338,13 +326,10 @@ extension View {
     func applyContentViewModifiers(appSettings: AppSettings, imageLoader: ImageLoader, isSettingsPresented: Binding<Bool>) -> some View {
         self
             .onChange(of: appSettings.isSpreadViewEnabled) { _, _ in
-                imageLoader.updateSpreadIndices(isSpreadViewEnabled: appSettings.isSpreadViewEnabled, isRightToLeftReading: appSettings.isRightToLeftReading)
+                imageLoader.updateCurrentImage()
             }
             .onChange(of: appSettings.isRightToLeftReading) { _, _ in
-                imageLoader.updateSpreadIndices(isSpreadViewEnabled: appSettings.isSpreadViewEnabled, isRightToLeftReading: appSettings.isRightToLeftReading)
-            }
-            .onChange(of: imageLoader.currentIndex) { _, _ in
-                imageLoader.updateSpreadIndices(isSpreadViewEnabled: appSettings.isSpreadViewEnabled, isRightToLeftReading: appSettings.isRightToLeftReading)
+                imageLoader.updateCurrentImage()
             }
             .onDrop(of: [.fileURL], isTargeted: nil) { providers in
                 if let provider = providers.first {
