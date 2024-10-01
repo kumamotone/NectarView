@@ -346,7 +346,7 @@ class ImageLoader: ObservableObject {
         if currentIndex < images.count - 1 {
             updateSafeCurrentIndex(currentIndex + 1)
         } else {
-            playSound()
+            NSSound.beep()
         }
     }
     
@@ -354,12 +354,8 @@ class ImageLoader: ObservableObject {
         if currentIndex > 0 {
             updateSafeCurrentIndex(currentIndex - 1)
         } else {
-            playSound()
+            NSSound.beep()
         }
-    }
-    
-    private func playSound() {
-        NSSound.beep()
     }
     
     func updateSpreadIndices(isSpreadViewEnabled: Bool, isRightToLeftReading: Bool) {
@@ -386,7 +382,6 @@ class ImageLoader: ObservableObject {
             currentSpreadIndices = (currentIndex, nil)
         }
         
-        objectWillChange.send()
         updateCurrentImageInfo()
     }
     
@@ -509,7 +504,6 @@ class ImageLoader: ObservableObject {
 
     func rotateImage(by degrees: Int) {
         currentRotation = currentRotation + .degrees(Double(degrees))
-        objectWillChange.send()
     }
 }
 
