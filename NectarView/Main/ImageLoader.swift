@@ -23,7 +23,10 @@ class ImageLoader: ObservableObject {
 
     private let imageExtensions = ["png", "jpg", "jpeg", "gif", "bmp", "tiff", "webp"]
     private var imageCache = NSCache<NSURL, NSImage>()
-    private let preloadQueue = DispatchQueue(label: "com.nectarview.imagepreload", qos: .utility)
+    private lazy var preloadQueue: DispatchQueue = {
+        let bundleIdentifier = Bundle.main.bundleIdentifier ?? "com.unknown"
+        return DispatchQueue(label: "\(bundleIdentifier).imagepreload", qos: .utility)
+    }()
     private var prefetchedImages: [URL: NSImage] = [:]
     private let prefetchRange = 5
     
@@ -169,7 +172,7 @@ class ImageLoader: ObservableObject {
             }
         } catch {
             print("ZIPアーカイブを開く際のエラー: \(error.localizedDescription)")
-            showAlert(message: "ZIPファイルの読み込み中にエラーが発生しました: \(error.localizedDescription)")
+            ErrorUtil.showAlert(message: "ZIPファイルの読み込み中にエラーが発生しました: \(error.localizedDescription)")
             // エラーが発生した場合、画像リストをクリアし、インデックスをリセット
             DispatchQueue.main.async {
                 self.images = []
@@ -216,49 +219,20 @@ class ImageLoader: ObservableObject {
                     if success {
                         // 権限が付与されたら、再度読み込みを試みる
                         self.loadImagesFromFileOrFolder(url: url)
-                    } else {
-                        self.handleLoadError(url: url, error: error)
                     }
                 }
             } else {
-                handleLoadError(url: url, error: error)
+                ErrorUtil.handleLoadError(url: url, error: error) {
+                    if self.imageExtensions.contains(url.pathExtension.lowercased()) {
+                        DispatchQueue.main.async {
+                            self.images = [url]
+                            self.currentIndex = 0
+                        }
+                    } else {
+                        ErrorUtil.showAlert(message: "サポートされていないファイル形式です")
+                    }
+                }
             }
-        }
-    }
-    
-    private func handleLoadError(url: URL, error: Error) {
-        print("エラーが発生しました: \(error.localizedDescription)")
-        print("問題のファイルパス: \(url.path)")
-        
-        if let nsError = error as NSError? {
-            switch nsError.code {
-            case NSFileReadNoPermissionError:
-                showAlert(message: "ファイルへのアクセス権限がありん。アプリケーションの権限設定を確認してください。\nファイルパス: \(url.path)")
-            case NSFileReadUnknownError:
-                showAlert(message: "ファイルの読み込に敗しました。ファイル存在するか確認してください。\nファイパス: \(url.path)")
-            default:
-                showAlert(message: "予期せぬエラーが発生しました: \(nsError.localizedDescription)\nファイルパス: \(url.path)")
-            }
-        }
-        
-        if imageExtensions.contains(url.pathExtension.lowercased()) {
-            DispatchQueue.main.async {
-                self.images = [url]
-                self.currentIndex = 0
-            }
-        } else {
-            showAlert(message: "サポートされていないファイル形式です")
-        }
-    }
-    
-    private func showAlert(message: String) {
-        DispatchQueue.main.async {
-            let alert = NSAlert()
-            alert.messageText = "エラー"
-            alert.informativeText = message
-            alert.alertStyle = .warning
-            alert.addButton(withTitle: "OK")
-            alert.runModal()
         }
     }
     
