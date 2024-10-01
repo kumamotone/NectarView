@@ -25,7 +25,6 @@ struct BottomControlsView: View {
                         currentIndex: $imageLoader.currentIndex,
                         totalImages: imageLoader.images.count,
                         onHover: { index in
-                            // ホバーの処理（必要に応じて）
                         },
                         onClick: { index in
                             imageLoader.updateSafeCurrentIndex(index)

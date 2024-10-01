@@ -383,12 +383,15 @@ class ImageLoader: ObservableObject {
         let start = max(0, currentIndex - prefetchRange)
         let end = min(images.count - 1, currentIndex + prefetchRange)
         
-        for index in start...end {
-            let url = images[index]
-            if prefetchedImages[url] == nil {
-                SDWebImageManager.shared.loadImage(with: url, options: [], progress: nil) { [weak self] (image, _, _, _, _, _) in
-                    if let image = image {
-                        self?.prefetchedImages[url] = image
+        DispatchQueue.global(qos: .utility).async { [weak self] in
+            guard let self = self else { return }
+            for index in start...end {
+                let url = self.images[index]
+                if self.prefetchedImages[url] == nil {
+                    if let image = self.loadImageFromSource(url: url) {
+                        DispatchQueue.main.async {
+                            self.prefetchedImages[url] = image
+                        }
                     }
                 }
             }
@@ -431,5 +434,50 @@ class ImageLoader: ObservableObject {
             let fileName = currentURL.lastPathComponent
             currentImageInfo = "\(folderPath)/\(fileName) (\(currentIndex + 1)/\(images.count))"
         }
+    }
+
+    private func loadImageFromSource(url: URL) -> NSImage? {
+        if let zipArchive = currentZipArchive, zipFileURL != nil {
+            return loadImageFromZip(url: url)
+        } else {
+            return NSImage(contentsOf: url)
+        }
+    }
+
+    private func loadImageFromZip(url: URL) -> NSImage? {
+        let index = images.firstIndex(of: url) ?? -1
+        guard index >= 0 && index < zipEntryPaths.count else { return nil }
+        
+        let entryPath = zipEntryPaths[index]
+        let pathComponents = entryPath.split(separator: "|")
+        
+        do {
+            if pathComponents.count == 2 {
+                // 書庫内書庫の画像
+                let outerZipPath = String(pathComponents[0])
+                let innerImagePath = String(pathComponents[1])
+                if let nestedArchive = nestedArchives[outerZipPath],
+                   let nestedEntry = nestedArchive[innerImagePath] {
+                    var imageData = Data()
+                    _ = try nestedArchive.extract(nestedEntry) { data in
+                        imageData.append(data)
+                    }
+                    return NSImage(data: imageData)
+                }
+            } else {
+                // 通常の画像ファイル
+                guard let entry = zipImageEntries.first(where: { $0.path == entryPath }) else {
+                    return nil
+                }
+                var imageData = Data()
+                _ = try currentZipArchive?.extract(entry) { data in
+                    imageData.append(data)
+                }
+                return NSImage(data: imageData)
+            }
+        } catch {
+            print("画像の展開中にエラーが発生しました: \(error.localizedDescription)")
+        }
+        return nil
     }
 }
