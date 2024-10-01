@@ -30,13 +30,13 @@ class ImageLoaderTests: XCTestCase {
         appSettings.isSpreadViewEnabled = false
         imageLoader.updateViewMode(appSettings: appSettings)
         imageLoader.updateCurrentImage()
-        
+
         // 1. 通常の前後移動テスト
         XCTContext.runActivity(named: "通常の前後移動") { _ in
             imageLoader.currentIndex = 2
             XCTAssertEqual(imageLoader.currentImages.0, 2)
             XCTAssertNil(imageLoader.currentImages.1)
-            
+
             imageLoader.showNextImage()
             XCTAssertEqual(imageLoader.currentImages.0, 3)
             XCTAssertNil(imageLoader.currentImages.1)
@@ -45,7 +45,7 @@ class ImageLoaderTests: XCTestCase {
             XCTAssertEqual(imageLoader.currentImages.0, 2)
             XCTAssertNil(imageLoader.currentImages.1)
         }
-        
+
         // 2. 最小値境界テスト
         XCTContext.runActivity(named: "最小値境界") { _ in
             imageLoader.currentIndex = 0
@@ -61,7 +61,7 @@ class ImageLoaderTests: XCTestCase {
             XCTAssertEqual(imageLoader.currentImages.0, 4)
             XCTAssertNil(imageLoader.currentImages.1)
         }
-        
+
         // 4. インデックスの一貫性テスト
         XCTContext.runActivity(named: "インデックスの一貫性") { _ in
             imageLoader.currentIndex = 2
@@ -77,7 +77,7 @@ class ImageLoaderTests: XCTestCase {
             appSettings.isRightToLeftReading = false
             imageLoader.updateViewMode(appSettings: appSettings)
             imageLoader.currentIndex = 2
-            
+
             XCTAssertEqual(imageLoader.currentImages.0, 2)
             XCTAssertEqual(imageLoader.currentImages.1, 3)
         }
@@ -87,7 +87,7 @@ class ImageLoaderTests: XCTestCase {
             appSettings.isRightToLeftReading = true
             imageLoader.updateViewMode(appSettings: appSettings)
             imageLoader.currentIndex = 2
-            
+
             XCTAssertEqual(imageLoader.currentImages.0, 3)
             XCTAssertEqual(imageLoader.currentImages.1, 2)
         }
@@ -98,7 +98,7 @@ class ImageLoaderTests: XCTestCase {
                 appSettings.isRightToLeftReading = true
                 imageLoader.updateViewMode(appSettings: appSettings)
                 imageLoader.currentIndex = 4
-                
+
                 XCTAssertNil(imageLoader.currentImages.0)
                 XCTAssertEqual(imageLoader.currentImages.1, 4)
             }
@@ -108,7 +108,7 @@ class ImageLoaderTests: XCTestCase {
                 appSettings.isRightToLeftReading = false
                 imageLoader.updateViewMode(appSettings: appSettings)
                 imageLoader.currentIndex = 4
-                
+
                 XCTAssertEqual(imageLoader.currentImages.0, 4)
                 XCTAssertNil(imageLoader.currentImages.1)
             }
@@ -122,7 +122,7 @@ class ImageLoaderTests: XCTestCase {
             imageLoader.updateViewMode(appSettings: appSettings)
             imageLoader.currentIndex = 0
             imageLoader.showNextImage()
-            
+
             XCTAssertEqual(imageLoader.currentIndex, 2)
             XCTAssertEqual(imageLoader.currentImages.0, 2)
             XCTAssertEqual(imageLoader.currentImages.1, 3)
@@ -134,12 +134,12 @@ class ImageLoaderTests: XCTestCase {
             imageLoader.updateViewMode(appSettings: appSettings)
             imageLoader.currentIndex = 4
             imageLoader.showPreviousImage()
-            
+
             XCTAssertEqual(imageLoader.currentIndex, 2)
             XCTAssertEqual(imageLoader.currentImages.0, 2)
             XCTAssertEqual(imageLoader.currentImages.1, 3)
         }
-        
+
         XCTContext.runActivity(named: "最初のページからの移動") { _ in
             XCTContext.runActivity(named: "右から左への読み方") { _ in
                 appSettings.isSpreadViewEnabled = true
@@ -189,7 +189,7 @@ class ImageLoaderTests: XCTestCase {
         XCTContext.runActivity(named: "画像が空の場合") { _ in
             imageLoader.images = []
             imageLoader.updateCurrentImage()
-            
+
             XCTAssertNil(imageLoader.currentImages.0)
             XCTAssertNil(imageLoader.currentImages.1)
         }
@@ -199,7 +199,7 @@ class ImageLoaderTests: XCTestCase {
         XCTContext.runActivity(named: "画像がロードされていない場合") { _ in
             XCTAssertEqual(imageLoader.currentImageInfo, NSLocalizedString("NectarView", comment: "NectarView"))
         }
-        
+
         XCTContext.runActivity(named: "画像ファイルがロードされた場合") { _ in
             imageLoader.images = [URL(string: "file:///Users/test/Documents/image1.jpg")!]
             imageLoader.currentIndex = 0
