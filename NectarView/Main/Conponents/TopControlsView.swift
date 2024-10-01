@@ -14,8 +14,8 @@ struct TopControlsView: View {
             HStack(spacing: 15) {
                 Spacer()
                 AutoScrollControls(isAutoScrolling: $isAutoScrolling, autoScrollInterval: $autoScrollInterval, toggleAutoScroll: toggleAutoScroll)
-                ViewModeButton(appSettings: appSettings)
-                ReadingDirectionButton(appSettings: appSettings)
+                ViewModeButton(appSettings: appSettings, imageLoader: imageLoader)
+                ReadingDirectionButton(appSettings: appSettings, imageLoader: imageLoader)
             }
             .padding(.top, 10)
             .padding(.trailing, 10)
@@ -59,10 +59,12 @@ struct AutoScrollControls: View {
 // 見開き/単ページのコントロール
 struct ViewModeButton: View {
     @ObservedObject var appSettings: AppSettings
-
+    @ObservedObject var imageLoader: ImageLoader
+    
     var body: some View {
         Button(action: {
             appSettings.isSpreadViewEnabled.toggle()
+            imageLoader.updateViewMode(appSettings: appSettings)
         }) {
             Image(systemName: appSettings.isSpreadViewEnabled ? "book.fill" : "doc.text.fill")
                 .foregroundColor(.white)
@@ -76,10 +78,12 @@ struct ViewModeButton: View {
 // 読み込み方向のコントロール
 struct ReadingDirectionButton: View {
     @ObservedObject var appSettings: AppSettings
-
+    @ObservedObject var imageLoader: ImageLoader
+    
     var body: some View {
         Button(action: {
             appSettings.isRightToLeftReading.toggle()
+            imageLoader.updateViewMode(appSettings: appSettings)
         }) {
             Image(systemName: appSettings.isRightToLeftReading ? "arrow.left" : "arrow.right")
                 .foregroundColor(.white)

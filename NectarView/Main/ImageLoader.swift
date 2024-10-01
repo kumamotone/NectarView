@@ -13,7 +13,7 @@ class ImageLoader: ObservableObject {
         }
     }
     @Published var currentImages: (Int?, Int?) = (nil, nil)
-    @Published var viewMode: ViewMode = .single
+    @Published private(set) var viewMode: ViewMode = .single
     @Published var zipFileURL: URL?
     @Published var bookmarks: [Int] = []
     @Published var currentRotation: Angle = .degrees(0)
@@ -38,7 +38,7 @@ class ImageLoader: ObservableObject {
     
     private var currentZipArchive: Archive?
     private var zipImageEntries: [Entry] = []
-    private var zipEntryPaths: [String] = []
+    var zipEntryPaths: [String] = []
     private var nestedArchives: [String: Archive] = [:]
     private var nestedImageEntries: [String: [Entry]] = [:]
     
@@ -126,9 +126,10 @@ class ImageLoader: ObservableObject {
             if currentIndex > 1 {
                 currentIndex -= 2
             } else if currentIndex == 1 {
-                currentIndex -= 1
+                currentIndex = 0
             }
         }
+        updateCurrentImage()
     }
     
     func showNextImage() {
@@ -141,9 +142,10 @@ class ImageLoader: ObservableObject {
             if currentIndex < images.count - 2 {
                 currentIndex += 2
             } else if currentIndex == images.count - 2 {
-                currentIndex += 1
+                currentIndex = images.count - 1
             }
         }
+        updateCurrentImage()
     }
     
     func updateCurrentImage() {
@@ -155,15 +157,14 @@ class ImageLoader: ObservableObject {
         switch viewMode {
         case .single:
             currentImages = (currentIndex, nil)
-        case .spreadLeftToRight, .spreadRightToLeft:
+        case .spreadLeftToRight:
             let leftIndex = currentIndex
-            let rightIndex = currentIndex + 1
-
-            if viewMode == .spreadLeftToRight {
-                currentImages = (leftIndex, rightIndex < images.count ? rightIndex : nil)
-            } else {
-                currentImages = (rightIndex < images.count ? rightIndex : nil, leftIndex)
-            }
+            let rightIndex = min(currentIndex + 1, images.count - 1)
+            currentImages = (leftIndex, rightIndex == leftIndex ? nil : rightIndex)
+        case .spreadRightToLeft:
+            let rightIndex = currentIndex
+            let leftIndex = min(currentIndex + 1, images.count - 1)
+            currentImages = (leftIndex == rightIndex ? nil : leftIndex, rightIndex)
         }
         
         updateCurrentImageInfo()
