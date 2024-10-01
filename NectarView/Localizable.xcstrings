@@ -19,6 +19,12 @@
     },
     "%lld / %lld" : {
       "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%1$lld / %2$lld"
+          }
+        },
         "ja" : {
           "stringUnit" : {
             "state" : "new",
@@ -258,9 +264,6 @@
         }
       }
     },
-    "Error loading ZIP file: (error.localizedDescription)" : {
-
-    },
     "Failed to read the file. Please make sure the file exists." : {
       "localizations" : {
         "en" : {
@@ -296,7 +299,15 @@
       }
     },
     "NectarView" : {
-      "comment" : "NectarView"
+      "comment" : "NectarView",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "NectarView"
+          }
+        }
+      }
     },
     "Next Bookmark" : {
       "extractionState" : "manual",
@@ -762,8 +773,21 @@
         }
       }
     },
-    "View" : {
-      "comment" : "View"
+    "UnsupportedFileFormat" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Unsupported file format"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "サポートされていないファイル形式です"
+          }
+        }
+      }
     },
     "You don't have permission to access this file. Please check the application's permission settings." : {
       "localizations" : {
@@ -777,22 +801,6 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "ファイルへのアクセス権限がありません。アプリケーションの権限設定を確認してください。"
-          }
-        }
-      }
-    },
-    "UnsupportedFileFormat": {
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Unsupported file format"
-          }
-        },
-        "ja": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "サポートされていないファイル形式です"
           }
         }
       }
