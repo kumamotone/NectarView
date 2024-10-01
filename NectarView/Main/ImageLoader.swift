@@ -50,12 +50,20 @@ class ImageLoader: ObservableObject {
     private var nestedArchives: [String: Archive] = [:]
     private var nestedImageEntries: [String: [Entry]] = [:]
 
-    private var imageInfo: ImageInfo {
-        return ImageInfo(imageLoader: self)
-    }
-
     var currentImageInfo: String {
-        return imageInfo.current
+        if let zipFileName = currentZipFileName {
+            if let entryFileName = currentZipEntryFileName {
+                return "\(zipFileName) - \(entryFileName) (\(currentIndex + 1)/\(images.count))"
+            } else {
+                return "\(zipFileName) (\(currentIndex + 1)/\(images.count))"
+            }
+        } else if images.isEmpty {
+            return NSLocalizedString("NectarView", comment: "NectarView")
+        } else {
+            let folderInfo = currentFolderPath
+            let fileInfo = currentFileName
+            return "\(folderInfo)/\(fileInfo) (\(currentIndex + 1)/\(images.count))"
+        }
     }
 
     func loadImages(from url: URL) {
