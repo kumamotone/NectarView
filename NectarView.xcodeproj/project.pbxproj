@@ -34,6 +34,7 @@
 		D0C282482CAA61F50095D414 /* BookmarkListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D0C282472CAA61F50095D414 /* BookmarkListView.swift */; };
 		D0C451482CAC89C50057CDD5 /* NectarViewUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D0C451432CAC89950057CDD5 /* NectarViewUITests.swift */; };
 		D0C451492CAC89D10057CDD5 /* NectarViewUITestsLaunchTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D0C451442CAC89950057CDD5 /* NectarViewUITestsLaunchTests.swift */; };
+		D0C4514D2CAC930E0057CDD5 /* ViewMode.swift in Sources */ = {isa = PBXBuildFile; fileRef = D0C4514C2CAC930E0057CDD5 /* ViewMode.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -83,6 +84,7 @@
 		D0C282472CAA61F50095D414 /* BookmarkListView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BookmarkListView.swift; sourceTree = "<group>"; };
 		D0C451432CAC89950057CDD5 /* NectarViewUITests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NectarViewUITests.swift; sourceTree = "<group>"; };
 		D0C451442CAC89950057CDD5 /* NectarViewUITestsLaunchTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NectarViewUITestsLaunchTests.swift; sourceTree = "<group>"; };
+		D0C4514C2CAC930E0057CDD5 /* ViewMode.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewMode.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -138,6 +140,7 @@
 				D0AABEC32CA22D0E00878C45 /* ContentView.swift */,
 				D08EF1DD2CAB26BE00301FA8 /* ContextMenu.swift */,
 				D07E8B1B2CA249D600C7E124 /* ImageLoader.swift */,
+				D0C4514C2CAC930E0057CDD5 /* ViewMode.swift */,
 				D07E8B172CA249D600C7E124 /* KeyboardHandler.swift */,
 			);
 			path = Main;
@@ -375,6 +378,7 @@
 				D07E8B2A2CA2597400C7E124 /* AppSettings.swift in Sources */,
 				D029CFAC2CAC5F2000D2080C /* ArchiveUtil.swift in Sources */,
 				D08EF19C2CAB142F00301FA8 /* NSColor+.swift in Sources */,
+				D0C4514D2CAC930E0057CDD5 /* ViewMode.swift in Sources */,
 				D08EF1DE2CAB26BE00301FA8 /* ContextMenu.swift in Sources */,
 				D07E8B1E2CA249D600C7E124 /* KeyboardHandler.swift in Sources */,
 				D08EF1D22CAB22D200301FA8 /* ImageDisplayView.swift in Sources */,

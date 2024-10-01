@@ -19,12 +19,7 @@ class ImageLoader: ObservableObject {
     @Published var currentRotation: Angle = .degrees(0)
     @Published private(set) var currentImageInfo: String = NSLocalizedString("NectarView", comment: "NectarView")
 
-    // MARK: - Enums
-    enum ViewMode {
-        case single
-        case spreadLeftToRight
-        case spreadRightToLeft
-    }
+    var zipEntryPaths: [String] = [] // for testing
 
     // MARK: - Private properties
     private let imageExtensions = ["png", "jpg", "jpeg", "gif", "bmp", "tiff", "webp"]
@@ -38,7 +33,6 @@ class ImageLoader: ObservableObject {
     
     private var currentZipArchive: Archive?
     private var zipImageEntries: [Entry] = []
-    var zipEntryPaths: [String] = []
     private var nestedArchives: [String: Archive] = [:]
     private var nestedImageEntries: [String: [Entry]] = [:]
     
@@ -402,9 +396,22 @@ class ImageLoader: ObservableObject {
     }
 
     private func updateCurrentImageInfo() {
-        guard !images.isEmpty, let currentImageIndex = currentImages.0 else {
+        guard !images.isEmpty else {
             currentImageInfo = NSLocalizedString("NectarView", comment: "NectarView")
             return
+        }
+
+        let currentImageIndex: Int
+        switch viewMode {
+        case .single:
+            guard let index = currentImages.0 else { return }
+            currentImageIndex = index
+        case .spreadLeftToRight:
+            guard let index = currentImages.0 else { return }
+            currentImageIndex = index
+        case .spreadRightToLeft:
+            guard let index = currentImages.1 ?? currentImages.0 else { return }
+            currentImageIndex = index
         }
 
         let currentURL = images[currentImageIndex]
@@ -425,7 +432,7 @@ class ImageLoader: ObservableObject {
     }
 
     private func loadImageFromSource(url: URL) -> NSImage? {
-        if let zipArchive = currentZipArchive, zipFileURL != nil {
+        if let _ = currentZipArchive, zipFileURL != nil {
             return loadImageFromZip(url: url)
         } else {
             return NSImage(contentsOf: url)

@@ -113,7 +113,7 @@ struct ContextMenuContent: View {
         .keyboardShortcut("l", modifiers: .command)
     }
     
-    private func setViewMode(_ mode: ImageLoader.ViewMode) {
+    private func setViewMode(_ mode: ViewMode) {
         switch mode {
         case .single:
             appSettings.isSpreadViewEnabled = false
