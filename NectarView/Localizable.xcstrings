@@ -780,6 +780,22 @@
           }
         }
       }
+    },
+    "UnsupportedFileFormat": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Unsupported file format"
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "サポートされていないファイル形式です"
+          }
+        }
+      }
     }
   },
   "version" : "1.0"

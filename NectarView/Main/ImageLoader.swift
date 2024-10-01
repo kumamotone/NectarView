@@ -330,7 +330,7 @@ class ImageLoader: ObservableObject {
                             self.currentIndex = 0
                         }
                     } else {
-                        ErrorUtil.showAlert(message: "サポートされていないファイル形式です")
+                        ErrorUtil.showAlert(message: NSLocalizedString("UnsupportedFileFormat", comment: ""))
                     }
                 }
             }
@@ -432,7 +432,7 @@ class ImageLoader: ObservableObject {
     }
 
     private func loadImageFromSource(url: URL) -> NSImage? {
-        if let _ = currentZipArchive, zipFileURL != nil {
+        if currentZipArchive != nil && zipFileURL != nil {
             return loadImageFromZip(url: url)
         } else {
             return NSImage(contentsOf: url)
