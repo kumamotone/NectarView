@@ -812,6 +812,7 @@
       }
     },
     "View" : {
+      "comment" : "View",
       "localizations" : {
         "en" : {
           "stringUnit" : {
