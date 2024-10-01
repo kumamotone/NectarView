@@ -61,7 +61,7 @@ struct MainApp: App {
                     imageLoader.updateViewMode(appSettings: appSettings)
                 }
                 .keyboardShortcut("3", modifiers: .command)
-                
+
                 Divider()
 
                 Button(NSLocalizedString("Rotate 90 Degrees", comment: "")) {
@@ -79,19 +79,19 @@ struct MainApp: App {
                     imageLoader.toggleBookmark()
                 }
                 .keyboardShortcut("b", modifiers: .command)
-                
+
                 Button(NSLocalizedString("Next Bookmark", comment: "")) {
                     imageLoader.goToNextBookmark()
                 }
                 .keyboardShortcut("]", modifiers: .command)
-                
+
                 Button(NSLocalizedString("Previous Bookmark", comment: "")) {
                     imageLoader.goToPreviousBookmark()
                 }
                 .keyboardShortcut("[", modifiers: .command)
-                
+
                 Divider()
-                
+
                 Button(NSLocalizedString("Show Bookmark List", comment: "")) {
                     isBookmarkListPresented = true
                 }

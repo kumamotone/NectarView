@@ -8,9 +8,9 @@ struct SettingsView: View {
         Form {
             ColorPicker(NSLocalizedString("BackgroundColor", comment: "BackgroundColor"), selection: $appSettings.backgroundColor)
             ColorPicker(NSLocalizedString("ControlBarColor", comment: "ControlBarColor"), selection: $appSettings.controlBarColor)
-            
+
             Toggle(NSLocalizedString("ReverseLeftRightKey", comment: "Reverse left-right key direction"), isOn: $appSettings.isLeftRightKeyReversed)
-            
+
             Button(NSLocalizedString("ResetSettings", comment: "ResetSettings")) {
                 appSettings.resetToDefaults()
             }
@@ -29,7 +29,7 @@ struct SettingsView: View {
             }
         }
     }
-    
+
     private func openTemporaryDirectory() {
         let tempDir = FileManager.default.temporaryDirectory
         NSWorkspace.shared.open(tempDir)

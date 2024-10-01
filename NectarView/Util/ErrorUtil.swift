@@ -1,7 +1,7 @@
 import AppKit
 
 class ErrorUtil {
-    static func handleLoadError(url: URL, error: Error, completion: @escaping () -> Void) {        
+    static func handleLoadError(url: URL, error: Error, completion: @escaping () -> Void) {
         if let nsError = error as NSError? {
             switch nsError.code {
             case NSFileReadNoPermissionError:
@@ -12,10 +12,10 @@ class ErrorUtil {
                 showAlert(message: NSLocalizedString("An unexpected error occurred: %@", comment: "").replacingOccurrences(of: "%@", with: nsError.localizedDescription) + "\n" + NSLocalizedString("Problem file path: %@", comment: "").replacingOccurrences(of: "%@", with: url.path))
             }
         }
-        
+
         completion()
     }
-    
+
     static func showAlert(message: String) {
         DispatchQueue.main.async {
             let alert = NSAlert()

@@ -60,7 +60,7 @@ struct AutoScrollControls: View {
 struct ViewModeButton: View {
     @ObservedObject var appSettings: AppSettings
     @ObservedObject var imageLoader: ImageLoader
-    
+
     var body: some View {
         Button(action: {
             appSettings.isSpreadViewEnabled.toggle()
@@ -79,7 +79,7 @@ struct ViewModeButton: View {
 struct ReadingDirectionButton: View {
     @ObservedObject var appSettings: AppSettings
     @ObservedObject var imageLoader: ImageLoader
-    
+
     var body: some View {
         Button(action: {
             appSettings.isRightToLeftReading.toggle()

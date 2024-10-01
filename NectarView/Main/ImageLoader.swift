@@ -30,17 +30,17 @@ class ImageLoader: ObservableObject {
     }()
     private var prefetchedImages: [URL: NSImage] = [:]
     private let prefetchRange = 5
-    
+
     private var currentZipArchive: Archive?
     private var zipImageEntries: [Entry] = []
     private var nestedArchives: [String: Archive] = [:]
     private var nestedImageEntries: [String: [Entry]] = [:]
-    
+
     // MARK: - Public methods
     func loadImages(from url: URL) {
         clearExistingData()
         clearZipData()
-        
+
         if url.pathExtension.lowercased() == "zip" {
             loadImagesFromZip(url: url)
         } else {
@@ -52,13 +52,13 @@ class ImageLoader: ObservableObject {
         if let cachedImage = imageCache.object(forKey: url as NSURL) {
             return cachedImage
         }
-        
+
         if let zipArchive = currentZipArchive, zipFileURL != nil {
             let index = images.firstIndex(of: url) ?? -1
             if index >= 0 && index < zipEntryPaths.count {
                 let entryPath = zipEntryPaths[index]
                 let pathComponents = entryPath.split(separator: "|")
-                
+
                 do {
                     if pathComponents.count == 2 {
                         // 書庫内書庫の画像
@@ -70,7 +70,7 @@ class ImageLoader: ObservableObject {
                             _ = try nestedArchive.extract(nestedEntry) { data in
                                 imageData.append(data)
                             }
-                            
+
                             if let image = NSImage(data: imageData) {
                                 imageCache.setObject(image, forKey: url as NSURL)
                                 return image
@@ -85,7 +85,7 @@ class ImageLoader: ObservableObject {
                         _ = try zipArchive.extract(entry) { data in
                             imageData.append(data)
                         }
-                        
+
                         if let image = NSImage(data: imageData) {
                             imageCache.setObject(image, forKey: url as NSURL)
                             return image
@@ -102,7 +102,7 @@ class ImageLoader: ObservableObject {
                 return image
             }
         }
-        
+
         return nil
     }
 
@@ -125,7 +125,7 @@ class ImageLoader: ObservableObject {
         }
         updateCurrentImage()
     }
-    
+
     func showNextImage() {
         switch viewMode {
         case .single:
@@ -141,7 +141,7 @@ class ImageLoader: ObservableObject {
         }
         updateCurrentImage()
     }
-    
+
     func updateCurrentImage() {
         guard !images.isEmpty else {
             currentImages = (nil, nil)
@@ -160,7 +160,7 @@ class ImageLoader: ObservableObject {
             let leftIndex = min(currentIndex + 1, images.count - 1)
             currentImages = (leftIndex == rightIndex ? nil : leftIndex, rightIndex)
         }
-        
+
         updateCurrentImageInfo()
     }
 
@@ -218,7 +218,7 @@ class ImageLoader: ObservableObject {
         images = []
         currentIndex = 0
     }
-    
+
     private func clearZipData() {
         currentZipArchive = nil
         zipImageEntries.removeAll()
@@ -227,7 +227,7 @@ class ImageLoader: ObservableObject {
         imageCache.removeAllObjects()
         prefetchedImages.removeAll()
     }
-        
+
     private func loadImagesFromZip(url: URL) {
         do {
             currentZipArchive = nil
@@ -237,7 +237,7 @@ class ImageLoader: ObservableObject {
             let archive = try Archive(url: url, accessMode: .read)
             currentZipArchive = archive
             zipFileURL = url
-            
+
             zipImageEntries = archive.filter { entry in
                 let entryPath = entry.path
                 let entryPathExtension = (entryPath as NSString).pathExtension.lowercased()
@@ -282,20 +282,20 @@ class ImageLoader: ObservableObject {
             }
         }
     }
-    
+
     private func loadImagesFromFileOrFolder(url: URL) {
         // 既存のキャッシュをクリア
         imageCache.removeAllObjects()
         prefetchedImages.removeAll()
 
         let folderURL = url.hasDirectoryPath ? url : url.deletingLastPathComponent()
-        
+
         do {
             let files = try FileManager.default.contentsOfDirectory(at: folderURL, includingPropertiesForKeys: nil)
-            
+
             let filteredImages = files.filter { imageExtensions.contains($0.pathExtension.lowercased()) }
                 .sorted { $0.lastPathComponent.localizedStandardCompare($1.lastPathComponent) == .orderedAscending }
-            
+
             DispatchQueue.main.async {
                 self.images = filteredImages
                 if !self.images.isEmpty {
@@ -336,15 +336,15 @@ class ImageLoader: ObservableObject {
             }
         }
     }
-    
+
     private func preloadAdjacentImages() {
         guard !images.isEmpty else { return }
-        
+
         let adjacentIndices = [
             max(0, currentIndex - 1),
             min(images.count - 1, currentIndex + 1)
         ]
-        
+
         for index in adjacentIndices {
             guard index >= 0 && index < images.count else { continue }
             let url = images[index]
@@ -358,13 +358,13 @@ class ImageLoader: ObservableObject {
             }
         }
     }
-    
+
     private func prefetchImages() {
         guard !images.isEmpty else { return }
-        
+
         let start = max(0, currentIndex - prefetchRange)
         let end = min(images.count - 1, currentIndex + prefetchRange)
-        
+
         DispatchQueue.global(qos: .utility).async { [weak self] in
             guard let self = self else { return }
             for index in start...end {
@@ -379,7 +379,7 @@ class ImageLoader: ObservableObject {
             }
         }
     }
-    
+
     private func preloadNextImage() {
         let nextIndex = currentIndex + 1
         if nextIndex < images.count {
@@ -442,10 +442,10 @@ class ImageLoader: ObservableObject {
     private func loadImageFromZip(url: URL) -> NSImage? {
         let index = images.firstIndex(of: url) ?? -1
         guard index >= 0 && index < zipEntryPaths.count else { return nil }
-        
+
         let entryPath = zipEntryPaths[index]
         let pathComponents = entryPath.split(separator: "|")
-        
+
         do {
             if pathComponents.count == 2 {
                 // 書庫内書庫の画像

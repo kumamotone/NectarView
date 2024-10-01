@@ -6,7 +6,7 @@ struct ContextMenuContent: View {
     @Binding var isSettingsPresented: Bool
     @Binding var isBookmarkListPresented: Bool
     @EnvironmentObject var appSettings: AppSettings
-    
+
     var body: some View {
         Button(action: {
             openFile()
@@ -111,7 +111,7 @@ struct ContextMenuContent: View {
         }
         .keyboardShortcut("l", modifiers: .command)
     }
-    
+
     private func setViewMode(_ mode: ViewMode) {
         switch mode {
         case .single:
@@ -125,11 +125,11 @@ struct ContextMenuContent: View {
         }
         imageLoader.updateViewMode(appSettings: appSettings)
     }
-    
+
     private func openFile() {
         imageLoader.openFile()
     }
-    
+
     private func showInFinder() {
         if let zipFileURL = imageLoader.zipFileURL {
             // ZIPファイルの場合、ZIPファイル自体を表示

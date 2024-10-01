@@ -19,12 +19,12 @@ struct BottomControlsView: View {
                     .font(.caption)
                     .padding(.leading, 10)
                     .foregroundColor(.white)
-                
+
                 if imageLoader.images.count > 1 {
                     CustomSliderView(
                         currentIndex: $imageLoader.currentIndex,
                         totalImages: imageLoader.images.count,
-                        onHover: { index in
+                        onHover: { _ in
                         },
                         onClick: { index in
                             imageLoader.updateSafeCurrentIndex(index)
@@ -61,7 +61,7 @@ struct CustomSliderView: View {
     @Binding var hoverLocation: CGFloat
     @Binding var isHovering: Bool
     @State private var isDragging: Bool = false
-    
+
     var body: some View {
         GeometryReader { geometry in
             ZStack(alignment: .leading) {
@@ -70,17 +70,17 @@ struct CustomSliderView: View {
                     .fill(Color.gray.opacity(0.3))
                     .frame(height: 4)
                     .position(x: geometry.size.width / 2, y: geometry.size.height / 2)
-                
+
                 Rectangle()
                     .fill(Color.blue)
                     .frame(width: CGFloat(currentIndex) / CGFloat(totalImages - 1) * geometry.size.width, height: 4)
                     .position(x: (CGFloat(currentIndex) / CGFloat(totalImages - 1) * geometry.size.width) / 2, y: geometry.size.height / 2)
-                
+
                 RoundedRectangle(cornerRadius: 4)
                     .fill(Color.blue)
                     .frame(width: 12, height: 24)
                     .position(x: CGFloat(currentIndex) / CGFloat(totalImages - 1) * geometry.size.width, y: geometry.size.height / 2)
-                
+
                 // クリック可能な領域を作成
                 Rectangle()
                     .fill(Color.clear)
@@ -92,7 +92,7 @@ struct CustomSliderView: View {
                                 isDragging = true
                                 updateIndexAndHover(location: value.location.x, in: geometry)
                             }
-                            .onEnded { value in
+                            .onEnded { _ in
                                 isDragging = false
                                 onClick(currentIndex)
                             }
@@ -113,14 +113,14 @@ struct CustomSliderView: View {
         .frame(height: 30)
         .contentShape(Rectangle())
     }
-    
+
     private func updateHoverIndex(location: CGFloat, in geometry: GeometryProxy) {
         hoverIndex = calculateIndex(for: location, in: geometry)
         hoverLocation = location
         isHovering = true
         onHover(hoverIndex)
     }
-    
+
     private func updateIndexAndHover(location: CGFloat, in geometry: GeometryProxy) {
         let newIndex = calculateIndex(for: location, in: geometry)
         currentIndex = newIndex
@@ -129,7 +129,7 @@ struct CustomSliderView: View {
         isHovering = true
         onHover(newIndex)
     }
-    
+
     private func calculateIndex(for location: CGFloat, in geometry: GeometryProxy) -> Int {
         let ratio = location / geometry.size.width
         let newIndex = Int(round(ratio * CGFloat(totalImages - 1)))

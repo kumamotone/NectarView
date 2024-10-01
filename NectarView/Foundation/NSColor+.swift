@@ -44,4 +44,3 @@ extension Color: RawRepresentable {
         return [r, g, b, o].joined(separator: ",")
     }
 }
-

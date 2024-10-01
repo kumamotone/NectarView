@@ -5,18 +5,18 @@ struct ContentView: View {
     // MARK: - Observed Objects
     @ObservedObject var imageLoader: ImageLoader
     @EnvironmentObject var appSettings: AppSettings
-    
+
     // MARK: - State Properties
     // 一定時間後に自動的に画面上部のコントロールを隠す機能
     @State private var isTopControlsVisible: Bool = true
     @State private var topControlsTimer: Timer?
     @State private var isInitialDisplay: Bool = true
-    
+
     // 自動めくり用の機能
     @State private var isAutoScrolling: Bool = false
     @State private var autoScrollInterval: Double = 3.0
     @State private var autoScrollTimer: Timer?
-    
+
     // 画面下部のコントロール絡みのState
     @State private var isBottomControlVisible: Bool = false
     @State private var isControlBarHovered: Bool = false
@@ -24,34 +24,34 @@ struct ContentView: View {
     @State private var sliderHoverLocation: CGFloat = 0
     @State private var isSliderHovering: Bool = false
     @State private var isSliderVisible: Bool = false
-    
+
     // マウスで左右切り替え用のコントロール
     @State private var isLeftCursorHovered: Bool = false
     @State private var isRightCursorHovered: Bool = false
-     
+
     // 拡大縮小と表示位置
     @State private var scale: CGFloat = 1.0
     @State private var offset: CGSize = .zero
     @State private var dragStartOffset: CGSize = .zero
-    
+
     // ドラッグでウィンドウ位置の調整
     @State private var dragOffset: CGSize = .zero
-    
+
     // ドラッグ中かどうか
     @State private var isDraggingImage: Bool = false
-    
+
     // モーダルの表示非表示
     @State private var isSettingsPresented: Bool = false
     @State private var isBookmarkListPresented: Bool = false
 
     // マウスを定期的に監視 なんでもいい
     @State private var mouseTrackingTimer: Timer?
-    
+
     var body: some View {
         GeometryReader { geometry in
             ZStack {
                 appSettings.backgroundColor.edgesIgnoringSafeArea(.all)
-                
+
                 ImageDisplayView(imageLoader: imageLoader, appSettings: appSettings, geometry: geometry, scale: scale, offset: offset)
                     .rotationEffect(imageLoader.currentRotation)
                     .scaleEffect(scale)
@@ -78,7 +78,7 @@ struct ContentView: View {
                                 self.dragOffset = .zero
                             }
                     )
-                
+
                 HStack(spacing: 0) {
                     LinearGradient(gradient: Gradient(colors: [Color.white.opacity(isLeftCursorHovered ? 0.2 : 0), Color.clear]), startPoint: .leading, endPoint: .trailing)
                         .frame(width: geometry.size.width * 0.15)
@@ -118,7 +118,7 @@ struct ContentView: View {
                                 .padding(.trailing, 5)
                         )
                 }
-                
+
                 VStack {
                     TopControlsView(isVisible: $isTopControlsVisible, appSettings: appSettings, imageLoader: imageLoader, isAutoScrolling: $isAutoScrolling, autoScrollInterval: $autoScrollInterval, toggleAutoScroll: toggleAutoScroll)
 
@@ -175,12 +175,12 @@ struct ContentView: View {
 
     // マウスを定期的に監視
     private func startMouseTracking() {
-        mouseTrackingTimer = Timer.scheduledTimer(withTimeInterval: 0.16, repeats: true) { timer in
+        mouseTrackingTimer = Timer.scheduledTimer(withTimeInterval: 0.16, repeats: true) { _ in
             if let window = NSApplication.shared.windows.first {
                 let mouseLocation = NSEvent.mouseLocation
                 let windowFrame = window.frame
-                
-                if NSPointInRect(mouseLocation, windowFrame) {
+
+                if windowFrame.contains(mouseLocation) {
                     let localMouseLocation = window.convertFromScreen(NSRect(origin: mouseLocation, size: .zero)).origin
 
                     withAnimation {
@@ -289,7 +289,7 @@ struct ContentView: View {
     private func limitOffset(_ offset: CGSize, in size: CGSize) -> CGSize {
         let maxOffsetX = max(0, (size.width * scale - size.width) / 2)
         let maxOffsetY = max(0, (size.height * scale - size.height) / 2)
-        
+
         return CGSize(
             width: min(max(offset.width, -maxOffsetX), maxOffsetX),
             height: min(max(offset.height, -maxOffsetY), maxOffsetY)
@@ -321,7 +321,6 @@ struct ContentView: View {
     }
 }
 
-
 extension View {
     func applyContentViewModifiers(appSettings: AppSettings, imageLoader: ImageLoader, isSettingsPresented: Binding<Bool>) -> some View {
         self
@@ -333,7 +332,7 @@ extension View {
             }
             .onDrop(of: [.fileURL], isTargeted: nil) { providers in
                 if let provider = providers.first {
-                    _ = provider.loadObject(ofClass: URL.self) { url, error in
+                    _ = provider.loadObject(ofClass: URL.self) { url, _ in
                         if let url = url, url.isFileURL {
                             DispatchQueue.main.async {
                                 imageLoader.loadImages(from: url)

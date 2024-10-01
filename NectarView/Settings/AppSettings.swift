@@ -6,7 +6,7 @@ class AppSettings: ObservableObject {
     @AppStorage("isSpreadViewEnabled") var isSpreadViewEnabled: Bool = false
     @AppStorage("isRightToLeftReading") var isRightToLeftReading: Bool = false
     @AppStorage("isLeftRightKeyReversed") var isLeftRightKeyReversed: Bool = true
-    
+
     var body: some View {
         VStack {
             ColorPicker(NSLocalizedString("BackgroundColor", comment: ""), selection: $backgroundColor)
@@ -14,14 +14,14 @@ class AppSettings: ObservableObject {
             Toggle(NSLocalizedString("Enable Spread View", comment: ""), isOn: $isSpreadViewEnabled)
             Toggle(NSLocalizedString("Right to Left Reading", comment: ""), isOn: $isRightToLeftReading)
             Toggle(NSLocalizedString("Reverse Left/Right Keys", comment: ""), isOn: $isLeftRightKeyReversed)
-            
+
             Button(NSLocalizedString("Reset to Defaults", comment: "")) { [self] in
                 resetToDefaults()
             }
         }
         .padding()
     }
-    
+
     func resetToDefaults() {
         backgroundColor = .black
         controlBarColor = Color.black.opacity(0.6)
@@ -30,4 +30,3 @@ class AppSettings: ObservableObject {
         isLeftRightKeyReversed = true
     }
 }
-

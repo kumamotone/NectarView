@@ -14,20 +14,20 @@ class AppDelegate: NSObject, NSApplicationDelegate {
             }
         }
     }
-    
+
     func applicationWillTerminate(_ notification: Notification) {
     }
-    
+
     func applicationDidBecomeActive(_ notification: Notification) {
     }
-    
+
     func applicationWillResignActive(_ notification: Notification) {
     }
-    
+
     func applicationShouldTerminateAfterLastWindowClosed(_ sender: NSApplication) -> Bool {
         return true
     }
-    
+
     func application(_ application: NSApplication, open urls: [URL]) {
     }
 }

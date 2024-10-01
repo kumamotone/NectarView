@@ -5,7 +5,7 @@ import SwiftUI
 // .help()でも説明が出せるが、出るのが遅いため
 struct InstantTooltip: View {
     let text: String
-    
+
     var body: some View {
         Text(text)
             .font(.system(size: 12))
@@ -21,7 +21,7 @@ struct TooltipModifier: ViewModifier {
     let tooltip: String
     @State private var isShowing = false
     @State private var tooltipSize: CGSize = .zero
-    
+
     func body(content: Content) -> some View {
         content
             .overlay(
@@ -44,7 +44,7 @@ struct TooltipModifier: ViewModifier {
                 }
             }
     }
-    
+
     private func tooltipPosition(in geometry: GeometryProxy) -> CGPoint {
         let x = geometry.size.width / 2
         let y = geometry.size.height + 24 // 固定で24px下に配置
@@ -60,7 +60,7 @@ extension View {
 
 struct TooltipSizePreferenceKey: PreferenceKey {
     static var defaultValue: CGSize = .zero
-    
+
     static func reduce(value: inout CGSize, nextValue: () -> CGSize) {
         value = nextValue()
     }
