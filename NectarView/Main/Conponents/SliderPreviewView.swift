@@ -18,7 +18,7 @@ struct SliderPreviewView: View {
                     .scaledToFit()
                     .frame(width: 200, height: 200)
                     .cornerRadius(10)
-                Text("\(sliderHoverIndex + 1)/\(imageLoader.images.count)")
+                Text("\(sliderHoverIndex + 1) / \(imageLoader.images.count)")
                     .font(.caption)
                     .padding(4)
                     .background(Color.black.opacity(0.6))

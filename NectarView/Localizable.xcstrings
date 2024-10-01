@@ -27,16 +27,6 @@
         }
       }
     },
-    "%lld/%lld" : {
-      "localizations" : {
-        "ja" : {
-          "stringUnit" : {
-            "state" : "new",
-            "value" : "%1$lld/%2$lld"
-          }
-        }
-      }
-    },
     "Access permission is required to display images in this folder." : {
       "localizations" : {
         "en" : {
@@ -98,23 +88,6 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "フォルダへのアクセスを許可"
-          }
-        }
-      }
-    },
-    "An error occurred: %@" : {
-      "extractionState" : "stale",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "An error occurred: %@"
-          }
-        },
-        "ja" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "エラーが発生しました: %@"
           }
         }
       }
@@ -184,23 +157,6 @@
         }
       }
     },
-    "Close" : {
-      "extractionState" : "stale",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Close"
-          }
-        },
-        "ja" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "閉じる"
-          }
-        }
-      }
-    },
     "ControlBarColor" : {
       "comment" : "ControlBarColor",
       "localizations" : {
@@ -258,7 +214,7 @@
       "localizations" : {
         "en" : {
           "stringUnit" : {
-            "state" : "needs_review",
+            "state" : "translated",
             "value" : "Edit"
           }
         },
@@ -388,23 +344,6 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "開く"
-          }
-        }
-      }
-    },
-    "OpenTemporaryDirectory" : {
-      "comment" : "OpenTemporaryDirectory",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "needs_review",
-            "value" : "OpenTemporaryDirectory"
-          }
-        },
-        "ja" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "一時ディレクトリを開く"
           }
         }
       }

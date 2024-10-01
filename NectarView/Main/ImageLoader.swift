@@ -201,7 +201,7 @@ class ImageLoader: ObservableObject {
     }
 
     func rotateImage(by degrees: Int) {
-        currentRotation = currentRotation + .degrees(Double(degrees))
+        currentRotation += .degrees(Double(degrees))
     }
 
     func updateViewMode(appSettings: AppSettings) {

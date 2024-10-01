@@ -64,7 +64,9 @@ struct ContextMenuContent: View {
         Button(action: {
             imageLoader.toggleBookmark()
         }) {
-            Text(imageLoader.isCurrentPageBookmarked() ? NSLocalizedString("Remove Bookmark", comment: "") : NSLocalizedString("Add Bookmark", comment: ""))
+            Text(imageLoader.isCurrentPageBookmarked()
+                ? NSLocalizedString("Remove Bookmark", comment: "")
+                : NSLocalizedString("Add Bookmark", comment: ""))
             Image(systemName: imageLoader.isCurrentPageBookmarked() ? "bookmark.fill" : "bookmark")
         }
         .keyboardShortcut("b", modifiers: .command)
