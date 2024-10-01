@@ -12,9 +12,7 @@ class ImageLoader: ObservableObject {
             updateCurrentImage()
         }
     }
-    @Published var currentImageURL: URL? = nil
-    @Published var currentSpreadURLs: (URL?, URL?) = (nil, nil)
-    @Published var currentSpreadIndices: (Int?, Int?) = (nil, nil)
+    @Published var currentImages: (Int?, Int?) = (nil, nil)
     @Published var viewMode: ViewMode = .single
     @Published var zipFileURL: URL?
     @Published var bookmarks: [Int] = []
@@ -150,31 +148,22 @@ class ImageLoader: ObservableObject {
     
     func updateCurrentImage() {
         guard !images.isEmpty else {
-            currentSpreadIndices = (nil, nil)
-            currentImageURL = nil
-            currentSpreadURLs = (nil, nil)
+            currentImages = (nil, nil)
             return
         }
 
         switch viewMode {
         case .single:
-            currentSpreadIndices = (currentIndex, nil)
-            currentImageURL = images[currentIndex]
-            currentSpreadURLs = (currentImageURL, nil)
+            currentImages = (currentIndex, nil)
         case .spreadLeftToRight, .spreadRightToLeft:
             let leftIndex = currentIndex
             let rightIndex = currentIndex + 1
 
             if viewMode == .spreadLeftToRight {
-                currentSpreadIndices = (leftIndex, rightIndex < images.count ? rightIndex : nil)
+                currentImages = (leftIndex, rightIndex < images.count ? rightIndex : nil)
             } else {
-                currentSpreadIndices = (rightIndex < images.count ? rightIndex : nil, leftIndex)
+                currentImages = (rightIndex < images.count ? rightIndex : nil, leftIndex)
             }
-
-            let leftURL = images[leftIndex]
-            let rightURL = rightIndex < images.count ? images[rightIndex] : nil
-            currentImageURL = leftURL
-            currentSpreadURLs = (leftURL, rightURL)
         }
         
         updateCurrentImageInfo()
@@ -233,7 +222,6 @@ class ImageLoader: ObservableObject {
     private func clearExistingData() {
         images = []
         currentIndex = 0
-        currentImageURL = nil
     }
     
     private func clearZipData() {
@@ -288,7 +276,6 @@ class ImageLoader: ObservableObject {
             DispatchQueue.main.async {
                 self.images = self.zipEntryPaths.indices.map { URL(fileURLWithPath: "zip://\($0)") }
                 self.currentIndex = 0
-                self.currentImageURL = self.images.first
             }
         } catch {
             print("ZIPアーカイブを開く際のエラー: \(error.localizedDescription)")
@@ -297,7 +284,6 @@ class ImageLoader: ObservableObject {
             DispatchQueue.main.async {
                 self.images = []
                 self.currentIndex = 0
-                self.currentImageURL = nil
             }
         }
     }
@@ -321,16 +307,16 @@ class ImageLoader: ObservableObject {
                     if url.hasDirectoryPath {
                         self.currentIndex = 0
                     } else {
-                        // 単一ファイルが選択合、そのファイルのインデックスを見つける
+                        // 単一ファイルが選択された場合、そのファイルのインデックスを見つける
                         if let selectedIndex = self.images.firstIndex(of: url) {
                             self.currentIndex = selectedIndex
                         } else {
-                            // 選択されたファイルが見つからない合、最初の画像を表示
+                            // 選択されたファイルが見つからない場合、最初の画像を表示
                             self.currentIndex = 0
                         }
                     }
                 }
-                self.currentImageURL = self.images.isEmpty ? nil : self.images[self.currentIndex]
+                self.updateCurrentImage()
             }
         } catch {
             if (error as NSError).code == NSFileReadNoPermissionError {
@@ -415,25 +401,25 @@ class ImageLoader: ObservableObject {
     }
 
     private func updateCurrentImageInfo() {
-        guard !images.isEmpty else {
+        guard !images.isEmpty, let currentImageIndex = currentImages.0 else {
             currentImageInfo = NSLocalizedString("NectarView", comment: "NectarView")
             return
         }
 
-        let currentURL = images[currentIndex]
+        let currentURL = images[currentImageIndex]
         let isZipFile = zipFileURL != nil
 
         if isZipFile {
             let zipFileName = zipFileURL?.lastPathComponent ?? ""
-            let entryPath = zipEntryPaths[currentIndex]
+            let entryPath = zipEntryPaths[currentImageIndex]
             let entryComponents = entryPath.split(separator: "|")
             let entryFileName = entryComponents.count > 1 ? String(entryComponents[1]) : (entryPath as NSString).lastPathComponent
 
-            currentImageInfo = "\(zipFileName) - \(entryFileName) (\(currentIndex + 1)/\(images.count))"
+            currentImageInfo = "\(zipFileName) - \(entryFileName) (\(currentImageIndex + 1)/\(images.count))"
         } else {
             let folderPath = currentURL.deletingLastPathComponent().path
             let fileName = currentURL.lastPathComponent
-            currentImageInfo = "\(folderPath)/\(fileName) (\(currentIndex + 1)/\(images.count))"
+            currentImageInfo = "\(folderPath)/\(fileName) (\(currentImageIndex + 1)/\(images.count))"
         }
     }
 

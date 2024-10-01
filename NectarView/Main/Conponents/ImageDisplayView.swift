@@ -28,8 +28,8 @@ struct SinglePageView: View {
 
     var body: some View {
         Group {
-            if let currentImageURL = imageLoader.currentImageURL,
-               let image = imageLoader.getImage(for: currentImageURL) {
+            if let currentImageIndex = imageLoader.currentImages.0,
+               let image = imageLoader.getImage(for: imageLoader.images[currentImageIndex]) {
                 Image(nsImage: image)
                     .resizable()
                     .scaledToFit()
@@ -59,7 +59,7 @@ struct SpreadView: View {
         } else {
             HStack(spacing: 0) {
                 Spacer(minLength: 0)
-                ForEach([imageLoader.currentSpreadIndices.0, imageLoader.currentSpreadIndices.1].compactMap { $0 }, id: \.self) { index in
+                ForEach([imageLoader.currentImages.0, imageLoader.currentImages.1].compactMap { $0 }, id: \.self) { index in
                     if index < imageLoader.images.count,
                        let image = imageLoader.getImage(for: imageLoader.images[index]) {
                         Image(nsImage: image)

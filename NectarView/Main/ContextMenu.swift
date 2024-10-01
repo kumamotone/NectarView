@@ -135,9 +135,10 @@ struct ContextMenuContent: View {
         if let zipFileURL = imageLoader.zipFileURL {
             // ZIPファイルの場合、ZIPファイル自体を表示
             NSWorkspace.shared.activateFileViewerSelecting([zipFileURL])
-        } else if let currentImageURL = imageLoader.currentImageURL {
+        } else if let currentImageIndex = imageLoader.currentImages.0,
+                  currentImageIndex < imageLoader.images.count {
             // 通常のファイルの場合、現在の画像を表示
-            NSWorkspace.shared.activateFileViewerSelecting([currentImageURL])
+            NSWorkspace.shared.activateFileViewerSelecting([imageLoader.images[currentImageIndex]])
         } else {
             // 画像が読み込めていない場合
             print("表示できる画像またはZIPファイルがありません")

@@ -65,16 +65,16 @@ class ImageLoaderTests: XCTestCase {
             imageLoader.currentIndex = 2
             imageLoader.updateSpreadIndices(isSpreadViewEnabled: true, isRightToLeftReading: false)
             
-            XCTAssertEqual(imageLoader.currentSpreadIndices.0, 2)
-            XCTAssertEqual(imageLoader.currentSpreadIndices.1, 3)
+            XCTAssertEqual(imageLoader.currentImages.0, 2)
+            XCTAssertEqual(imageLoader.currentImages.1, 3)
         }
 
         XCTContext.runActivity(named: "右から左への見開き表示") { _ in
             imageLoader.currentIndex = 2
             imageLoader.updateSpreadIndices(isSpreadViewEnabled: true, isRightToLeftReading: true)
             
-            XCTAssertEqual(imageLoader.currentSpreadIndices.0, 3)
-            XCTAssertEqual(imageLoader.currentSpreadIndices.1, 2)
+            XCTAssertEqual(imageLoader.currentImages.0, 3)
+            XCTAssertEqual(imageLoader.currentImages.1, 2)
         }
 
         XCTContext.runActivity(named: "最後のページの表示") { _ in
@@ -83,15 +83,15 @@ class ImageLoaderTests: XCTestCase {
             XCTContext.runActivity(named: "右から左への読み方") { _ in
                 imageLoader.updateSpreadIndices(isSpreadViewEnabled: true, isRightToLeftReading: true)
                 
-                XCTAssertEqual(imageLoader.currentSpreadIndices.0, 4)
-                XCTAssertNil(imageLoader.currentSpreadIndices.1)
+                XCTAssertEqual(imageLoader.currentImages.0, 4)
+                XCTAssertNil(imageLoader.currentImages.1)
             }
 
             XCTContext.runActivity(named: "左から右への読み方") { _ in
                 imageLoader.updateSpreadIndices(isSpreadViewEnabled: true, isRightToLeftReading: false)
                 
-                XCTAssertEqual(imageLoader.currentSpreadIndices.0, 4)
-                XCTAssertNil(imageLoader.currentSpreadIndices.1)
+                XCTAssertEqual(imageLoader.currentImages.0, 4)
+                XCTAssertNil(imageLoader.currentImages.1)
             }
         }
     }
@@ -102,8 +102,8 @@ class ImageLoaderTests: XCTestCase {
             imageLoader.showNextSpread(isRightToLeftReading: false)
             
             XCTAssertEqual(imageLoader.currentIndex, 2)
-            XCTAssertEqual(imageLoader.currentSpreadIndices.0, 2)
-            XCTAssertEqual(imageLoader.currentSpreadIndices.1, 3)
+            XCTAssertEqual(imageLoader.currentImages.0, 2)
+            XCTAssertEqual(imageLoader.currentImages.1, 3)
         }
 
         XCTContext.runActivity(named: "前の見開きに移動") { _ in
@@ -111,8 +111,8 @@ class ImageLoaderTests: XCTestCase {
             imageLoader.showPreviousSpread(isRightToLeftReading: false)
             
             XCTAssertEqual(imageLoader.currentIndex, 2)
-            XCTAssertEqual(imageLoader.currentSpreadIndices.0, 2)
-            XCTAssertEqual(imageLoader.currentSpreadIndices.1, 3)
+            XCTAssertEqual(imageLoader.currentImages.0, 2)
+            XCTAssertEqual(imageLoader.currentImages.1, 3)
         }
         
         XCTContext.runActivity(named: "最初のページからの移動") { _ in
@@ -122,8 +122,8 @@ class ImageLoaderTests: XCTestCase {
                 imageLoader.showPreviousSpread(isRightToLeftReading: true)
                 
                 XCTAssertEqual(imageLoader.currentIndex, 0)
-                XCTAssertEqual(imageLoader.currentSpreadIndices.0, 1)
-                XCTAssertEqual(imageLoader.currentSpreadIndices.1, 0)
+                XCTAssertEqual(imageLoader.currentImages.0, 1)
+                XCTAssertEqual(imageLoader.currentImages.1, 0)
             }
 
             XCTContext.runActivity(named: "左から右への読み方") { _ in
@@ -132,8 +132,8 @@ class ImageLoaderTests: XCTestCase {
                 imageLoader.showPreviousSpread(isRightToLeftReading: false)
                 
                 XCTAssertEqual(imageLoader.currentIndex, 0)
-                XCTAssertEqual(imageLoader.currentSpreadIndices.0, 0)
-                XCTAssertEqual(imageLoader.currentSpreadIndices.1, 1)
+                XCTAssertEqual(imageLoader.currentImages.0, 0)
+                XCTAssertEqual(imageLoader.currentImages.1, 1)
             }
         }
 
@@ -143,8 +143,8 @@ class ImageLoaderTests: XCTestCase {
             imageLoader.showNextSpread(isRightToLeftReading: false)
             
             XCTAssertEqual(imageLoader.currentIndex, 4)
-            XCTAssertEqual(imageLoader.currentSpreadIndices.0, 4)
-            XCTAssertNil(imageLoader.currentSpreadIndices.1)
+            XCTAssertEqual(imageLoader.currentImages.0, 4)
+            XCTAssertNil(imageLoader.currentImages.1)
         }
     }
 
@@ -153,8 +153,8 @@ class ImageLoaderTests: XCTestCase {
             imageLoader.images = []
             imageLoader.updateSpreadIndices(isSpreadViewEnabled: true, isRightToLeftReading: false)
             
-            XCTAssertNil(imageLoader.currentSpreadIndices.0)
-            XCTAssertNil(imageLoader.currentSpreadIndices.1)
+            XCTAssertNil(imageLoader.currentImages.0)
+            XCTAssertNil(imageLoader.currentImages.1)
         }
     }
 
