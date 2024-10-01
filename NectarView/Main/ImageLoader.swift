@@ -9,17 +9,12 @@ class ImageLoader: ObservableObject {
     @Published var currentIndex: Int = 0 {
         didSet {
             currentImageURL = images.isEmpty ? nil : images[currentIndex]
-            updateCurrentFileName()
-            preloadAdjacentImages()
             updateCurrentImageInfo()
+            preloadAdjacentImages()
         }
     }
     @Published var currentImageURL: URL? = nil
-    @Published var currentFolderPath: String = ""
-    @Published var currentFileName: String = ""
     @Published var currentSpreadIndices: (Int?, Int?) = (nil, nil)
-    @Published var currentZipFileName: String?
-    @Published var currentZipEntryFileName: String?
     @Published var viewMode: ViewMode = .single {
         didSet {
             updateSpreadIndices(isSpreadViewEnabled: viewMode != .single, isRightToLeftReading: viewMode == .spreadRightToLeft)
@@ -50,21 +45,7 @@ class ImageLoader: ObservableObject {
     private var nestedArchives: [String: Archive] = [:]
     private var nestedImageEntries: [String: [Entry]] = [:]
 
-    var currentImageInfo: String {
-        if let zipFileName = currentZipFileName {
-            if let entryFileName = currentZipEntryFileName {
-                return "\(zipFileName) - \(entryFileName) (\(currentIndex + 1)/\(images.count))"
-            } else {
-                return "\(zipFileName) (\(currentIndex + 1)/\(images.count))"
-            }
-        } else if images.isEmpty {
-            return NSLocalizedString("NectarView", comment: "NectarView")
-        } else {
-            let folderInfo = currentFolderPath
-            let fileInfo = currentFileName
-            return "\(folderInfo)/\(fileInfo) (\(currentIndex + 1)/\(images.count))"
-        }
-    }
+    @Published private(set) var currentImageInfo: String = NSLocalizedString("NectarView", comment: "NectarView")
 
     func loadImages(from url: URL) {
         // 既存のデータをクリア
@@ -80,11 +61,11 @@ class ImageLoader: ObservableObject {
             loadImagesFromFileOrFolder(url: url)
         }
         
-        // 現在のフォルダとファイル名を更新
-        updateCurrentFolderAndFileName(url: url)
-        
         // 画像のロード後にスプレッドインデックスを更新
         updateSpreadIndicesAfterLoading()
+        
+        // 画像のロード後にcurrentImageInfoを更新
+        updateCurrentImageInfo()
     }
     
     // 既存のデータをクリアするヘルパー関数
@@ -100,8 +81,6 @@ class ImageLoader: ObservableObject {
         zipImageEntries.removeAll()
         zipFileURL = nil
         zipEntryPaths.removeAll()
-        currentZipFileName = nil
-        currentZipEntryFileName = nil
         imageCache.removeAllObjects()
         prefetchedImages.removeAll()
     }
@@ -121,44 +100,6 @@ class ImageLoader: ObservableObject {
         }
     }
     
-    func updateCurrentFolderAndFileName(url: URL) {
-        if url.hasDirectoryPath {
-            currentFolderPath = url.path
-            currentFileName = ""
-        } else {
-            currentFolderPath = url.deletingLastPathComponent().path
-            currentFileName = url.lastPathComponent
-        }
-    }
-    
-    private func updateCurrentFileName() {
-        if !images.isEmpty && currentIndex < images.count {
-            if currentZipArchive != nil {
-                updateCurrentZipEntryFileName()
-            } else {
-                currentFileName = images[currentIndex].lastPathComponent
-            }
-        } else {
-            currentFileName = ""
-            currentZipEntryFileName = nil
-        }
-    }
-    
-    private func updateCurrentZipEntryFileName() {
-        if let _ = currentZipArchive,
-           currentIndex < zipEntryPaths.count {
-            let entryPath = zipEntryPaths[currentIndex]
-            let pathComponents = entryPath.split(separator: "|")
-            if pathComponents.count == 2 {
-                currentZipEntryFileName = String(pathComponents[1])
-            } else {
-                currentZipEntryFileName = (entryPath as NSString).lastPathComponent
-            }
-        } else {
-            currentZipEntryFileName = nil
-        }
-    }
-    
     private func loadImagesFromZip(url: URL) {
         do {
             currentZipArchive = nil
@@ -168,10 +109,6 @@ class ImageLoader: ObservableObject {
             let archive = try Archive(url: url, accessMode: .read)
             currentZipArchive = archive
             zipFileURL = url
-            
-            currentZipFileName = url.lastPathComponent
-            currentFolderPath = url.deletingLastPathComponent().path
-            currentFileName = url.lastPathComponent
             
             zipImageEntries = archive.filter { entry in
                 let entryPath = entry.path
@@ -207,7 +144,6 @@ class ImageLoader: ObservableObject {
                 self.images = self.zipEntryPaths.indices.map { URL(fileURLWithPath: "zip://\($0)") }
                 self.currentIndex = 0
                 self.currentImageURL = self.images.first
-                self.updateCurrentZipEntryFileName()
             }
         } catch {
             print("ZIPアーカイブを開く際のエラー: \(error.localizedDescription)")
@@ -227,9 +163,6 @@ class ImageLoader: ObservableObject {
         prefetchedImages.removeAll()
 
         let folderURL = url.hasDirectoryPath ? url : url.deletingLastPathComponent()
-        
-        // タイトルとパス情報を設定
-        updateCurrentFolderAndFileName(url: url)
         
         do {
             let files = try FileManager.default.contentsOfDirectory(at: folderURL, includingPropertiesForKeys: nil)
@@ -253,7 +186,6 @@ class ImageLoader: ObservableObject {
                     }
                 }
                 self.currentImageURL = self.images.isEmpty ? nil : self.images[self.currentIndex]
-                self.updateCurrentFileName()
             }
         } catch {
             if (error as NSError).code == NSFileReadNoPermissionError {
@@ -416,7 +348,6 @@ class ImageLoader: ObservableObject {
         } else {
             playSound()
         }
-        updateCurrentImageInfo()
     }
     
     func showPreviousImage() {
@@ -425,7 +356,6 @@ class ImageLoader: ObservableObject {
         } else {
             playSound()
         }
-        updateCurrentImageInfo()
     }
     
     private func playSound() {
@@ -463,13 +393,11 @@ class ImageLoader: ObservableObject {
     func showNextSpread(isRightToLeftReading: Bool) {
         currentIndex = min(images.count - 1, currentIndex + 2)
         updateSpreadIndices(isSpreadViewEnabled: true, isRightToLeftReading: isRightToLeftReading)
-        updateCurrentImageInfo()
     }
 
     func showPreviousSpread(isRightToLeftReading: Bool) {
         currentIndex = max(0, currentIndex - 2)
         updateSpreadIndices(isSpreadViewEnabled: true, isRightToLeftReading: isRightToLeftReading)
-        updateCurrentImageInfo()
     }
     
     private func preloadNextImage() {
@@ -508,8 +436,27 @@ class ImageLoader: ObservableObject {
         }
     }
 
-    func updateCurrentImageInfo() {
-        objectWillChange.send()
+    private func updateCurrentImageInfo() {
+        guard !images.isEmpty else {
+            currentImageInfo = NSLocalizedString("NectarView", comment: "NectarView")
+            return
+        }
+
+        let currentURL = images[currentIndex]
+        let isZipFile = zipFileURL != nil
+
+        if isZipFile {
+            let zipFileName = zipFileURL?.lastPathComponent ?? ""
+            let entryPath = zipEntryPaths[currentIndex]
+            let entryComponents = entryPath.split(separator: "|")
+            let entryFileName = entryComponents.count > 1 ? String(entryComponents[1]) : (entryPath as NSString).lastPathComponent
+
+            currentImageInfo = "\(zipFileName) - \(entryFileName) (\(currentIndex + 1)/\(images.count))"
+        } else {
+            let folderPath = currentURL.deletingLastPathComponent().path
+            let fileName = currentURL.lastPathComponent
+            currentImageInfo = "\(folderPath)/\(fileName) (\(currentIndex + 1)/\(images.count))"
+        }
     }
 
     func toggleViewMode(_ mode: ViewMode) {
