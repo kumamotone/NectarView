@@ -38,13 +38,13 @@ struct AutoScrollControls: View {
                     .frame(width: 20, height: 20)
             }
             .buttonStyle(PlainButtonStyle())
-            .instantTooltip(isAutoScrolling ? "自動ページめくりを停止" : "自動ページめくりを開始")
+            .instantTooltip(isAutoScrolling ? NSLocalizedString("Stop Auto Page Turn", comment: "") : NSLocalizedString("Start Auto Page Turn", comment: ""))
 
             Slider(value: $autoScrollInterval, in: 0.5...30.0, step: 0.5)
                 .frame(width: 80)
                 .accentColor(.white)
-                .instantTooltip("自動ページめくりの間隔を設定（0.5秒〜30秒）")
-            Text(String(format: "%.1f秒", autoScrollInterval))
+                .instantTooltip(NSLocalizedString("Set Auto Page Turn Interval (0.5 to 30 seconds)", comment: ""))
+            Text(String(format: NSLocalizedString("%.1f seconds", comment: ""), autoScrollInterval))
                 .foregroundColor(.white)
                 .font(.system(size: 12))
         }
@@ -52,7 +52,7 @@ struct AutoScrollControls: View {
         .padding(.vertical, 5)
         .background(Color.black.opacity(0.6))
         .cornerRadius(15)
-        .instantTooltip("自動ページめくりの設定")
+        .instantTooltip(NSLocalizedString("Auto Page Turn Settings", comment: ""))
     }
 }
 
@@ -71,7 +71,7 @@ struct ViewModeButton: View {
                 .frame(width: 20, height: 20)
         }
         .buttonStyle(TopControlButtonStyle())
-        .instantTooltip("単ページ/見開き")
+        .instantTooltip(NSLocalizedString("Single Page/Spread View", comment: ""))
     }
 }
 
@@ -90,7 +90,7 @@ struct ReadingDirectionButton: View {
                 .frame(width: 20, height: 20)
         }
         .buttonStyle(TopControlButtonStyle())
-        .instantTooltip("方向")
+        .instantTooltip(NSLocalizedString("Reading Direction", comment: ""))
     }
 }
 

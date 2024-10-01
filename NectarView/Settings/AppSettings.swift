@@ -9,13 +9,13 @@ class AppSettings: ObservableObject {
     
     var body: some View {
         VStack {
-            ColorPicker("Background Color", selection: $backgroundColor)
-            ColorPicker("Control Bar Color", selection: $controlBarColor)
-            Toggle("Enable Spread View", isOn: $isSpreadViewEnabled)
-            Toggle("Right to Left Reading", isOn: $isRightToLeftReading)
-            Toggle("Reverse Left/Right Keys", isOn: $isLeftRightKeyReversed)
+            ColorPicker(NSLocalizedString("BackgroundColor", comment: ""), selection: $backgroundColor)
+            ColorPicker(NSLocalizedString("ControlBarColor", comment: ""), selection: $controlBarColor)
+            Toggle(NSLocalizedString("Enable Spread View", comment: ""), isOn: $isSpreadViewEnabled)
+            Toggle(NSLocalizedString("Right to Left Reading", comment: ""), isOn: $isRightToLeftReading)
+            Toggle(NSLocalizedString("Reverse Left/Right Keys", comment: ""), isOn: $isLeftRightKeyReversed)
             
-            Button("Reset to Defaults") { [self] in
+            Button(NSLocalizedString("Reset to Defaults", comment: "")) { [self] in
                 resetToDefaults()
             }
         }

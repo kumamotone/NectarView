@@ -2,17 +2,17 @@ import AppKit
 
 class ErrorUtil {
     static func handleLoadError(url: URL, error: Error, completion: @escaping () -> Void) {
-        print("エラーが発生しました: \(error.localizedDescription)")
-        print("問題のファイルパス: \(url.path)")
+        print(NSLocalizedString("An error occurred: %@", comment: ""), error.localizedDescription)
+        print(NSLocalizedString("Problem file path: %@", comment: ""), url.path)
         
         if let nsError = error as NSError? {
             switch nsError.code {
             case NSFileReadNoPermissionError:
-                showAlert(message: "ファイルへのアクセス権限がありません。アプリケーションの権限設定を確認してください。\nファイルパス: \(url.path)")
+                showAlert(message: NSLocalizedString("You don't have permission to access this file. Please check the application's permission settings.", comment: "") + "\n" + NSLocalizedString("Problem file path: %@", comment: "").replacingOccurrences(of: "%@", with: url.path))
             case NSFileReadUnknownError:
-                showAlert(message: "ファイルの読み込みに失敗しました。ファイルが存在するか確認してください。\nファイルパス: \(url.path)")
+                showAlert(message: NSLocalizedString("Failed to read the file. Please make sure the file exists.", comment: "") + "\n" + NSLocalizedString("Problem file path: %@", comment: "").replacingOccurrences(of: "%@", with: url.path))
             default:
-                showAlert(message: "予期せぬエラーが発生しました: \(nsError.localizedDescription)\nファイルパス: \(url.path)")
+                showAlert(message: NSLocalizedString("An unexpected error occurred: %@", comment: "").replacingOccurrences(of: "%@", with: nsError.localizedDescription) + "\n" + NSLocalizedString("Problem file path: %@", comment: "").replacingOccurrences(of: "%@", with: url.path))
             }
         }
         
@@ -22,10 +22,10 @@ class ErrorUtil {
     static func showAlert(message: String) {
         DispatchQueue.main.async {
             let alert = NSAlert()
-            alert.messageText = "エラー"
+            alert.messageText = NSLocalizedString("Error", comment: "")
             alert.informativeText = message
             alert.alertStyle = .warning
-            alert.addButton(withTitle: "OK")
+            alert.addButton(withTitle: NSLocalizedString("OK", comment: ""))
             alert.runModal()
         }
     }

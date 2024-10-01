@@ -11,7 +11,7 @@ struct ContextMenuContent: View {
         Button(action: {
             openFile()
         }) {
-            Text("開く")
+            Text(NSLocalizedString("Open", comment: ""))
             Image(systemName: "folder")
         }
         .keyboardShortcut("o", modifiers: .command)
@@ -19,7 +19,7 @@ struct ContextMenuContent: View {
         Button(action: {
             showInFinder()
         }) {
-            Text("Finder に表示")
+            Text(NSLocalizedString("Show in Finder", comment: ""))
         }
         .keyboardShortcut("r", modifiers: .command)
 
@@ -28,7 +28,7 @@ struct ContextMenuContent: View {
         Button(action: {
             setViewMode(.single)
         }) {
-            Text("単ページ表示")
+            Text(NSLocalizedString("Single Page View", comment: ""))
             Image(systemName: "doc.text")
         }
         .keyboardShortcut("1", modifiers: .command)
@@ -36,16 +36,15 @@ struct ContextMenuContent: View {
         Button(action: {
             setViewMode(.spreadRightToLeft)
         }) {
-            Text("見開き表示 (右→左)")
+            Text(NSLocalizedString("Spread View (Right to Left)", comment: ""))
             Image(systemName: "book.closed")
         }
         .keyboardShortcut("2", modifiers: .command)
 
-        
         Button(action: {
             setViewMode(.spreadLeftToRight)
         }) {
-            Text("見開き表示 (左→右)")
+            Text(NSLocalizedString("Spread View (Left to Right)", comment: ""))
             Image(systemName: "book")
         }
         .keyboardShortcut("3", modifiers: .command)
@@ -55,7 +54,7 @@ struct ContextMenuContent: View {
         Button(action: {
             isSettingsPresented = true
         }) {
-            Text("設定")
+            Text(NSLocalizedString("Settings", comment: ""))
             Image(systemName: "gear")
         }
         .keyboardShortcut(",", modifiers: .command)
@@ -65,7 +64,7 @@ struct ContextMenuContent: View {
         Button(action: {
             imageLoader.toggleBookmark()
         }) {
-            Text(imageLoader.isCurrentPageBookmarked() ? "ブックマークを解除" : "ブックマークを追加")
+            Text(imageLoader.isCurrentPageBookmarked() ? NSLocalizedString("Remove Bookmark", comment: "") : NSLocalizedString("Add Bookmark", comment: ""))
             Image(systemName: imageLoader.isCurrentPageBookmarked() ? "bookmark.fill" : "bookmark")
         }
         .keyboardShortcut("b", modifiers: .command)
@@ -73,7 +72,7 @@ struct ContextMenuContent: View {
         Button(action: {
             imageLoader.goToNextBookmark()
         }) {
-            Text("次のブックマークへ")
+            Text(NSLocalizedString("Next Bookmark", comment: ""))
             Image(systemName: "arrow.right.to.line")
         }
         .keyboardShortcut("]", modifiers: .command)
@@ -81,7 +80,7 @@ struct ContextMenuContent: View {
         Button(action: {
             imageLoader.goToPreviousBookmark()
         }) {
-            Text("前のブックマークへ")
+            Text(NSLocalizedString("Previous Bookmark", comment: ""))
             Image(systemName: "arrow.left.to.line")
         }
         .keyboardShortcut("[", modifiers: .command)
@@ -89,7 +88,7 @@ struct ContextMenuContent: View {
         Button(action: {
             isBookmarkListPresented = true
         }) {
-            Text("ブックマークリストを表示")
+            Text(NSLocalizedString("Show Bookmark List", comment: ""))
             Image(systemName: "list.bullet")
         }
         .keyboardShortcut("l", modifiers: .command)
@@ -99,7 +98,7 @@ struct ContextMenuContent: View {
         Button(action: {
             imageLoader.rotateImage(by: 90)
         }) {
-            Text("90度回転")
+            Text(NSLocalizedString("Rotate 90 Degrees", comment: ""))
             Image(systemName: "rotate.right")
         }
         .keyboardShortcut("r", modifiers: .command)
@@ -107,7 +106,7 @@ struct ContextMenuContent: View {
         Button(action: {
             imageLoader.rotateImage(by: -90)
         }) {
-            Text("反時計回りに90度回転")
+            Text(NSLocalizedString("Rotate 90 Degrees Counterclockwise", comment: ""))
             Image(systemName: "rotate.left")
         }
         .keyboardShortcut("l", modifiers: .command)

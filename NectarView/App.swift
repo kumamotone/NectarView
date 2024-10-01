@@ -22,7 +22,7 @@ struct MainApp: App {
                 }
                 .sheet(isPresented: $isSettingsPresented) {
                     SettingsView(appSettings: appSettings)
-                        .frame(width: 300, height: 300)
+                        .frame(width: 400, height: 300)
                 }
                 .sheet(isPresented: $isBookmarkListPresented) {
                     BookmarkListView(imageLoader: imageLoader, isPresented: $isBookmarkListPresented)
@@ -30,32 +30,32 @@ struct MainApp: App {
         }
         .commands {
             CommandGroup(replacing: .appSettings) {
-                Button(NSLocalizedString("Settings", comment: "Settings")) {
+                Button(NSLocalizedString("Settings", comment: "")) {
                     isSettingsPresented = true
                 }
                 .keyboardShortcut(",", modifiers: .command)
             }
             CommandGroup(replacing: .newItem) {
-                Button("開く") {
+                Button(NSLocalizedString("Open", comment: "")) {
                     imageLoader.openFile()
                 }
                 .keyboardShortcut("o", modifiers: .command)
             }
             CommandGroup(replacing: .sidebar) {
-                Button("単ページ表示") {
+                Button(NSLocalizedString("Single Page View", comment: "")) {
                     appSettings.isSpreadViewEnabled = false
                     imageLoader.updateViewMode(appSettings: appSettings)
                 }
                 .keyboardShortcut("1", modifiers: .command)
 
-                Button("見開き表示 (右→左)") {
+                Button(NSLocalizedString("Spread View (Right to Left)", comment: "")) {
                     appSettings.isSpreadViewEnabled = true
                     appSettings.isRightToLeftReading = true
                     imageLoader.updateViewMode(appSettings: appSettings)
                 }
                 .keyboardShortcut("2", modifiers: .command)
 
-                Button("見開き表示 (左→右)") {
+                Button(NSLocalizedString("Spread View (Left to Right)", comment: "")) {
                     appSettings.isSpreadViewEnabled = true
                     appSettings.isRightToLeftReading = false
                     imageLoader.updateViewMode(appSettings: appSettings)
@@ -64,35 +64,35 @@ struct MainApp: App {
                 
                 Divider()
 
-                Button("90度回転") {
+                Button(NSLocalizedString("Rotate 90 Degrees", comment: "")) {
                     imageLoader.rotateImage(by: 90)
                 }
                 .keyboardShortcut("r", modifiers: .command)
 
-                Button("反時計回りに90度回転") {
+                Button(NSLocalizedString("Rotate 90 Degrees Counterclockwise", comment: "")) {
                     imageLoader.rotateImage(by: -90)
                 }
                 .keyboardShortcut("l", modifiers: .command)
             }
-            CommandMenu("ブックマーク") {
-                Button("ブックマークを追加/削除") {
+            CommandMenu(NSLocalizedString("Bookmarks", comment: "")) {
+                Button(NSLocalizedString("Add/Remove Bookmark", comment: "")) {
                     imageLoader.toggleBookmark()
                 }
                 .keyboardShortcut("b", modifiers: .command)
                 
-                Button("次のブックマークへ") {
+                Button(NSLocalizedString("Next Bookmark", comment: "")) {
                     imageLoader.goToNextBookmark()
                 }
                 .keyboardShortcut("]", modifiers: .command)
                 
-                Button("前のブックマークへ") {
+                Button(NSLocalizedString("Previous Bookmark", comment: "")) {
                     imageLoader.goToPreviousBookmark()
                 }
                 .keyboardShortcut("[", modifiers: .command)
                 
                 Divider()
                 
-                Button("ブックマークリストを表示") {
+                Button(NSLocalizedString("Show Bookmark List", comment: "")) {
                     isBookmarkListPresented = true
                 }
                 .keyboardShortcut("e", modifiers: .command)

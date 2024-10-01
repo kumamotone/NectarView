@@ -169,7 +169,7 @@ struct ContentView: View {
         .navigationTitle(imageLoader.currentImageInfo)
         .sheet(isPresented: $isSettingsPresented) {
             SettingsView(appSettings: appSettings)
-                .frame(width: 300, height: 150)
+                .frame(width: 400, height: 300)
         }
     }
 

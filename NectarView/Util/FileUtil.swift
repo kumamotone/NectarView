@@ -7,8 +7,8 @@ class FileUtil {
         openPanel.directoryURL = url
         openPanel.canChooseDirectories = true
         openPanel.canChooseFiles = false
-        openPanel.prompt = "フォルダへのアクセスを許可"
-        openPanel.message = "このフォルダ内の画像を表示するには、アクセス権が必要です。"
+        openPanel.prompt = NSLocalizedString("Allow Access to Folder", comment: "")
+        openPanel.message = NSLocalizedString("Access permission is required to display images in this folder.", comment: "")
 
         openPanel.begin { result in
             completion(result == .OK && openPanel.url != nil)
