@@ -46,6 +46,28 @@ class ImageLoader: ObservableObject {
     private var nestedImageEntries: [String: [Entry]] = [:]
 
     @Published private(set) var currentImageInfo: String = NSLocalizedString("NectarView", comment: "NectarView")
+    private func updateCurrentImageInfo() {
+        guard !images.isEmpty else {
+            currentImageInfo = NSLocalizedString("NectarView", comment: "NectarView")
+            return
+        }
+
+        let currentURL = images[currentIndex]
+        let isZipFile = zipFileURL != nil
+
+        if isZipFile {
+            let zipFileName = zipFileURL?.lastPathComponent ?? ""
+            let entryPath = zipEntryPaths[currentIndex]
+            let entryComponents = entryPath.split(separator: "|")
+            let entryFileName = entryComponents.count > 1 ? String(entryComponents[1]) : (entryPath as NSString).lastPathComponent
+
+            currentImageInfo = "\(zipFileName) - \(entryFileName) (\(currentIndex + 1)/\(images.count))"
+        } else {
+            let folderPath = currentURL.deletingLastPathComponent().path
+            let fileName = currentURL.lastPathComponent
+            currentImageInfo = "\(folderPath)/\(fileName) (\(currentIndex + 1)/\(images.count))"
+        }
+    }
 
     func loadImages(from url: URL) {
         // 既存のデータをクリア
@@ -120,7 +142,7 @@ class ImageLoader: ObservableObject {
 
             // 書庫内書庫の処理
             for entry in zipImageEntries where (entry.path as NSString).pathExtension.lowercased() == "zip" {
-                if let nestedArchive = try? archive.extractArchive(entry) {
+                if let nestedArchive = try? archive.extractArchive(from: entry) {
                     nestedArchives[entry.path] = nestedArchive
                     let nestedEntries = nestedArchive.filter { nestedEntry in
                         let nestedEntryPath = nestedEntry.path
@@ -190,7 +212,7 @@ class ImageLoader: ObservableObject {
         } catch {
             if (error as NSError).code == NSFileReadNoPermissionError {
                 // 権限がない場合、ユーザーに権限を要求
-                requestAccessForURL(folderURL) { success in
+                FileUtil.requestAccessForURL(folderURL) { success in
                     if success {
                         // 権限が付与されたら、再度読み込みを試みる
                         self.loadImagesFromFileOrFolder(url: url)
@@ -409,50 +431,6 @@ class ImageLoader: ObservableObject {
             }
         }
     }
-    
-    func requestAccessForURL(_ url: URL, completion: @escaping (Bool) -> Void) {
-        let openPanel = NSOpenPanel()
-        openPanel.directoryURL = url
-        openPanel.canChooseDirectories = true
-        openPanel.canChooseFiles = false
-        openPanel.prompt = "フォルダへのアクセスを許可"
-        openPanel.message = "このフォルダ内の画像を表示するには、アクセス権が必要です。"
-
-        openPanel.begin { result in
-            if result == .OK {
-                if openPanel.url != nil {
-                    completion(true)
-                } else {
-                    completion(false)
-                }
-            } else {
-                completion(false)
-            }
-        }
-    }
-
-    private func updateCurrentImageInfo() {
-        guard !images.isEmpty else {
-            currentImageInfo = NSLocalizedString("NectarView", comment: "NectarView")
-            return
-        }
-
-        let currentURL = images[currentIndex]
-        let isZipFile = zipFileURL != nil
-
-        if isZipFile {
-            let zipFileName = zipFileURL?.lastPathComponent ?? ""
-            let entryPath = zipEntryPaths[currentIndex]
-            let entryComponents = entryPath.split(separator: "|")
-            let entryFileName = entryComponents.count > 1 ? String(entryComponents[1]) : (entryPath as NSString).lastPathComponent
-
-            currentImageInfo = "\(zipFileName) - \(entryFileName) (\(currentIndex + 1)/\(images.count))"
-        } else {
-            let folderPath = currentURL.deletingLastPathComponent().path
-            let fileName = currentURL.lastPathComponent
-            currentImageInfo = "\(folderPath)/\(fileName) (\(currentIndex + 1)/\(images.count))"
-        }
-    }
 
     func toggleViewMode(_ mode: ViewMode) {
         viewMode = mode
@@ -489,31 +467,13 @@ class ImageLoader: ObservableObject {
     }
 
     public func openFile() {
-        let panel = NSOpenPanel()
-        panel.allowsMultipleSelection = false
-        panel.canChooseDirectories = true
-        panel.canChooseFiles = true
-        panel.allowedContentTypes = [.folder, .image, .archive]
-
-        if panel.runModal() == .OK {
-            if let url = panel.url {
-                self.loadImages(from: url)
-            }
+        FileUtil.openFile { [weak self] url in
+            guard let self = self, let url = url else { return }
+            self.loadImages(from: url)
         }
     }
 
     func rotateImage(by degrees: Int) {
         currentRotation = currentRotation + .degrees(Double(degrees))
-    }
-}
-
-extension Archive {
-    func extractArchive(_ entry: Entry) throws -> Archive? {
-        var archiveData = Data()
-        _ = try self.extract(entry) { data in
-            archiveData.append(data)
-        }
-        let archive = try Archive(data: archiveData, accessMode: .read)
-        return archive
     }
 }
