@@ -29,7 +29,6 @@ struct BottomControlsView: View {
                         },
                         onClick: { index in
                             imageLoader.updateSafeCurrentIndex(index)
-                            imageLoader.prefetchImages()
                         },
                         hoverIndex: $sliderHoverIndex,
                         hoverLocation: $sliderHoverLocation,

@@ -5,22 +5,25 @@ import SDWebImage
 import SwiftUI
 
 class ImageLoader: ObservableObject {
+    // MARK: - Published properties
     @Published var images: [URL] = []
-    @Published var currentIndex: Int = 0 {
-        didSet {
-            currentImageURL = images.isEmpty ? nil : images[currentIndex]
-            updateCurrentImageInfo()
-            preloadAdjacentImages()
-        }
-    }
+    @Published var currentIndex: Int = 0
     @Published var currentImageURL: URL? = nil
     @Published var currentSpreadIndices: (Int?, Int?) = (nil, nil)
-    @Published var viewMode: ViewMode = .single {
-        didSet {
-            updateSpreadIndices(isSpreadViewEnabled: viewMode != .single, isRightToLeftReading: viewMode == .spreadRightToLeft)
-        }
+    @Published var viewMode: ViewMode = .single
+    @Published var zipFileURL: URL?
+    @Published var bookmarks: [Int] = []
+    @Published var currentRotation: Angle = .degrees(0)
+    @Published private(set) var currentImageInfo: String = NSLocalizedString("NectarView", comment: "NectarView")
+
+    // MARK: - Enums
+    enum ViewMode {
+        case single
+        case spreadLeftToRight
+        case spreadRightToLeft
     }
 
+    // MARK: - Private properties
     private let imageExtensions = ["png", "jpg", "jpeg", "gif", "bmp", "tiff", "webp"]
     private var imageCache = NSCache<NSURL, NSImage>()
     private lazy var preloadQueue: DispatchQueue = {
@@ -32,75 +35,192 @@ class ImageLoader: ObservableObject {
     
     private var currentZipArchive: Archive?
     private var zipImageEntries: [Entry] = []
-    @Published var zipFileURL: URL?
     private var zipEntryPaths: [String] = []
-
-    @Published var bookmarks: [Int] = []
-
-    @Published var currentRotation: Angle = .degrees(0)
-
-    enum ViewMode {
-        case single
-        case spreadLeftToRight
-        case spreadRightToLeft
-    }
-
     private var nestedArchives: [String: Archive] = [:]
     private var nestedImageEntries: [String: [Entry]] = [:]
 
-    @Published private(set) var currentImageInfo: String = NSLocalizedString("NectarView", comment: "NectarView")
-    private func updateCurrentImageInfo() {
-        guard !images.isEmpty else {
-            currentImageInfo = NSLocalizedString("NectarView", comment: "NectarView")
-            return
-        }
-
-        let currentURL = images[currentIndex]
-        let isZipFile = zipFileURL != nil
-
-        if isZipFile {
-            let zipFileName = zipFileURL?.lastPathComponent ?? ""
-            let entryPath = zipEntryPaths[currentIndex]
-            let entryComponents = entryPath.split(separator: "|")
-            let entryFileName = entryComponents.count > 1 ? String(entryComponents[1]) : (entryPath as NSString).lastPathComponent
-
-            currentImageInfo = "\(zipFileName) - \(entryFileName) (\(currentIndex + 1)/\(images.count))"
-        } else {
-            let folderPath = currentURL.deletingLastPathComponent().path
-            let fileName = currentURL.lastPathComponent
-            currentImageInfo = "\(folderPath)/\(fileName) (\(currentIndex + 1)/\(images.count))"
-        }
-    }
-
+    // MARK: - Public methods
     func loadImages(from url: URL) {
-        // 既存のデータをクリア
         clearExistingData()
-        
-        // ZIPファイルの状態をクリア
         clearZipData()
         
-        // 画像のロード処理
         if url.pathExtension.lowercased() == "zip" {
             loadImagesFromZip(url: url)
         } else {
             loadImagesFromFileOrFolder(url: url)
         }
         
-        // 画像のロード後にスプレッドインデックスを更新
         updateSpreadIndicesAfterLoading()
+        updateCurrentImageInfo()
+    }
+
+    func getImage(for url: URL) -> NSImage? {
+        if let cachedImage = imageCache.object(forKey: url as NSURL) {
+            return cachedImage
+        }
         
-        // 画像のロード後にcurrentImageInfoを更新
+        if let zipArchive = currentZipArchive, zipFileURL != nil {
+            let index = images.firstIndex(of: url) ?? -1
+            if index >= 0 && index < zipEntryPaths.count {
+                let entryPath = zipEntryPaths[index]
+                let pathComponents = entryPath.split(separator: "|")
+                
+                do {
+                    if pathComponents.count == 2 {
+                        // 書庫内書庫の画像
+                        let outerZipPath = String(pathComponents[0])
+                        let innerImagePath = String(pathComponents[1])
+                        if let nestedArchive = nestedArchives[outerZipPath],
+                           let nestedEntry = nestedArchive[innerImagePath] {
+                            var imageData = Data()
+                            _ = try nestedArchive.extract(nestedEntry) { data in
+                                imageData.append(data)
+                            }
+                            
+                            if let image = NSImage(data: imageData) {
+                                imageCache.setObject(image, forKey: url as NSURL)
+                                return image
+                            }
+                        }
+                    } else {
+                        // 通常の画像ファイル
+                        guard let entry = zipImageEntries.first(where: { $0.path == entryPath }) else {
+                            return nil
+                        }
+                        var imageData = Data()
+                        _ = try zipArchive.extract(entry) { data in
+                            imageData.append(data)
+                        }
+                        
+                        if let image = NSImage(data: imageData) {
+                            imageCache.setObject(image, forKey: url as NSURL)
+                            return image
+                        }
+                    }
+                } catch {
+                    print("画像の展開中にエラーが発生しました: \(error.localizedDescription)")
+                }
+            }
+        } else {
+            // 通常のファイルシステム上の像の場合
+            if let image = NSImage(contentsOf: url) {
+                imageCache.setObject(image, forKey: url as NSURL)
+                return image
+            }
+        }
+        
+        return nil
+    }
+
+    func updateSafeCurrentIndex(_ newIndex: Int) {
+        currentIndex = max(0, min(newIndex, images.count - 1))
+    }
+
+    func showNextImage() {
+        if currentIndex < images.count - 1 {
+            updateSafeCurrentIndex(currentIndex + 1)
+        } else {
+            NSSound.beep()
+        }
+    }
+    
+    func showPreviousImage() {
+        if currentIndex > 0 {
+            updateSafeCurrentIndex(currentIndex - 1)
+        } else {
+            NSSound.beep()
+        }
+    }
+    
+    func updateSpreadIndices(isSpreadViewEnabled: Bool, isRightToLeftReading: Bool) {
+        guard !images.isEmpty else {
+            currentSpreadIndices = (nil, nil)
+            return
+        }
+
+        if isSpreadViewEnabled {
+            if isRightToLeftReading {
+                if currentIndex == images.count - 1 {
+                    currentSpreadIndices = (currentIndex, nil)
+                } else {
+                    currentSpreadIndices = (min(currentIndex + 1, images.count - 1), currentIndex)
+                }
+            } else {
+                if currentIndex == images.count - 1 {
+                    currentSpreadIndices = (currentIndex, nil)
+                } else {
+                    currentSpreadIndices = (currentIndex, min(currentIndex + 1, images.count - 1))
+                }
+            }
+        } else {
+            currentSpreadIndices = (currentIndex, nil)
+        }
+        
         updateCurrentImageInfo()
     }
     
-    // 既存のデータをクリアするヘルパー関数
+    func showNextSpread(isRightToLeftReading: Bool) {
+        currentIndex = min(images.count - 1, currentIndex + 2)
+        updateSpreadIndices(isSpreadViewEnabled: true, isRightToLeftReading: isRightToLeftReading)
+    }
+
+    func showPreviousSpread(isRightToLeftReading: Bool) {
+        currentIndex = max(0, currentIndex - 2)
+        updateSpreadIndices(isSpreadViewEnabled: true, isRightToLeftReading: isRightToLeftReading)
+    }
+
+    func toggleViewMode(_ mode: ViewMode) {
+        viewMode = mode
+        updateCurrentImageInfo()
+    }
+
+    func toggleBookmark() {
+        if bookmarks.contains(currentIndex) {
+            bookmarks.removeAll { $0 == currentIndex }
+        } else {
+            bookmarks.append(currentIndex)
+            bookmarks.sort()
+        }
+    }
+
+    func isCurrentPageBookmarked() -> Bool {
+        return bookmarks.contains(currentIndex)
+    }
+
+    func goToNextBookmark() {
+        if let nextBookmark = bookmarks.first(where: { $0 > currentIndex }) {
+            currentIndex = nextBookmark
+        } else if let firstBookmark = bookmarks.first, firstBookmark < currentIndex {
+            currentIndex = firstBookmark
+        }
+    }
+
+    func goToPreviousBookmark() {
+        if let previousBookmark = bookmarks.last(where: { $0 < currentIndex }) {
+            currentIndex = previousBookmark
+        } else if let lastBookmark = bookmarks.last, lastBookmark > currentIndex {
+            currentIndex = lastBookmark
+        }
+    }
+
+    func openFile() {
+        FileUtil.openFile { [weak self] url in
+            guard let self = self, let url = url else { return }
+            self.loadImages(from: url)
+        }
+    }
+
+    func rotateImage(by degrees: Int) {
+        currentRotation = currentRotation + .degrees(Double(degrees))
+    }
+
+    // MARK: - Private methods
     private func clearExistingData() {
         images = []
         currentIndex = 0
         currentImageURL = nil
     }
     
-    // ZIPファイルの状態をクリアするヘルパー関数
     private func clearZipData() {
         currentZipArchive = nil
         zipImageEntries.removeAll()
@@ -110,7 +230,6 @@ class ImageLoader: ObservableObject {
         prefetchedImages.removeAll()
     }
     
-    // 画像のロード後にスプレッドインデックスを更新するヘルパー関数
     private func updateSpreadIndicesAfterLoading() {
         DispatchQueue.main.async { [weak self] in
             guard let self = self else { return }
@@ -258,7 +377,7 @@ class ImageLoader: ObservableObject {
         }
     }
     
-    func prefetchImages() {
+    private func prefetchImages() {
         guard !images.isEmpty else { return }
         
         let start = max(0, currentIndex - prefetchRange)
@@ -276,121 +395,6 @@ class ImageLoader: ObservableObject {
         }
     }
     
-    func getImage(for url: URL) -> NSImage? {
-        if let cachedImage = imageCache.object(forKey: url as NSURL) {
-            return cachedImage
-        }
-        
-        if let zipArchive = currentZipArchive, zipFileURL != nil {
-            let index = images.firstIndex(of: url) ?? -1
-            if index >= 0 && index < zipEntryPaths.count {
-                let entryPath = zipEntryPaths[index]
-                let pathComponents = entryPath.split(separator: "|")
-                
-                do {
-                    if pathComponents.count == 2 {
-                        // 書庫内書庫の画像
-                        let outerZipPath = String(pathComponents[0])
-                        let innerImagePath = String(pathComponents[1])
-                        if let nestedArchive = nestedArchives[outerZipPath],
-                           let nestedEntry = nestedArchive[innerImagePath] {
-                            var imageData = Data()
-                            _ = try nestedArchive.extract(nestedEntry) { data in
-                                imageData.append(data)
-                            }
-                            
-                            if let image = NSImage(data: imageData) {
-                                imageCache.setObject(image, forKey: url as NSURL)
-                                return image
-                            }
-                        }
-                    } else {
-                        // 通常の画像ファイル
-                        guard let entry = zipImageEntries.first(where: { $0.path == entryPath }) else {
-                            return nil
-                        }
-                        var imageData = Data()
-                        _ = try zipArchive.extract(entry) { data in
-                            imageData.append(data)
-                        }
-                        
-                        if let image = NSImage(data: imageData) {
-                            imageCache.setObject(image, forKey: url as NSURL)
-                            return image
-                        }
-                    }
-                } catch {
-                    print("画像の展開中にエラーが発生しました: \(error.localizedDescription)")
-                }
-            }
-        } else {
-            // 通常のファイルシステム上の像の場合
-            if let image = NSImage(contentsOf: url) {
-                imageCache.setObject(image, forKey: url as NSURL)
-                return image
-            }
-        }
-        
-        return nil
-    }
-    
-    func updateSafeCurrentIndex(_ newIndex: Int) {
-        currentIndex = max(0, min(newIndex, images.count - 1))
-    }
-
-    func showNextImage() {
-        if currentIndex < images.count - 1 {
-            updateSafeCurrentIndex(currentIndex + 1)
-        } else {
-            NSSound.beep()
-        }
-    }
-    
-    func showPreviousImage() {
-        if currentIndex > 0 {
-            updateSafeCurrentIndex(currentIndex - 1)
-        } else {
-            NSSound.beep()
-        }
-    }
-    
-    func updateSpreadIndices(isSpreadViewEnabled: Bool, isRightToLeftReading: Bool) {
-        guard !images.isEmpty else {
-            currentSpreadIndices = (nil, nil)
-            return
-        }
-
-        if isSpreadViewEnabled {
-            if isRightToLeftReading {
-                if currentIndex == images.count - 1 {
-                    currentSpreadIndices = (currentIndex, nil)
-                } else {
-                    currentSpreadIndices = (min(currentIndex + 1, images.count - 1), currentIndex)
-                }
-            } else {
-                if currentIndex == images.count - 1 {
-                    currentSpreadIndices = (currentIndex, nil)
-                } else {
-                    currentSpreadIndices = (currentIndex, min(currentIndex + 1, images.count - 1))
-                }
-            }
-        } else {
-            currentSpreadIndices = (currentIndex, nil)
-        }
-        
-        updateCurrentImageInfo()
-    }
-    
-    func showNextSpread(isRightToLeftReading: Bool) {
-        currentIndex = min(images.count - 1, currentIndex + 2)
-        updateSpreadIndices(isSpreadViewEnabled: true, isRightToLeftReading: isRightToLeftReading)
-    }
-
-    func showPreviousSpread(isRightToLeftReading: Bool) {
-        currentIndex = max(0, currentIndex - 2)
-        updateSpreadIndices(isSpreadViewEnabled: true, isRightToLeftReading: isRightToLeftReading)
-    }
-    
     private func preloadNextImage() {
         let nextIndex = currentIndex + 1
         if nextIndex < images.count {
@@ -406,48 +410,26 @@ class ImageLoader: ObservableObject {
         }
     }
 
-    func toggleViewMode(_ mode: ViewMode) {
-        viewMode = mode
-        updateCurrentImageInfo()
-    }
+    private func updateCurrentImageInfo() {
+        guard !images.isEmpty else {
+            currentImageInfo = NSLocalizedString("NectarView", comment: "NectarView")
+            return
+        }
 
-    func toggleBookmark() {
-        if bookmarks.contains(currentIndex) {
-            bookmarks.removeAll { $0 == currentIndex }
+        let currentURL = images[currentIndex]
+        let isZipFile = zipFileURL != nil
+
+        if isZipFile {
+            let zipFileName = zipFileURL?.lastPathComponent ?? ""
+            let entryPath = zipEntryPaths[currentIndex]
+            let entryComponents = entryPath.split(separator: "|")
+            let entryFileName = entryComponents.count > 1 ? String(entryComponents[1]) : (entryPath as NSString).lastPathComponent
+
+            currentImageInfo = "\(zipFileName) - \(entryFileName) (\(currentIndex + 1)/\(images.count))"
         } else {
-            bookmarks.append(currentIndex)
-            bookmarks.sort()
+            let folderPath = currentURL.deletingLastPathComponent().path
+            let fileName = currentURL.lastPathComponent
+            currentImageInfo = "\(folderPath)/\(fileName) (\(currentIndex + 1)/\(images.count))"
         }
-    }
-
-    func isCurrentPageBookmarked() -> Bool {
-        return bookmarks.contains(currentIndex)
-    }
-
-    func goToNextBookmark() {
-        if let nextBookmark = bookmarks.first(where: { $0 > currentIndex }) {
-            currentIndex = nextBookmark
-        } else if let firstBookmark = bookmarks.first, firstBookmark < currentIndex {
-            currentIndex = firstBookmark
-        }
-    }
-
-    func goToPreviousBookmark() {
-        if let previousBookmark = bookmarks.last(where: { $0 < currentIndex }) {
-            currentIndex = previousBookmark
-        } else if let lastBookmark = bookmarks.last, lastBookmark > currentIndex {
-            currentIndex = lastBookmark
-        }
-    }
-
-    public func openFile() {
-        FileUtil.openFile { [weak self] url in
-            guard let self = self, let url = url else { return }
-            self.loadImages(from: url)
-        }
-    }
-
-    func rotateImage(by degrees: Int) {
-        currentRotation = currentRotation + .degrees(Double(degrees))
     }
 }
