@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		D029CFA32CAC4FDB00D2080C /* ImageInfo.swift in Sources */ = {isa = PBXBuildFile; fileRef = D029CFA22CAC4FDB00D2080C /* ImageInfo.swift */; };
 		D04E2F482CAAEE4A000B45AD /* ImageLoaderTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D04E2F472CAAEE4A000B45AD /* ImageLoaderTests.swift */; };
 		D07E8B102CA22E8B00C7E124 /* SDWebImageSwiftUI in Frameworks */ = {isa = PBXBuildFile; productRef = D07E8B0F2CA22E8B00C7E124 /* SDWebImageSwiftUI */; };
 		D07E8B162CA2449000C7E124 /* ZIPFoundation in Frameworks */ = {isa = PBXBuildFile; productRef = D07E8B152CA2449000C7E124 /* ZIPFoundation */; };
@@ -49,6 +50,7 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		D029CFA22CAC4FDB00D2080C /* ImageInfo.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ImageInfo.swift; sourceTree = "<group>"; };
 		D04E2F472CAAEE4A000B45AD /* ImageLoaderTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ImageLoaderTests.swift; sourceTree = "<group>"; };
 		D07E8B172CA249D600C7E124 /* KeyboardHandler.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = KeyboardHandler.swift; sourceTree = "<group>"; };
 		D07E8B1B2CA249D600C7E124 /* ImageLoader.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ImageLoader.swift; sourceTree = "<group>"; };
@@ -116,6 +118,7 @@
 			children = (
 				D08EF1D62CAB235C00301FA8 /* Conponents */,
 				D0AABEC32CA22D0E00878C45 /* ContentView.swift */,
+				D029CFA22CAC4FDB00D2080C /* ImageInfo.swift */,
 				D08EF1DD2CAB26BE00301FA8 /* ContextMenu.swift */,
 				D07E8B1B2CA249D600C7E124 /* ImageLoader.swift */,
 				D07E8B172CA249D600C7E124 /* KeyboardHandler.swift */,
@@ -339,6 +342,7 @@
 				D0C282422CA8D6E50095D414 /* InstantTooltip.swift in Sources */,
 				D0AABEC42CA22D0E00878C45 /* ContentView.swift in Sources */,
 				D08EF1D02CAB22B000301FA8 /* TopControlsView.swift in Sources */,
+				D029CFA32CAC4FDB00D2080C /* ImageInfo.swift in Sources */,
 				D07E8B2A2CA2597400C7E124 /* AppSettings.swift in Sources */,
 				D08EF19C2CAB142F00301FA8 /* NSColor+.swift in Sources */,
 				D08EF1DE2CAB26BE00301FA8 /* ContextMenu.swift in Sources */,
