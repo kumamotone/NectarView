@@ -47,148 +47,157 @@ struct ContentView: View {
     // マウスを定期的に監視 なんでもいい
     @State private var mouseTrackingTimer: Timer?
 
-    var body: some View {
-        NavigationSplitView {
-            SidebarView(imageLoader: imageLoader)
-        } detail: {
-            GeometryReader { geometry in
-                ZStack {
-                    appSettings.backgroundColor.edgesIgnoringSafeArea(.all)
+    @State private var isSidebarVisible: Bool = false
+    @State private var sidebarWidth: CGFloat = 200
 
-                    ImageDisplayView(imageLoader: imageLoader, appSettings: appSettings, geometry: geometry, scale: appSettings.zoomFactor, offset: offset)
-                        .rotationEffect(appSettings.isSpreadViewEnabled ? .zero : imageLoader.currentRotation)
-                        .scaleEffect(appSettings.zoomFactor)
-                        .offset(offset)
-                        .gesture(
-                            DragGesture()
-                                .onChanged { value in
-                                    if self.scale > 1.0 && self.isImageDraggable(in: geometry.size) {
-                                        if !self.isDraggingImage {
-                                            self.isDraggingImage = true
-                                            self.dragStartOffset = self.offset
+    var body: some View {
+        GeometryReader { geometry in
+            ZStack {
+                HStack(spacing: 0) {
+                    if isSidebarVisible {
+                        SidebarView(imageLoader: imageLoader)
+                            .frame(width: sidebarWidth)
+                            .transition(.move(edge: .leading))
+                    }
+
+                    ZStack {
+                        appSettings.backgroundColor.edgesIgnoringSafeArea(.all)
+
+                        ImageDisplayView(imageLoader: imageLoader, appSettings: appSettings, geometry: geometry, scale: appSettings.zoomFactor, offset: offset)
+                            .rotationEffect(appSettings.isSpreadViewEnabled ? .zero : imageLoader.currentRotation)
+                            .scaleEffect(appSettings.zoomFactor)
+                            .offset(offset)
+                            .gesture(
+                                DragGesture()
+                                    .onChanged { value in
+                                        if self.scale > 1.0 && self.isImageDraggable(in: geometry.size) {
+                                            if !self.isDraggingImage {
+                                                self.isDraggingImage = true
+                                                self.dragStartOffset = self.offset
+                                            }
+                                            let translation = CGSize(
+                                                width: value.translation.width + self.dragStartOffset.width,
+                                                height: value.translation.height + self.dragStartOffset.height
+                                            )
+                                            self.offset = limitOffset(translation, in: geometry.size)
+                                        } else {
+                                            self.handleWindowDrag(value)
                                         }
-                                        let translation = CGSize(
-                                            width: value.translation.width + self.dragStartOffset.width,
-                                            height: value.translation.height + self.dragStartOffset.height
-                                        )
-                                        self.offset = limitOffset(translation, in: geometry.size)
-                                    } else {
-                                        self.handleWindowDrag(value)
+                                    }
+                                    .onEnded { _ in
+                                        self.isDraggingImage = false
+                                        self.dragOffset = .zero
+                                    }
+                            )
+
+                        HStack(spacing: 0) {
+                            LinearGradient(gradient: Gradient(colors: [Color.white.opacity(isLeftCursorHovered ? 0.2 : 0), Color.clear]), startPoint: .leading, endPoint: .trailing)
+                                .frame(width: geometry.size.width * 0.15)
+                                .contentShape(Rectangle())
+                                .onTapGesture {
+                                    imageLoader.showPreviousImage()
+                                }
+                                .onHover { hovering in
+                                    withAnimation(.easeInOut(duration: 0.2)) {
+                                        isLeftCursorHovered = hovering
                                     }
                                 }
-                                .onEnded { _ in
-                                    self.isDraggingImage = false
-                                    self.dragOffset = .zero
+                                .overlay(
+                                    Image(systemName: "chevron.left")
+                                        .font(.system(size: 30))
+                                        .foregroundColor(.white)
+                                        .opacity(isLeftCursorHovered ? 0.6 : 0)
+                                        .padding(.leading, 5)
+                                )
+                            Spacer()
+                            LinearGradient(gradient: Gradient(colors: [Color.clear, Color.white.opacity(isRightCursorHovered ? 0.2 : 0)]), startPoint: .leading, endPoint: .trailing)
+                                .frame(width: geometry.size.width * 0.15)
+                                .contentShape(Rectangle())
+                                .onTapGesture {
+                                    imageLoader.showNextImage()
                                 }
-                        )
+                                .onHover { hovering in
+                                    withAnimation(.easeInOut(duration: 0.2)) {
+                                        isRightCursorHovered = hovering
+                                    }
+                                }
+                                .overlay(
+                                    Image(systemName: "chevron.right")
+                                        .font(.system(size: 30))
+                                        .foregroundColor(.white)
+                                        .opacity(isRightCursorHovered ? 0.6 : 0)
+                                        .padding(.trailing, 5)
+                                )
+                        }
 
-                    HStack(spacing: 0) {
-                        LinearGradient(gradient: Gradient(colors: [Color.white.opacity(isLeftCursorHovered ? 0.2 : 0), Color.clear]), startPoint: .leading, endPoint: .trailing)
-                            .frame(width: geometry.size.width * 0.15)
-                            .contentShape(Rectangle())
-                            .onTapGesture {
-                                imageLoader.showPreviousImage()
-                            }
-                            .onHover { hovering in
-                                withAnimation(.easeInOut(duration: 0.2)) {
-                                    isLeftCursorHovered = hovering
-                                }
-                            }
-                            .overlay(
-                                Image(systemName: "chevron.left")
-                                    .font(.system(size: 30))
-                                    .foregroundColor(.white)
-                                    .opacity(isLeftCursorHovered ? 0.6 : 0)
-                                    .padding(.leading, 5)
-                            )
-                        Spacer()
-                        LinearGradient(gradient: Gradient(colors: [Color.clear, Color.white.opacity(isRightCursorHovered ? 0.2 : 0)]), startPoint: .leading, endPoint: .trailing)
-                            .frame(width: geometry.size.width * 0.15)
-                            .contentShape(Rectangle())
-                            .onTapGesture {
-                                imageLoader.showNextImage()
-                            }
-                            .onHover { hovering in
-                                withAnimation(.easeInOut(duration: 0.2)) {
-                                    isRightCursorHovered = hovering
-                                }
-                            }
-                            .overlay(
-                                Image(systemName: "chevron.right")
-                                    .font(.system(size: 30))
-                                    .foregroundColor(.white)
-                                    .opacity(isRightCursorHovered ? 0.6 : 0)
-                                    .padding(.trailing, 5)
-                            )
+                        SliderPreviewView(isSliderHovering: isSliderHovering && isSliderVisible, imageLoader: imageLoader, sliderHoverIndex: sliderHoverIndex, hoverPercentage: hoverPercentage, geometry: geometry)
                     }
-
-                    VStack {
-                        TopControlsView(isVisible: $isTopControlsVisible, appSettings: appSettings, imageLoader: imageLoader, isAutoScrolling: $isAutoScrolling, autoScrollInterval: $autoScrollInterval, toggleAutoScroll: toggleAutoScroll)
-
-                        Spacer()
-
-                        BottomControlsView(isVisible: $isBottomControlVisible, imageLoader: imageLoader, appSettings: appSettings, geometry: geometry, isControlBarHovered: $isControlBarHovered, sliderHoverIndex: $sliderHoverIndex, hoverPercentage: $hoverPercentage, isSliderHovering: $isSliderHovering, isSliderVisible: $isSliderVisible)
-                    }
-
-                    SliderPreviewView(isSliderHovering: isSliderHovering && isSliderVisible, imageLoader: imageLoader, sliderHoverIndex: sliderHoverIndex, hoverPercentage: hoverPercentage, geometry: geometry)
+                    .frame(maxWidth: .infinity, maxHeight: .infinity)
                 }
-                .frame(maxWidth: .infinity, maxHeight: .infinity)
-                .contentShape(Rectangle())
-                .gesture(
-                    DragGesture()
-                        .onChanged { value in
-                            self.handleWindowDrag(value)
-                        }
-                        .onEnded { _ in
-                            self.dragOffset = .zero
-                        }
+
+                VStack {
+                    TopControlsView(isVisible: $isTopControlsVisible, appSettings: appSettings, imageLoader: imageLoader, isAutoScrolling: $isAutoScrolling, autoScrollInterval: $autoScrollInterval, toggleAutoScroll: toggleAutoScroll, toggleSidebar: toggleSidebar)
+
+                    Spacer()
+
+                    BottomControlsView(isVisible: $isBottomControlVisible, imageLoader: imageLoader, appSettings: appSettings, geometry: geometry, isControlBarHovered: $isControlBarHovered, sliderHoverIndex: $sliderHoverIndex, hoverPercentage: $hoverPercentage, isSliderHovering: $isSliderHovering, isSliderVisible: $isSliderVisible)
+                }
+            }
+            .frame(maxWidth: .infinity, maxHeight: .infinity)
+            .contentShape(Rectangle())
+            .gesture(
+                DragGesture()
+                    .onChanged { value in
+                        self.handleWindowDrag(value)
+                    }
+                    .onEnded { _ in
+                        self.dragOffset = .zero
+                    }
+            )
+            .onTapGesture(count: 2) {
+                toggleFullscreen()
+            }
+            .contextMenu {
+                ContextMenuContent(
+                    imageLoader: imageLoader,
+                    isSettingsPresented: $isSettingsPresented,
+                    isBookmarkListPresented: $isBookmarkListPresented
                 )
-                .onTapGesture(count: 2) {
-                    toggleFullscreen()
-                }
-                .contextMenu {
-                    ContextMenuContent(
-                        imageLoader: imageLoader,
-                        isSettingsPresented: $isSettingsPresented,
-                        isBookmarkListPresented: $isBookmarkListPresented
-                    )
-                }
             }
-            .frame(minWidth: 400, minHeight: 400)
-            .background(WindowAccessor { window in
-                window.isMovableByWindowBackground = false
-            })
-            .applyContentViewModifiers(appSettings: appSettings, imageLoader: imageLoader)
-            .onAppear {
-                KeyboardHandler.setupKeyboardHandler(for: self)
-                startMouseTracking()
-                startTopControlsTimer()
-            }
-            .onDisappear {
-                stopMouseTracking()
-                stopAutoScroll()
-                stopTopControlsTimer()
-            }
-            .navigationTitle(imageLoader.currentImageInfo)
-            .sheet(isPresented: $isSettingsPresented) {
-                SettingsView(appSettings: appSettings)
-            }
-            .sheet(isPresented: $isBookmarkListPresented) {
-                BookmarkListView(imageLoader: imageLoader, isPresented: $isBookmarkListPresented)
-            }
-            .onChange(of: appSettings.zoomFactor) { _, newValue in
-                withAnimation(.spring()) {
-                    self.scale = min(max(newValue, 1.0), 5.0)
-                    if self.scale == 1.0 {
-                        self.offset = .zero
-                    }
+        }
+        .frame(minWidth: 400, minHeight: 400)
+        .background(WindowAccessor { window in
+            window.isMovableByWindowBackground = false
+        })
+        .applyContentViewModifiers(appSettings: appSettings, imageLoader: imageLoader)
+        .onAppear {
+            KeyboardHandler.setupKeyboardHandler(for: self)
+            startMouseTracking()
+            startTopControlsTimer()
+        }
+        .onDisappear {
+            stopMouseTracking()
+            stopAutoScroll()
+            stopTopControlsTimer()
+        }
+        .navigationTitle(imageLoader.currentImageInfo)
+        .sheet(isPresented: $isSettingsPresented) {
+            SettingsView(appSettings: appSettings)
+        }
+        .sheet(isPresented: $isBookmarkListPresented) {
+            BookmarkListView(imageLoader: imageLoader, isPresented: $isBookmarkListPresented)
+        }
+        .onChange(of: appSettings.zoomFactor) { _, newValue in
+            withAnimation(.spring()) {
+                self.scale = min(max(newValue, 1.0), 5.0)
+                if self.scale == 1.0 {
+                    self.offset = .zero
                 }
             }
         }
-        .navigationSplitViewStyle(.balanced)
     }
 
-    // マウ���を定期的に監視
+    // マウを定期的に監視
     private func startMouseTracking() {
         mouseTrackingTimer = Timer.scheduledTimer(withTimeInterval: 0.16, repeats: true) { _ in
             if let window = NSApplication.shared.windows.first {
@@ -305,11 +314,16 @@ struct ContentView: View {
             self.dragOffset = newDragOffset
         }
     }
+
+    private func toggleSidebar() {
+        withAnimation(.easeInOut(duration: 0.3)) {
+            isSidebarVisible.toggle()
+        }
+    }
 }
 
 struct SidebarView: View {
     @ObservedObject var imageLoader: ImageLoader
-    @State private var rootDirectory: URL?
 
     var body: some View {
         VStack {
@@ -324,7 +338,7 @@ struct SidebarView: View {
             }
             .padding(.horizontal)
             
-            if let rootDirectory = rootDirectory {
+            if !imageLoader.images.isEmpty {
                 ScrollViewReader { proxy in
                     List(selection: Binding(
                         get: { imageLoader.currentIndex },
@@ -382,7 +396,6 @@ struct SidebarView: View {
         panel.allowedContentTypes = [.folder, .zip]
         
         if panel.runModal() == .OK {
-            rootDirectory = panel.url
             imageLoader.loadImages(from: panel.url!)
         }
     }

@@ -8,10 +8,19 @@ struct TopControlsView: View {
     @Binding var isAutoScrolling: Bool
     @Binding var autoScrollInterval: Double
     let toggleAutoScroll: () -> Void
+    let toggleSidebar: () -> Void
 
     var body: some View {
         if isVisible {
             HStack(spacing: 15) {
+                Button(action: toggleSidebar) {
+                    Image(systemName: "sidebar.left")
+                        .foregroundColor(.white)
+                        .frame(width: 20, height: 20)
+                }
+                .buttonStyle(TopControlButtonStyle())
+                .instantTooltip(NSLocalizedString("Toggle Sidebar", comment: ""))
+
                 Spacer()
                 AutoScrollControls(isAutoScrolling: $isAutoScrolling, autoScrollInterval: $autoScrollInterval, toggleAutoScroll: toggleAutoScroll)
                 BookmarkButton(imageLoader: imageLoader)
@@ -19,7 +28,7 @@ struct TopControlsView: View {
                 ReadingDirectionButton(appSettings: appSettings, imageLoader: imageLoader)
             }
             .padding(.top, 10)
-            .padding(.trailing, 10)
+            .padding(.horizontal, 10)
             .transition(.move(edge: .top))
         }
     }
