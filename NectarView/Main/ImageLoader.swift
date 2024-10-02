@@ -36,6 +36,8 @@ class ImageLoader: ObservableObject {
     private var nestedArchives: [String: Archive] = [:]
     private var nestedImageEntries: [String: [Entry]] = [:]
 
+    private var bookmarkManager = BookmarkManager()
+
     // MARK: - Public methods
     func loadImages(from url: URL) {
         clearExistingData()
@@ -46,6 +48,9 @@ class ImageLoader: ObservableObject {
         } else {
             loadImagesFromFileOrFolder(url: url)
         }
+        
+        // ブックマークを読み込む
+        bookmarks = bookmarkManager.loadBookmarks(for: url)
     }
 
     func getImage(for url: URL) -> NSImage? {
@@ -170,6 +175,11 @@ class ImageLoader: ObservableObject {
         } else {
             bookmarks.append(currentIndex)
             bookmarks.sort()
+        }
+        
+        // ブックマークを保存
+        if let url = zipFileURL ?? images.first?.deletingLastPathComponent() {
+            bookmarkManager.saveBookmarks(bookmarks, for: url)
         }
     }
 
@@ -474,5 +484,25 @@ class ImageLoader: ObservableObject {
             print("Error extracting image: \(error.localizedDescription)")
         }
         return nil
+    }
+}
+
+class BookmarkManager {
+    private let userDefaults = UserDefaults.standard
+    private let bookmarksKey = "ImageBookmarks"
+
+    func saveBookmarks(_ bookmarks: [Int], for url: URL) {
+        var allBookmarks = getAllBookmarks()
+        allBookmarks[url.path] = bookmarks
+        userDefaults.set(allBookmarks, forKey: bookmarksKey)
+    }
+
+    func loadBookmarks(for url: URL) -> [Int] {
+        let allBookmarks = getAllBookmarks()
+        return allBookmarks[url.path] ?? []
+    }
+
+    private func getAllBookmarks() -> [String: [Int]] {
+        return userDefaults.dictionary(forKey: bookmarksKey) as? [String: [Int]] ?? [:]
     }
 }
