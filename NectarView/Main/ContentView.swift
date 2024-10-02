@@ -327,8 +327,18 @@ struct SidebarView: View {
             .padding(.horizontal)
             
             if let rootDirectory = rootDirectory {
-                List {
-                    FileSystemItem(url: rootDirectory, imageLoader: imageLoader, expandedPaths: $expandedPaths)
+                List(selection: Binding(
+                    get: { imageLoader.currentIndex },
+                    set: { imageLoader.currentIndex = $0 }
+                )) {
+                    ForEach(Array(imageLoader.images.enumerated()), id: \.element) { index, url in
+                        HStack {
+                            Image(systemName: "photo")
+                                .foregroundColor(.green)
+                            Text(url.lastPathComponent)
+                        }
+                        .tag(index)
+                    }
                 }
                 .listStyle(SidebarListStyle())
             } else {
@@ -351,12 +361,15 @@ struct SidebarView: View {
         if panel.runModal() == .OK {
             rootDirectory = panel.url
             lastOpenedFolder = panel.url?.path
+            imageLoader.loadImages(from: panel.url!)
         }
     }
 
     private func loadLastOpenedFolder() {
         if let lastPath = lastOpenedFolder {
-            rootDirectory = URL(fileURLWithPath: lastPath)
+            let url = URL(fileURLWithPath: lastPath)
+            rootDirectory = url
+            imageLoader.loadImages(from: url)
         }
     }
 }
