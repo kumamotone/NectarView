@@ -15,8 +15,7 @@ struct BottomControlsView: View {
     var body: some View {
         if isVisible && !imageLoader.images.isEmpty {
             HStack {
-                Text(LocalizedStringKey("%lld / %lld"))
-                    .environment(\.locale, .init(identifier: "ja"))
+                Text("\(imageLoader.currentIndex + 1) / \(imageLoader.images.count)")
                     .font(.caption)
                     .padding(.leading, 10)
                     .foregroundColor(.white)
