@@ -167,6 +167,12 @@ struct ContentView: View {
             stopTopControlsTimer()
         }
         .navigationTitle(imageLoader.currentImageInfo)
+        .sheet(isPresented: $isSettingsPresented) {
+            SettingsView(appSettings: appSettings)
+        }
+        .sheet(isPresented: $isBookmarkListPresented) {
+            BookmarkListView(imageLoader: imageLoader, isPresented: $isBookmarkListPresented)
+        }
     }
 
     // マウスを定期的に監視

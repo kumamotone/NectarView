@@ -20,12 +20,6 @@ struct MainApp: App {
                 .onAppear {
                     imageLoader.updateViewMode(appSettings: appSettings)
                 }
-                .sheet(isPresented: $isSettingsPresented) {
-                    SettingsView(appSettings: appSettings)
-                }
-                .sheet(isPresented: $isBookmarkListPresented) {
-                    BookmarkListView(imageLoader: imageLoader, isPresented: $isBookmarkListPresented)
-                }
         }
         .commands {
             CommandGroup(replacing: .appSettings) {
