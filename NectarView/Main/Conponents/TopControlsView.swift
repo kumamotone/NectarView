@@ -14,6 +14,7 @@ struct TopControlsView: View {
             HStack(spacing: 15) {
                 Spacer()
                 AutoScrollControls(isAutoScrolling: $isAutoScrolling, autoScrollInterval: $autoScrollInterval, toggleAutoScroll: toggleAutoScroll)
+                BookmarkButton(imageLoader: imageLoader)
                 ViewModeButton(appSettings: appSettings, imageLoader: imageLoader)
                 ReadingDirectionButton(appSettings: appSettings, imageLoader: imageLoader)
             }
@@ -102,5 +103,22 @@ struct TopControlButtonStyle: ButtonStyle {
             .background(Color.black.opacity(0.6))
             .cornerRadius(10)
             .scaleEffect(configuration.isPressed ? 0.95 : 1.0)
+    }
+}
+
+// ブックマークボタン
+struct BookmarkButton: View {
+    @ObservedObject var imageLoader: ImageLoader
+
+    var body: some View {
+        Button(action: {
+            imageLoader.toggleBookmark()
+        }) {
+            Image(systemName: imageLoader.isCurrentPageBookmarked() ? "bookmark.fill" : "bookmark")
+                .foregroundColor(.white)
+                .frame(width: 20, height: 20)
+        }
+        .buttonStyle(TopControlButtonStyle())
+        .instantTooltip(NSLocalizedString("Add/Remove Bookmark", comment: ""))
     }
 }

@@ -48,7 +48,7 @@ class ImageLoader: ObservableObject {
         } else {
             loadImagesFromFileOrFolder(url: url)
         }
-        
+
         // ブックマークを読み込む
         bookmarks = bookmarkManager.loadBookmarks(for: url)
     }
@@ -176,7 +176,7 @@ class ImageLoader: ObservableObject {
             bookmarks.append(currentIndex)
             bookmarks.sort()
         }
-        
+
         // ブックマークを保存
         if let url = zipFileURL ?? images.first?.deletingLastPathComponent() {
             bookmarkManager.saveBookmarks(bookmarks, for: url)
