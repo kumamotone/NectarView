@@ -188,7 +188,7 @@ struct ContentView: View {
         .navigationSplitViewStyle(.balanced)
     }
 
-    // マウスを定期的に監視
+    // マウ���を定期的に監視
     private func startMouseTracking() {
         mouseTrackingTimer = Timer.scheduledTimer(withTimeInterval: 0.16, repeats: true) { _ in
             if let window = NSApplication.shared.windows.first {
@@ -309,7 +309,6 @@ struct ContentView: View {
 
 struct SidebarView: View {
     @ObservedObject var imageLoader: ImageLoader
-    @AppStorage("lastOpenedFolder") private var lastOpenedFolder: String?
     @State private var rootDirectory: URL?
 
     var body: some View {
@@ -326,20 +325,28 @@ struct SidebarView: View {
             .padding(.horizontal)
             
             if let rootDirectory = rootDirectory {
-                List(selection: Binding(
-                    get: { imageLoader.currentIndex },
-                    set: { imageLoader.currentIndex = $0 }
-                )) {
-                    ForEach(Array(imageLoader.images.enumerated()), id: \.element) { index, url in
-                        HStack {
-                            Image(systemName: "photo")
-                                .foregroundColor(.green)
-                            Text(getDisplayName(for: url, at: index))
+                ScrollViewReader { proxy in
+                    List(selection: Binding(
+                        get: { imageLoader.currentIndex },
+                        set: { imageLoader.currentIndex = $0 }
+                    )) {
+                        ForEach(Array(imageLoader.images.enumerated()), id: \.element) { index, url in
+                            HStack {
+                                Image(systemName: "photo")
+                                    .foregroundColor(.green)
+                                Text(getDisplayName(for: url, at: index))
+                            }
+                            .tag(index)
+                            .id(index)
                         }
-                        .tag(index)
+                    }
+                    .listStyle(SidebarListStyle())
+                    .onChange(of: imageLoader.currentIndex) { _, newIndex in
+                        withAnimation {
+                            proxy.scrollTo(newIndex, anchor: .center)
+                        }
                     }
                 }
-                .listStyle(SidebarListStyle())
             } else {
                 Text("フォルダを選択してください")
                     .onTapGesture {
@@ -348,7 +355,6 @@ struct SidebarView: View {
             }
         }
         .frame(minWidth: 200)
-        .onAppear(perform: loadLastOpenedFolder)
     }
 
     private func getDisplayName(for url: URL, at index: Int) -> String {
@@ -377,16 +383,7 @@ struct SidebarView: View {
         
         if panel.runModal() == .OK {
             rootDirectory = panel.url
-            lastOpenedFolder = panel.url?.path
             imageLoader.loadImages(from: panel.url!)
-        }
-    }
-
-    private func loadLastOpenedFolder() {
-        if let lastPath = lastOpenedFolder {
-            let url = URL(fileURLWithPath: lastPath)
-            rootDirectory = url
-            imageLoader.loadImages(from: url)
         }
     }
 }
