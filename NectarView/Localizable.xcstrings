@@ -1,5 +1,5 @@
 {
-  "sourceLanguage" : "en",
+  "sourceLanguage" : "ja",
   "strings" : {
     "%.1f seconds" : {
       "localizations" : {
@@ -889,10 +889,10 @@
         }
       }
     },
-    "エクスプローラー" : {
+    "フォルダを選択してください" : {
 
     },
-    "フォルダを選択してください" : {
+    "選択" : {
 
     }
   },

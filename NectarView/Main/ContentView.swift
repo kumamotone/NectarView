@@ -326,18 +326,18 @@ struct SidebarView: View {
     @ObservedObject var imageLoader: ImageLoader
 
     var body: some View {
-        VStack(spacing: 10) {
-            HStack {
-                Text("エクスプローラー")
-                    .font(.headline)
+        VStack(spacing: 0) {
+            HStack(alignment: .center) {
                 Spacer()
                 Button(action: selectFolder) {
                     Image(systemName: "folder")
+                        .foregroundColor(.primary)
                 }
                 .buttonStyle(.borderless)
+                .padding(.trailing, 10)
             }
-            .padding(.horizontal)
-            .padding(.top, 10)
+            .frame(height: 48)
+            .background(Color.secondary.opacity(0.1))
             
             if !imageLoader.images.isEmpty {
                 ScrollViewReader { proxy in
@@ -348,7 +348,7 @@ struct SidebarView: View {
                         ForEach(Array(imageLoader.images.enumerated()), id: \.element) { index, url in
                             HStack {
                                 Image(systemName: "photo")
-                                    .foregroundColor(.green)
+                                    .foregroundColor(.secondary)
                                 Text(getDisplayName(for: url, at: index))
                                     .lineLimit(1)
                                     .truncationMode(.middle)
@@ -365,18 +365,18 @@ struct SidebarView: View {
                         }
                     }
                 }
-                .padding(.horizontal, 5)
             } else {
-                Text("フォルダを選択してください")
-                    .onTapGesture {
-                        selectFolder()
-                    }
-                    .padding()
-                    .frame(maxHeight: .infinity)
+                VStack {
+                    Spacer()
+                    Text("フォルダを選択してください")
+                        .foregroundColor(.secondary)
+                    Button("選択", action: selectFolder)
+                        .padding(.top, 10)
+                    Spacer()
+                }
             }
         }
         .frame(minWidth: 200)
-        .padding(.bottom, 10)
     }
 
     private func getDisplayName(for url: URL, at index: Int) -> String {
