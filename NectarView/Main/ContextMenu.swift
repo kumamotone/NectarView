@@ -93,7 +93,7 @@ struct ContextMenuContent: View {
             Text(NSLocalizedString("Show Bookmark List", comment: ""))
             Image(systemName: "list.bullet")
         }
-        .keyboardShortcut("l", modifiers: .command)
+        .keyboardShortcut("e", modifiers: .command)
 
         Divider()
 
