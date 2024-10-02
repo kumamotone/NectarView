@@ -52,9 +52,9 @@ struct ContentView: View {
             ZStack {
                 appSettings.backgroundColor.edgesIgnoringSafeArea(.all)
 
-                ImageDisplayView(imageLoader: imageLoader, appSettings: appSettings, geometry: geometry, scale: scale, offset: offset)
+                ImageDisplayView(imageLoader: imageLoader, appSettings: appSettings, geometry: geometry, scale: appSettings.zoomFactor, offset: offset)
                     .rotationEffect(appSettings.isSpreadViewEnabled ? .zero : imageLoader.currentRotation)
-                    .scaleEffect(scale)
+                    .scaleEffect(appSettings.zoomFactor)
                     .offset(offset)
                     .gesture(
                         DragGesture()
@@ -173,6 +173,14 @@ struct ContentView: View {
         .sheet(isPresented: $isBookmarkListPresented) {
             BookmarkListView(imageLoader: imageLoader, isPresented: $isBookmarkListPresented)
         }
+        .onChange(of: appSettings.zoomFactor) { _, newValue in
+            withAnimation(.spring()) {
+                self.scale = min(max(newValue, 1.0), 5.0)
+                if self.scale == 1.0 {
+                    self.offset = .zero
+                }
+            }
+        }
     }
 
     // マウスを定期的に監視
@@ -262,16 +270,6 @@ struct ContentView: View {
     func zoom(by factor: CGFloat) {
         withAnimation(.spring()) {
             let newScale = self.scale * factor
-            self.scale = min(max(newScale, 1.0), 5.0)
-            if self.scale == 1.0 {
-                self.offset = .zero
-            }
-        }
-    }
-
-    // 拡大縮小の変更
-    func zoom(to newScale: CGFloat) {
-        withAnimation(.spring()) {
             self.scale = min(max(newScale, 1.0), 5.0)
             if self.scale == 1.0 {
                 self.offset = .zero

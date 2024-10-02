@@ -16,22 +16,6 @@ class KeyboardHandler {
         let isSpreadView = appSettings.isSpreadViewEnabled
         let isRightToLeftReading = appSettings.isRightToLeftReading
 
-        if event.modifierFlags.contains(.command) {
-            switch event.charactersIgnoringModifiers {
-            case "+", "=":
-                contentView.zoom(by: 1.25)
-                return nil
-            case "-":
-                contentView.zoom(by: 0.8)
-                return nil
-            case "0":
-                contentView.resetZoom()
-                return nil
-            default:
-                break
-            }
-        }
-
         switch event.keyCode {
         case 126: // 上矢印キー
             imageLoader.showPreviousImage()

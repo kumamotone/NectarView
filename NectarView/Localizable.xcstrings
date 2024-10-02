@@ -473,6 +473,22 @@
         }
       }
     },
+    "Reset Zoom" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Reset Zoom"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "ズームをリセット"
+          }
+        }
+      }
+    },
     "ResetSettings" : {
       "comment" : "ResetSettings",
       "localizations" : {
@@ -789,7 +805,6 @@
         }
       }
     },
-
     "UnsupportedFileFormat" : {
       "localizations" : {
         "en" : {
@@ -835,6 +850,38 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "ファイルへのアクセス権限がありません。アプリケーションの権限設定を確認してください。"
+          }
+        }
+      }
+    },
+    "Zoom In" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Zoom In"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "拡大"
+          }
+        }
+      }
+    },
+    "Zoom Out" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Zoom Out"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "縮小"
           }
         }
       }

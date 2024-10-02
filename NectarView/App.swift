@@ -96,6 +96,22 @@ struct MainApp: App {
                 }
                 .keyboardShortcut("e", modifiers: .command)
             }
+            CommandMenu(NSLocalizedString("View", comment: "")) {
+                Button(NSLocalizedString("Zoom In", comment: "")) {
+                    appSettings.zoomFactor *= 1.25
+                }
+                .keyboardShortcut("+", modifiers: .command)
+
+                Button(NSLocalizedString("Zoom Out", comment: "")) {
+                    appSettings.zoomFactor *= 0.8
+                }
+                .keyboardShortcut("-", modifiers: .command)
+
+                Button(NSLocalizedString("Reset Zoom", comment: "")) {
+                    appSettings.zoomFactor = 1.0
+                }
+                .keyboardShortcut("0", modifiers: .command)
+            }
         }
     }
 }

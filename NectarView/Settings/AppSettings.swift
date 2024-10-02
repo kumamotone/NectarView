@@ -6,6 +6,7 @@ class AppSettings: ObservableObject {
     @AppStorage("isSpreadViewEnabled") var isSpreadViewEnabled: Bool = false
     @AppStorage("isRightToLeftReading") var isRightToLeftReading: Bool = false
     @AppStorage("isLeftRightKeyReversed") var isLeftRightKeyReversed: Bool = true
+    @Published var zoomFactor: CGFloat = 1.0
 
     var body: some View {
         VStack {
@@ -28,5 +29,6 @@ class AppSettings: ObservableObject {
         isSpreadViewEnabled = false
         isRightToLeftReading = false
         isLeftRightKeyReversed = true
+        zoomFactor = 1.0
     }
 }
