@@ -326,7 +326,7 @@ struct SidebarView: View {
     @ObservedObject var imageLoader: ImageLoader
 
     var body: some View {
-        VStack {
+        VStack(spacing: 10) {
             HStack {
                 Text("エクスプローラー")
                     .font(.headline)
@@ -337,6 +337,7 @@ struct SidebarView: View {
                 .buttonStyle(.borderless)
             }
             .padding(.horizontal)
+            .padding(.top, 10)
             
             if !imageLoader.images.isEmpty {
                 ScrollViewReader { proxy in
@@ -349,9 +350,12 @@ struct SidebarView: View {
                                 Image(systemName: "photo")
                                     .foregroundColor(.green)
                                 Text(getDisplayName(for: url, at: index))
+                                    .lineLimit(1)
+                                    .truncationMode(.middle)
                             }
                             .tag(index)
                             .id(index)
+                            .padding(.vertical, 4)
                         }
                     }
                     .listStyle(SidebarListStyle())
@@ -361,14 +365,18 @@ struct SidebarView: View {
                         }
                     }
                 }
+                .padding(.horizontal, 5)
             } else {
                 Text("フォルダを選択してください")
                     .onTapGesture {
                         selectFolder()
                     }
+                    .padding()
+                    .frame(maxHeight: .infinity)
             }
         }
         .frame(minWidth: 200)
+        .padding(.bottom, 10)
     }
 
     private func getDisplayName(for url: URL, at index: Int) -> String {
