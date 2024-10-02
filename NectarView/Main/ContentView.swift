@@ -53,7 +53,7 @@ struct ContentView: View {
                 appSettings.backgroundColor.edgesIgnoringSafeArea(.all)
 
                 ImageDisplayView(imageLoader: imageLoader, appSettings: appSettings, geometry: geometry, scale: scale, offset: offset)
-                    .rotationEffect(imageLoader.currentRotation)
+                    .rotationEffect(appSettings.isSpreadViewEnabled ? .zero : imageLoader.currentRotation)
                     .scaleEffect(scale)
                     .offset(offset)
                     .gesture(
