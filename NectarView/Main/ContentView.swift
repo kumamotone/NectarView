@@ -311,7 +311,6 @@ struct SidebarView: View {
     @ObservedObject var imageLoader: ImageLoader
     @AppStorage("lastOpenedFolder") private var lastOpenedFolder: String?
     @State private var rootDirectory: URL?
-    @State private var expandedPaths: Set<URL> = []
 
     var body: some View {
         VStack {
@@ -335,7 +334,7 @@ struct SidebarView: View {
                         HStack {
                             Image(systemName: "photo")
                                 .foregroundColor(.green)
-                            Text(url.lastPathComponent)
+                            Text(getDisplayName(for: url, at: index))
                         }
                         .tag(index)
                     }
@@ -352,11 +351,29 @@ struct SidebarView: View {
         .onAppear(perform: loadLastOpenedFolder)
     }
 
+    private func getDisplayName(for url: URL, at index: Int) -> String {
+        if imageLoader.zipFileURL != nil {
+            // ZIPファイルの場合
+            let entryPath = imageLoader.zipEntryPaths[index]
+            let entryComponents = entryPath.split(separator: "|")
+            if entryComponents.count > 1 {
+                // 書庫内書庫の場合
+                return String(entryComponents[1])
+            } else {
+                return (entryPath as NSString).lastPathComponent
+            }
+        } else {
+            // 通常のファイルの場合
+            return url.lastPathComponent
+        }
+    }
+
     private func selectFolder() {
         let panel = NSOpenPanel()
-        panel.canChooseFiles = false
+        panel.canChooseFiles = true
         panel.canChooseDirectories = true
         panel.allowsMultipleSelection = false
+        panel.allowedContentTypes = [.folder, .zip]
         
         if panel.runModal() == .OK {
             rootDirectory = panel.url
