@@ -22,7 +22,6 @@ struct MainApp: App {
                 }
                 .sheet(isPresented: $isSettingsPresented) {
                     SettingsView(appSettings: appSettings)
-                        .frame(width: 400, height: 300)
                 }
                 .sheet(isPresented: $isBookmarkListPresented) {
                     BookmarkListView(imageLoader: imageLoader, isPresented: $isBookmarkListPresented)

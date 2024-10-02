@@ -16,7 +16,6 @@ struct SettingsView: View {
             }
         }
         .padding()
-        .frame(width: 400, height: 300)
         .navigationTitle(NSLocalizedString("Settings", comment: "Settings"))
         .toolbar {
             ToolbarItem(placement: .confirmationAction) {

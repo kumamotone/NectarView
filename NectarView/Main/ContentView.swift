@@ -155,7 +155,7 @@ struct ContentView: View {
         .background(WindowAccessor { window in
             window.isMovableByWindowBackground = false
         })
-        .applyContentViewModifiers(appSettings: appSettings, imageLoader: imageLoader, isSettingsPresented: $isSettingsPresented)
+        .applyContentViewModifiers(appSettings: appSettings, imageLoader: imageLoader)
         .onAppear {
             KeyboardHandler.setupKeyboardHandler(for: self)
             startMouseTracking()
@@ -167,10 +167,6 @@ struct ContentView: View {
             stopTopControlsTimer()
         }
         .navigationTitle(imageLoader.currentImageInfo)
-        .sheet(isPresented: $isSettingsPresented) {
-            SettingsView(appSettings: appSettings)
-                .frame(width: 400, height: 300)
-        }
     }
 
     // マウスを定期的に監視
@@ -322,7 +318,7 @@ struct ContentView: View {
 }
 
 extension View {
-    func applyContentViewModifiers(appSettings: AppSettings, imageLoader: ImageLoader, isSettingsPresented: Binding<Bool>) -> some View {
+    func applyContentViewModifiers(appSettings: AppSettings, imageLoader: ImageLoader) -> some View {
         self
             .onChange(of: appSettings.isSpreadViewEnabled) { _, _ in
                 imageLoader.updateCurrentImage()
