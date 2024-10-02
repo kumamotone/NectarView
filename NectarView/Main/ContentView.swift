@@ -266,25 +266,6 @@ struct ContentView: View {
         topControlsTimer = nil
     }
 
-    // MARK: - Zoom Functions
-    func zoom(by factor: CGFloat) {
-        withAnimation(.spring()) {
-            let newScale = self.scale * factor
-            self.scale = min(max(newScale, 1.0), 5.0)
-            if self.scale == 1.0 {
-                self.offset = .zero
-            }
-        }
-    }
-
-    // 拡大縮小のリセット
-    func resetZoom() {
-        withAnimation(.spring()) {
-            self.scale = 1.0
-            self.offset = .zero
-        }
-    }
-
     // MARK: - Offset and Dragging Functions
     private func limitOffset(_ offset: CGSize, in size: CGSize) -> CGSize {
         let maxOffsetX = max(0, (size.width * scale - size.width) / 2)

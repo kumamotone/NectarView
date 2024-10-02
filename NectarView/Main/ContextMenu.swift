@@ -112,6 +112,32 @@ struct ContextMenuContent: View {
             Image(systemName: "rotate.left")
         }
         .keyboardShortcut("l", modifiers: .command)
+
+        Divider()
+
+        Button(action: {
+            zoomIn()
+        }) {
+            Text(NSLocalizedString("Zoom In", comment: ""))
+            Image(systemName: "plus.magnifyingglass")
+        }
+        .keyboardShortcut("+", modifiers: .command)
+
+        Button(action: {
+            zoomOut()
+        }) {
+            Text(NSLocalizedString("Zoom Out", comment: ""))
+            Image(systemName: "minus.magnifyingglass")
+        }
+        .keyboardShortcut("-", modifiers: .command)
+
+        Button(action: {
+            resetZoom()
+        }) {
+            Text(NSLocalizedString("Reset Zoom", comment: ""))
+            Image(systemName: "1.magnifyingglass")
+        }
+        .keyboardShortcut("0", modifiers: .command)
     }
 
     private func setViewMode(_ mode: ViewMode) {
@@ -144,5 +170,17 @@ struct ContextMenuContent: View {
             // 画像が読み込めていない場合
             print("No image or ZIP file to display")
         }
+    }
+
+    private func zoomIn() {
+        appSettings.zoomFactor *= 1.25
+    }
+
+    private func zoomOut() {
+        appSettings.zoomFactor *= 0.8
+    }
+
+    private func resetZoom() {
+        appSettings.zoomFactor = 1.0
     }
 }
