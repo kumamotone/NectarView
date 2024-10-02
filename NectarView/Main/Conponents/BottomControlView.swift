@@ -8,7 +8,7 @@ struct BottomControlsView: View {
     let geometry: GeometryProxy
     @Binding var isControlBarHovered: Bool
     @Binding var sliderHoverIndex: Int
-    @Binding var sliderHoverLocation: CGFloat
+    @Binding var hoverPercentage: CGFloat
     @Binding var isSliderHovering: Bool
     @Binding var isSliderVisible: Bool
 
@@ -30,7 +30,7 @@ struct BottomControlsView: View {
                             imageLoader.updateSafeCurrentIndex(index)
                         },
                         hoverIndex: $sliderHoverIndex,
-                        hoverLocation: $sliderHoverLocation,
+                        hoverPercentage: $hoverPercentage,
                         isHovering: $isSliderHovering
                     )
                     .frame(maxWidth: geometry.size.width * 0.8)
@@ -58,7 +58,7 @@ struct CustomSliderView: View {
     let onHover: (Int) -> Void
     let onClick: (Int) -> Void
     @Binding var hoverIndex: Int
-    @Binding var hoverLocation: CGFloat
+    @Binding var hoverPercentage: CGFloat
     @Binding var isHovering: Bool
     @State private var isDragging: Bool = false
 
@@ -116,7 +116,7 @@ struct CustomSliderView: View {
 
     private func updateHoverIndex(location: CGFloat, in geometry: GeometryProxy) {
         hoverIndex = calculateIndex(for: location, in: geometry)
-        hoverLocation = location
+        hoverPercentage = location / geometry.size.width
         isHovering = true
         onHover(hoverIndex)
     }
@@ -125,7 +125,7 @@ struct CustomSliderView: View {
         let newIndex = calculateIndex(for: location, in: geometry)
         currentIndex = newIndex
         hoverIndex = newIndex
-        hoverLocation = location
+        hoverPercentage = location / geometry.size.width
         isHovering = true
         onHover(newIndex)
     }

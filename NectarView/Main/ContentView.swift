@@ -21,7 +21,7 @@ struct ContentView: View {
     @State private var isBottomControlVisible: Bool = false
     @State private var isControlBarHovered: Bool = false
     @State private var sliderHoverIndex: Int = 0
-    @State private var sliderHoverLocation: CGFloat = 0
+    @State private var hoverPercentage: CGFloat = 0
     @State private var isSliderHovering: Bool = false
     @State private var isSliderVisible: Bool = false
 
@@ -124,10 +124,10 @@ struct ContentView: View {
 
                     Spacer()
 
-                    BottomControlsView(isVisible: $isBottomControlVisible, imageLoader: imageLoader, appSettings: appSettings, geometry: geometry, isControlBarHovered: $isControlBarHovered, sliderHoverIndex: $sliderHoverIndex, sliderHoverLocation: $sliderHoverLocation, isSliderHovering: $isSliderHovering, isSliderVisible: $isSliderVisible)
+                    BottomControlsView(isVisible: $isBottomControlVisible, imageLoader: imageLoader, appSettings: appSettings, geometry: geometry, isControlBarHovered: $isControlBarHovered, sliderHoverIndex: $sliderHoverIndex, hoverPercentage: $hoverPercentage, isSliderHovering: $isSliderHovering, isSliderVisible: $isSliderVisible)
                 }
 
-                SliderPreviewView(isSliderHovering: isSliderHovering && isSliderVisible, imageLoader: imageLoader, sliderHoverIndex: sliderHoverIndex, sliderHoverLocation: sliderHoverLocation, geometry: geometry)
+                SliderPreviewView(isSliderHovering: isSliderHovering && isSliderVisible, imageLoader: imageLoader, sliderHoverIndex: sliderHoverIndex, hoverPercentage: hoverPercentage, geometry: geometry)
             }
             .frame(maxWidth: .infinity, maxHeight: .infinity)
             .contentShape(Rectangle())

@@ -5,7 +5,7 @@ struct SliderPreviewView: View {
     let isSliderHovering: Bool
     @ObservedObject var imageLoader: ImageLoader
     let sliderHoverIndex: Int
-    let sliderHoverLocation: CGFloat
+    let hoverPercentage: CGFloat
     let geometry: GeometryProxy
 
     var body: some View {
@@ -16,7 +16,7 @@ struct SliderPreviewView: View {
                 Image(nsImage: previewImage)
                     .resizable()
                     .scaledToFit()
-                    .frame(width: 200, height: 200)
+                    .frame(width: geometry.size.width * 0.4, height: geometry.size.height * 0.4)
                     .cornerRadius(10)
                 Text("\(sliderHoverIndex + 1) / \(imageLoader.images.count)")
                     .font(.caption)
@@ -28,7 +28,7 @@ struct SliderPreviewView: View {
             .background(Color.white)
             .cornerRadius(10)
             .shadow(radius: 5)
-            .position(x: sliderHoverLocation + 100, y: geometry.size.height - 200)
+            .position(x: geometry.size.width / 2, y: geometry.size.height - geometry.size.height * 0.3)
         }
     }
 }
