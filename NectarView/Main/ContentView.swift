@@ -48,15 +48,43 @@ struct ContentView: View {
 
     @State private var isSidebarVisible: Bool = false
     @State private var sidebarWidth: CGFloat = 200
+    @State private var isDraggingSidebar: Bool = false
 
     var body: some View {
         GeometryReader { geometry in
             ZStack {
                 HStack(spacing: 0) {
                     if isSidebarVisible {
-                        SidebarView(imageLoader: imageLoader)
-                            .frame(width: sidebarWidth)
-                            .transition(.move(edge: .leading))
+                        ZStack(alignment: .trailing) {
+                            SidebarView(imageLoader: imageLoader)
+                                .frame(width: sidebarWidth)
+                                .transition(.move(edge: .leading))
+                            
+                            // 見えないリサイズハンドル
+                            Rectangle()
+                                .fill(Color.clear)
+                                .frame(width: 16)
+                                .contentShape(Rectangle())
+                                .onHover { hovering in
+                                    if hovering {
+                                        NSCursor.resizeLeftRight.push()
+                                    } else {
+                                        NSCursor.pop()
+                                    }
+                                }
+                                .gesture(
+                                    DragGesture()
+                                        .onChanged { value in
+                                            isDraggingSidebar = true
+                                            let newWidth = sidebarWidth + value.translation.width
+                                            sidebarWidth = max(100, min(newWidth, geometry.size.width / 2))
+                                        }
+                                        .onEnded { _ in
+                                            isDraggingSidebar = false
+                                        }
+                                )
+                        }
+                        .frame(width: sidebarWidth)
                     }
 
                     ZStack {
