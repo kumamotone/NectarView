@@ -1,8 +1,8 @@
 import Foundation
 import AppKit
 import ZIPFoundation
-import SDWebImage
 import SwiftUI
+import PDFKit
 
 class ImageLoader: ObservableObject {
     // MARK: - Published properties
@@ -18,6 +18,8 @@ class ImageLoader: ObservableObject {
     @Published var bookmarks: [Int] = []
     @Published var currentRotation: Angle = .degrees(0)
     @Published private(set) var currentImageInfo: String = NSLocalizedString("NectarView", comment: "NectarView")
+
+    @Published var currentPDFDocument: PDFDocument?
 
     var zipEntryPaths: [String] = [] // for testing
 
@@ -38,6 +40,8 @@ class ImageLoader: ObservableObject {
 
     private var bookmarkManager = BookmarkManager()
 
+    private let supportedExtensions = ["png", "jpg", "jpeg", "gif", "bmp", "tiff", "webp", "pdf"]
+
     // MARK: - Public methods
     func loadImages(from url: URL) {
         clearExistingData()
@@ -45,6 +49,8 @@ class ImageLoader: ObservableObject {
 
         if url.pathExtension.lowercased() == "zip" {
             loadImagesFromZip(url: url)
+        } else if url.pathExtension.lowercased() == "pdf" {
+            loadPDF(url: url)
         } else {
             loadImagesFromFileOrFolder(url: url)
         }
@@ -53,9 +59,28 @@ class ImageLoader: ObservableObject {
         bookmarks = bookmarkManager.loadBookmarks(for: url)
     }
 
-    func getImage(for url: URL) -> NSImage? {
+    @MainActor func getImage(for url: URL) -> NSImage? {
         if let cachedImage = imageCache.object(forKey: url as NSURL) {
             return cachedImage
+        }
+
+        if url.scheme == "pdf" {
+            guard let pdfDocument = currentPDFDocument,
+                  let pageNumber = Int(url.host ?? ""),
+                  let pdfPage = pdfDocument.page(at: pageNumber) else {
+                return nil
+            }
+            
+            let pageRect = pdfPage.bounds(for: .mediaBox)
+            let image = NSImage(size: pageRect.size)
+            image.lockFocus()
+            if let context = NSGraphicsContext.current {
+                pdfPage.draw(with: .mediaBox, to: context.cgContext)
+            }
+            image.unlockFocus()
+            
+            imageCache.setObject(image, forKey: url as NSURL)
+            return image
         }
 
         if let zipArchive = currentZipArchive, zipFileURL != nil {
@@ -484,5 +509,20 @@ class ImageLoader: ObservableObject {
             print("Error extracting image: \(error.localizedDescription)")
         }
         return nil
+    }
+
+    private func loadPDF(url: URL) {
+        if let pdfDocument = PDFDocument(url: url) {
+            currentPDFDocument = pdfDocument
+            let totalPDFPages = pdfDocument.pageCount
+            
+            // PDFの各ページをイメージとして扱う
+            images = (0..<totalPDFPages).map { URL(string: "pdf://\($0)")! }
+            currentIndex = 0
+            updateCurrentImage()
+        } else {
+            print("Failed to load PDF")
+            ErrorUtil.showAlert(message: NSLocalizedString("FailedToLoadPDF", comment: ""))
+        }
     }
 }
