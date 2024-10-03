@@ -95,7 +95,11 @@ struct ContentView: View {
                                 .frame(width: geometry.size.width * 0.15)
                                 .contentShape(Rectangle())
                                 .onTapGesture {
-                                    imageLoader.showPreviousImage()
+                                    if imageLoader.viewMode != .spreadRightToLeft || (imageLoader.viewMode == .single && appSettings.isLeftRightKeyReversed) {
+                                        imageLoader.showPreviousImage()
+                                    } else {
+                                        imageLoader.showNextImage()
+                                    }
                                 }
                                 .onHover { hovering in
                                     withAnimation(.easeInOut(duration: 0.2)) {
@@ -114,7 +118,11 @@ struct ContentView: View {
                                 .frame(width: geometry.size.width * 0.15)
                                 .contentShape(Rectangle())
                                 .onTapGesture {
-                                    imageLoader.showNextImage()
+                                    if imageLoader.viewMode != .spreadRightToLeft || (imageLoader.viewMode == .single && appSettings.isLeftRightKeyReversed) {
+                                        imageLoader.showNextImage()
+                                    } else {
+                                        imageLoader.showPreviousImage()
+                                    }
                                 }
                                 .onHover { hovering in
                                     withAnimation(.easeInOut(duration: 0.2)) {
