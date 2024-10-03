@@ -1,5 +1,4 @@
 import SwiftUI
-import SDWebImageSwiftUI
 
 struct ContentView: View {
     // MARK: - Observed Objects
