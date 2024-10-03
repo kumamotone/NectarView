@@ -290,6 +290,9 @@
         }
       }
     },
+    "FailedToLoadPDF" : {
+
+    },
     "File" : {
       "comment" : "File",
       "extractionState" : "manual",

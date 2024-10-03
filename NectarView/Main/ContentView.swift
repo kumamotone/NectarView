@@ -51,7 +51,7 @@ struct ContentView: View {
     @State private var isDraggingSidebar: Bool = false
 
     var body: some View {
-        GeometryReader { geometry in
+        GeometryReader { outerGeometry in
             ZStack {
                 HStack(spacing: 0) {
                     if isSidebarVisible {
@@ -87,87 +87,89 @@ struct ContentView: View {
                         .frame(width: sidebarWidth)
                     }
 
-                    ZStack {
-                        appSettings.backgroundColor.edgesIgnoringSafeArea(.all)
+                    GeometryReader { geometry in
+                        ZStack {
+                            appSettings.backgroundColor.edgesIgnoringSafeArea(.all)
 
-                        ImageDisplayView(imageLoader: imageLoader, appSettings: appSettings, geometry: geometry, scale: appSettings.zoomFactor, offset: offset)
-                            .rotationEffect(appSettings.isSpreadViewEnabled ? .zero : imageLoader.currentRotation)
-                            .scaleEffect(appSettings.zoomFactor)
-                            .offset(offset)
-                            .gesture(
-                                DragGesture()
-                                    .onChanged { value in
-                                        if self.scale > 1.0 && self.isImageDraggable(in: geometry.size) {
-                                            if !self.isDraggingImage {
-                                                self.isDraggingImage = true
-                                                self.dragStartOffset = self.offset
+                            ImageDisplayView(imageLoader: imageLoader, appSettings: appSettings, geometry: geometry, scale: appSettings.zoomFactor, offset: offset)
+                                .rotationEffect(appSettings.isSpreadViewEnabled ? .zero : imageLoader.currentRotation)
+                                .scaleEffect(appSettings.zoomFactor)
+                                .offset(offset)
+                                .gesture(
+                                    DragGesture()
+                                        .onChanged { value in
+                                            if self.scale > 1.0 && self.isImageDraggable(in: geometry.size) {
+                                                if !self.isDraggingImage {
+                                                    self.isDraggingImage = true
+                                                    self.dragStartOffset = self.offset
+                                                }
+                                                let translation = CGSize(
+                                                    width: value.translation.width + self.dragStartOffset.width,
+                                                    height: value.translation.height + self.dragStartOffset.height
+                                                )
+                                                self.offset = limitOffset(translation, in: geometry.size)
+                                            } else {
+                                                self.handleWindowDrag(value)
                                             }
-                                            let translation = CGSize(
-                                                width: value.translation.width + self.dragStartOffset.width,
-                                                height: value.translation.height + self.dragStartOffset.height
-                                            )
-                                            self.offset = limitOffset(translation, in: geometry.size)
+                                        }
+                                        .onEnded { _ in
+                                            self.isDraggingImage = false
+                                            self.dragOffset = .zero
+                                        }
+                                )
+
+                            HStack(spacing: 0) {
+                                LinearGradient(gradient: Gradient(colors: [Color.white.opacity(isLeftCursorHovered ? 0.2 : 0), Color.clear]), startPoint: .leading, endPoint: .trailing)
+                                    .frame(width: geometry.size.width * 0.15)
+                                    .contentShape(Rectangle())
+                                    .onTapGesture {
+                                        if imageLoader.viewMode != .spreadRightToLeft || (imageLoader.viewMode == .single && appSettings.isLeftRightKeyReversed) {
+                                            imageLoader.showPreviousImage()
                                         } else {
-                                            self.handleWindowDrag(value)
+                                            imageLoader.showNextImage()
                                         }
                                     }
-                                    .onEnded { _ in
-                                        self.isDraggingImage = false
-                                        self.dragOffset = .zero
+                                    .onHover { hovering in
+                                        withAnimation(.easeInOut(duration: 0.2)) {
+                                            isLeftCursorHovered = hovering
+                                        }
                                     }
-                            )
+                                    .overlay(
+                                        Image(systemName: "chevron.left")
+                                            .font(.system(size: 30))
+                                            .foregroundColor(.white)
+                                            .opacity(isLeftCursorHovered ? 0.6 : 0)
+                                            .padding(.leading, 5)
+                                    )
+                                Spacer()
+                                LinearGradient(gradient: Gradient(colors: [Color.clear, Color.white.opacity(isRightCursorHovered ? 0.2 : 0)]), startPoint: .leading, endPoint: .trailing)
+                                    .frame(width: geometry.size.width * 0.15)
+                                    .contentShape(Rectangle())
+                                    .onTapGesture {
+                                        if imageLoader.viewMode != .spreadRightToLeft || (imageLoader.viewMode == .single && appSettings.isLeftRightKeyReversed) {
+                                            imageLoader.showNextImage()
+                                        } else {
+                                            imageLoader.showPreviousImage()
+                                        }
+                                    }
+                                    .onHover { hovering in
+                                        withAnimation(.easeInOut(duration: 0.2)) {
+                                            isRightCursorHovered = hovering
+                                        }
+                                    }
+                                    .overlay(
+                                        Image(systemName: "chevron.right")
+                                            .font(.system(size: 30))
+                                            .foregroundColor(.white)
+                                            .opacity(isRightCursorHovered ? 0.6 : 0)
+                                            .padding(.trailing, 5)
+                                    )
+                            }
 
-                        HStack(spacing: 0) {
-                            LinearGradient(gradient: Gradient(colors: [Color.white.opacity(isLeftCursorHovered ? 0.2 : 0), Color.clear]), startPoint: .leading, endPoint: .trailing)
-                                .frame(width: geometry.size.width * 0.15)
-                                .contentShape(Rectangle())
-                                .onTapGesture {
-                                    if imageLoader.viewMode != .spreadRightToLeft || (imageLoader.viewMode == .single && appSettings.isLeftRightKeyReversed) {
-                                        imageLoader.showPreviousImage()
-                                    } else {
-                                        imageLoader.showNextImage()
-                                    }
-                                }
-                                .onHover { hovering in
-                                    withAnimation(.easeInOut(duration: 0.2)) {
-                                        isLeftCursorHovered = hovering
-                                    }
-                                }
-                                .overlay(
-                                    Image(systemName: "chevron.left")
-                                        .font(.system(size: 30))
-                                        .foregroundColor(.white)
-                                        .opacity(isLeftCursorHovered ? 0.6 : 0)
-                                        .padding(.leading, 5)
-                                )
-                            Spacer()
-                            LinearGradient(gradient: Gradient(colors: [Color.clear, Color.white.opacity(isRightCursorHovered ? 0.2 : 0)]), startPoint: .leading, endPoint: .trailing)
-                                .frame(width: geometry.size.width * 0.15)
-                                .contentShape(Rectangle())
-                                .onTapGesture {
-                                    if imageLoader.viewMode != .spreadRightToLeft || (imageLoader.viewMode == .single && appSettings.isLeftRightKeyReversed) {
-                                        imageLoader.showNextImage()
-                                    } else {
-                                        imageLoader.showPreviousImage()
-                                    }
-                                }
-                                .onHover { hovering in
-                                    withAnimation(.easeInOut(duration: 0.2)) {
-                                        isRightCursorHovered = hovering
-                                    }
-                                }
-                                .overlay(
-                                    Image(systemName: "chevron.right")
-                                        .font(.system(size: 30))
-                                        .foregroundColor(.white)
-                                        .opacity(isRightCursorHovered ? 0.6 : 0)
-                                        .padding(.trailing, 5)
-                                )
+                            SliderPreviewView(isSliderHovering: isSliderHovering && isSliderVisible, imageLoader: imageLoader, sliderHoverIndex: sliderHoverIndex, hoverPercentage: hoverPercentage, geometry: geometry)
                         }
-
-                        SliderPreviewView(isSliderHovering: isSliderHovering && isSliderVisible, imageLoader: imageLoader, sliderHoverIndex: sliderHoverIndex, hoverPercentage: hoverPercentage, geometry: geometry)
+                        .frame(maxWidth: .infinity, maxHeight: .infinity)
                     }
-                    .frame(maxWidth: .infinity, maxHeight: .infinity)
                 }
 
                 VStack {
@@ -175,7 +177,8 @@ struct ContentView: View {
 
                     Spacer()
 
-                    BottomControlsView(isVisible: $isBottomControlVisible, imageLoader: imageLoader, appSettings: appSettings, geometry: geometry, isControlBarHovered: $isControlBarHovered, sliderHoverIndex: $sliderHoverIndex, hoverPercentage: $hoverPercentage, isSliderHovering: $isSliderHovering, isSliderVisible: $isSliderVisible)
+                    BottomControlsView(isVisible: $isBottomControlVisible, imageLoader: imageLoader, appSettings: appSettings, geometry: outerGeometry, isControlBarHovered: $isControlBarHovered, sliderHoverIndex: $sliderHoverIndex, hoverPercentage: $hoverPercentage, isSliderHovering: $isSliderHovering, isSliderVisible: $isSliderVisible)
+                        .padding(.leading, isSidebarVisible ? sidebarWidth : 0)
                 }
             }
             .frame(maxWidth: .infinity, maxHeight: .infinity)
