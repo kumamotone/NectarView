@@ -77,7 +77,7 @@ struct ContentView: View {
                                         .onChanged { value in
                                             isDraggingSidebar = true
                                             let newWidth = sidebarWidth + value.translation.width
-                                            sidebarWidth = max(100, min(newWidth, geometry.size.width / 2))
+                                            sidebarWidth = max(200, min(newWidth, outerGeometry.size.width / 2))
                                         }
                                         .onEnded { _ in
                                             isDraggingSidebar = false
