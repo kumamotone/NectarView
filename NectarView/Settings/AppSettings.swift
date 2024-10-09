@@ -7,6 +7,8 @@ class AppSettings: ObservableObject {
     @AppStorage("isRightToLeftReading") var isRightToLeftReading: Bool = false
     @AppStorage("isLeftRightKeyReversed") var isLeftRightKeyReversed: Bool = true
     @Published var zoomFactor: CGFloat = 1.0
+    // 他のプロパティは変更なし
+    @AppStorage("selectedLanguage") var selectedLanguage: String = "system"
 
     var body: some View {
         VStack {
@@ -15,12 +17,25 @@ class AppSettings: ObservableObject {
             Toggle(NSLocalizedString("Enable Spread View", comment: ""), isOn: $isSpreadViewEnabled)
             Toggle(NSLocalizedString("Right to Left Reading", comment: ""), isOn: $isRightToLeftReading)
             Toggle(NSLocalizedString("Reverse Left/Right Keys", comment: ""), isOn: $isLeftRightKeyReversed)
-
+            
             Button(NSLocalizedString("Reset to Defaults", comment: "")) { [self] in
                 resetToDefaults()
             }
         }
         .padding()
+    }
+
+    func changeLanguage(to language: String) {
+        selectedLanguage = language
+        applyLanguageSetting()
+        // アプリケーションを再起動する必要があることをユーザーに通知
+        DispatchQueue.main.async {
+            let alert = NSAlert()
+            alert.messageText = NSLocalizedString("Language Changed", comment: "")
+            alert.informativeText = NSLocalizedString("Please restart the application for the language change to take effect.", comment: "")
+            alert.addButton(withTitle: NSLocalizedString("OK", comment: ""))
+            alert.runModal()
+        }
     }
 
     func resetToDefaults() {
@@ -30,5 +45,18 @@ class AppSettings: ObservableObject {
         isRightToLeftReading = false
         isLeftRightKeyReversed = true
         zoomFactor = 1.0
+        
+        selectedLanguage = "system"
+        applyLanguageSetting()
+
+    }
+    
+    func applyLanguageSetting() {
+        if selectedLanguage == "system" {
+            UserDefaults.standard.removeObject(forKey: "AppleLanguages")
+        } else {
+            UserDefaults.standard.set([selectedLanguage], forKey: "AppleLanguages")
+        }
+        UserDefaults.standard.synchronize()
     }
 }

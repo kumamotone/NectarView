@@ -59,7 +59,7 @@ struct ContentView: View {
                             SidebarView(imageLoader: imageLoader)
                                 .frame(width: sidebarWidth)
                                 .transition(.move(edge: .leading))
-                            
+
                             // 見えないリサイズハンドル
                             Rectangle()
                                 .fill(Color.clear)
@@ -376,7 +376,7 @@ struct SidebarView: View {
             }
             .frame(height: 48)
             .background(Color.secondary.opacity(0.1))
-            
+
             if !imageLoader.images.isEmpty {
                 ScrollViewReader { proxy in
                     List(selection: Binding(
@@ -440,7 +440,7 @@ struct SidebarView: View {
         panel.canChooseDirectories = true
         panel.allowsMultipleSelection = false
         panel.allowedContentTypes = [.folder, .zip]
-        
+
         if panel.runModal() == .OK {
             imageLoader.loadImages(from: panel.url!)
         }

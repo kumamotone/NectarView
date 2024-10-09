@@ -13,6 +13,17 @@ class AppDelegate: NSObject, NSApplicationDelegate {
                 mainMenu.removeItem(menu)
             }
         }
+        
+        let appSettings = AppSettings()
+        appSettings.applyLanguageSetting()
+        let currentLanguage = Locale.current.language.languageCode?.identifier ?? "Unknown"
+        print("Current Language: \(currentLanguage)")
+        
+//        UserDefaults.standard.set(["en"], forKey: "AppleLanguages")
+//        UserDefaults.standard.synchronize()
+//        let currentLanguage = Locale.preferredLanguages.first ?? "Unknown"
+//        print("Current Language: \(currentLanguage)")
+
     }
 
     func applicationWillTerminate(_ notification: Notification) {

@@ -1,5 +1,5 @@
 {
-  "sourceLanguage" : "ja",
+  "sourceLanguage" : "en",
   "strings" : {
     "%.1f seconds" : {
       "localizations" : {
@@ -157,6 +157,9 @@
         }
       }
     },
+    "Colors" : {
+      "comment" : "Colors section header"
+    },
     "ControlBarColor" : {
       "comment" : "ControlBarColor",
       "localizations" : {
@@ -227,6 +230,7 @@
       }
     },
     "Enable Spread View" : {
+      "comment" : "Enable spread view toggle",
       "localizations" : {
         "en" : {
           "stringUnit" : {
@@ -241,6 +245,9 @@
           }
         }
       }
+    },
+    "English" : {
+
     },
     "Error" : {
       "localizations" : {
@@ -310,6 +317,12 @@
           }
         }
       }
+    },
+    "Language" : {
+      "comment" : "Language section header"
+    },
+    "Language Changed" : {
+
     },
     "NectarView" : {
       "comment" : "NectarView",
@@ -394,6 +407,9 @@
         }
       }
     },
+    "Please restart the application for the language change to take effect." : {
+
+    },
     "Previous Bookmark" : {
       "extractionState" : "manual",
       "localizations" : {
@@ -442,6 +458,9 @@
           }
         }
       }
+    },
+    "Reading Options" : {
+      "comment" : "Reading options section header"
     },
     "Remove Bookmark" : {
       "extractionState" : "manual",
@@ -597,6 +616,7 @@
       }
     },
     "Right to Left Reading" : {
+      "comment" : "Right to left reading toggle",
       "localizations" : {
         "en" : {
           "stringUnit" : {
@@ -644,6 +664,9 @@
           }
         }
       }
+    },
+    "Select Language" : {
+      "comment" : "Language picker label"
     },
     "Set Auto Page Turn Interval (0.5 to 30 seconds)" : {
       "localizations" : {
@@ -808,6 +831,9 @@
         }
       }
     },
+    "System Default" : {
+      "comment" : "System default language option"
+    },
     "Toggle Sidebar" : {
 
     },
@@ -893,6 +919,9 @@
       }
     },
     "フォルダを選択してください" : {
+
+    },
+    "日本語" : {
 
     },
     "選択" : {

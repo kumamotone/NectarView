@@ -318,7 +318,7 @@
 			};
 			buildConfigurationList = D0AABEB92CA22D0E00878C45 /* Build configuration list for PBXProject "NectarView" */;
 			compatibilityVersion = "Xcode 14.0";
-			developmentRegion = ja;
+			developmentRegion = en;
 			hasScannedForEncodings = 0;
 			knownRegions = (
 				en,
