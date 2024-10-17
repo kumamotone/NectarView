@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		D00E7DF62CC1B756007F3578 /* CustomTabView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D00E7DF52CC1B756007F3578 /* CustomTabView.swift */; };
 		D029CFA92CAC5E6500D2080C /* FileUtil.swift in Sources */ = {isa = PBXBuildFile; fileRef = D029CFA82CAC5E6500D2080C /* FileUtil.swift */; };
 		D029CFAC2CAC5F2000D2080C /* ArchiveUtil.swift in Sources */ = {isa = PBXBuildFile; fileRef = D029CFAB2CAC5F2000D2080C /* ArchiveUtil.swift */; };
 		D029CFAE2CAC5FE100D2080C /* ErrorUtil.swift in Sources */ = {isa = PBXBuildFile; fileRef = D029CFAD2CAC5FE100D2080C /* ErrorUtil.swift */; };
@@ -56,6 +57,7 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		D00E7DF52CC1B756007F3578 /* CustomTabView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CustomTabView.swift; sourceTree = "<group>"; };
 		D029CFA82CAC5E6500D2080C /* FileUtil.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FileUtil.swift; sourceTree = "<group>"; };
 		D029CFAB2CAC5F2000D2080C /* ArchiveUtil.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ArchiveUtil.swift; sourceTree = "<group>"; };
 		D029CFAD2CAC5FE100D2080C /* ErrorUtil.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ErrorUtil.swift; sourceTree = "<group>"; };
@@ -129,6 +131,7 @@
 		D08EF19D2CAB143800301FA8 /* Foundation */ = {
 			isa = PBXGroup;
 			children = (
+				D00E7DF52CC1B756007F3578 /* CustomTabView.swift */,
 				D08EF19B2CAB142F00301FA8 /* NSColor+.swift */,
 				D08EF1DB2CAB261B00301FA8 /* WindowAccessor.swift */,
 			);
@@ -379,6 +382,7 @@
 				D0AABEC42CA22D0E00878C45 /* ContentView.swift in Sources */,
 				D08EF1D02CAB22B000301FA8 /* TopControlsView.swift in Sources */,
 				D07E8B2A2CA2597400C7E124 /* AppSettings.swift in Sources */,
+				D00E7DF62CC1B756007F3578 /* CustomTabView.swift in Sources */,
 				D029CFAC2CAC5F2000D2080C /* ArchiveUtil.swift in Sources */,
 				D0468D882CACCE170053E7F0 /* BookmarkManager.swift in Sources */,
 				D08EF19C2CAB142F00301FA8 /* NSColor+.swift in Sources */,

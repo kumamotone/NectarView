@@ -109,7 +109,7 @@
       }
     },
     "Appearance" : {
-      "comment" : "Appearance section header"
+      "comment" : "Appearance tab"
     },
     "Auto Page Turn Settings" : {
       "localizations" : {
@@ -159,9 +159,6 @@
           }
         }
       }
-    },
-    "Colors" : {
-      "comment" : "Colors section header"
     },
     "ControlBarColor" : {
       "comment" : "ControlBarColor",
@@ -321,8 +318,8 @@
         }
       }
     },
-    "Language" : {
-      "comment" : "Language section header"
+    "General" : {
+      "comment" : "General tab"
     },
     "Language Changed" : {
 
@@ -446,6 +443,9 @@
         }
       }
     },
+    "Reading" : {
+      "comment" : "Reading tab"
+    },
     "Reading Direction" : {
       "localizations" : {
         "en" : {
@@ -461,9 +461,6 @@
           }
         }
       }
-    },
-    "Reading Options" : {
-      "comment" : "Reading options section header"
     },
     "Remove Bookmark" : {
       "extractionState" : "manual",
@@ -483,6 +480,7 @@
       }
     },
     "Reset to Defaults" : {
+      "extractionState" : "stale",
       "localizations" : {
         "en" : {
           "stringUnit" : {
@@ -532,6 +530,7 @@
       }
     },
     "Reverse Left/Right Keys" : {
+      "extractionState" : "stale",
       "localizations" : {
         "en" : {
           "stringUnit" : {

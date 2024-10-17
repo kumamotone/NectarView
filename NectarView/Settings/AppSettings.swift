@@ -7,24 +7,8 @@ class AppSettings: ObservableObject {
     @AppStorage("isRightToLeftReading") var isRightToLeftReading: Bool = false
     @AppStorage("isLeftRightKeyReversed") var isLeftRightKeyReversed: Bool = true
     @Published var zoomFactor: CGFloat = 1.0
-    // 他のプロパティは変更なし
     @AppStorage("selectedLanguage") var selectedLanguage: String = "system"
     @AppStorage("useRealisticAppearance") var useRealisticAppearance: Bool = false
-
-    var body: some View {
-        VStack {
-            ColorPicker(NSLocalizedString("BackgroundColor", comment: ""), selection: $backgroundColor)
-            ColorPicker(NSLocalizedString("ControlBarColor", comment: ""), selection: $controlBarColor)
-            Toggle(NSLocalizedString("Enable Spread View", comment: ""), isOn: $isSpreadViewEnabled)
-            Toggle(NSLocalizedString("Right to Left Reading", comment: ""), isOn: $isRightToLeftReading)
-            Toggle(NSLocalizedString("Reverse Left/Right Keys", comment: ""), isOn: $isLeftRightKeyReversed)
-            
-            Button(NSLocalizedString("Reset to Defaults", comment: "")) { [self] in
-                resetToDefaults()
-            }
-        }
-        .padding()
-    }
 
     func changeLanguage(to language: String) {
         selectedLanguage = language
@@ -46,10 +30,9 @@ class AppSettings: ObservableObject {
         isRightToLeftReading = false
         isLeftRightKeyReversed = true
         zoomFactor = 1.0
-        
         selectedLanguage = "system"
+        useRealisticAppearance = false
         applyLanguageSetting()
-
     }
     
     func applyLanguageSetting() {
