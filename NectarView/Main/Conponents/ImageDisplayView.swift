@@ -83,11 +83,29 @@ struct SinglePageView: View {
                     .scaledToFit()
                     .frame(maxWidth: .infinity, maxHeight: .infinity)
             } else {
-                Text(NSLocalizedString("DropYourImagesHere", comment: "DropYourImagesHere"))
-                    .font(.headline)
-                    .foregroundColor(.gray)
+                DropZoneView()
             }
         }
+    }
+}
+
+struct DropZoneView: View {
+    var body: some View {
+        VStack {
+            Image(systemName: "arrow.down.doc.fill")
+                .font(.system(size: 60))
+                .foregroundColor(.gray)
+            Text(NSLocalizedString("DropYourImagesHere", comment: "DropYourImagesHere"))
+                .font(.headline)
+                .foregroundColor(.gray)
+        }
+        .frame(maxWidth: .infinity, maxHeight: .infinity)
+        .background(
+            RoundedRectangle(cornerRadius: 20)
+                .stroke(style: StrokeStyle(lineWidth: 3, dash: [10]))
+                .foregroundColor(.gray)
+                .padding(40)
+        )
     }
 }
 
@@ -101,10 +119,7 @@ struct SpreadView: View {
 
     var body: some View {
         if imageLoader.images.isEmpty {
-            Text(NSLocalizedString("DropYourImagesHere", comment: "DropYourImagesHere"))
-                .font(.headline)
-                .foregroundColor(.gray)
-                .frame(maxWidth: .infinity, maxHeight: .infinity)
+            DropZoneView()
         } else {
             HStack(spacing: 0) {
                 Spacer(minLength: 0)
