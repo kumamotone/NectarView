@@ -406,9 +406,11 @@ struct SidebarView: View {
             } else {
                 VStack {
                     Spacer()
-                    Text("フォルダを選択してください")
+                    Text(NSLocalizedString("Please select a folder", comment: ""))
                         .foregroundColor(.secondary)
-                    Button("選択", action: selectFolder)
+                    Button(NSLocalizedString("Select", comment: "")) {
+                        selectFolder()
+                    }
                         .padding(.top, 10)
                     Spacer()
                 }

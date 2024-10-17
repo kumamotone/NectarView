@@ -2,20 +2,17 @@ import Cocoa
 import SwiftUI
 
 class AppDelegate: NSObject, NSApplicationDelegate {
-    func applicationDidFinishLaunching(_ notification: Notification) {
-        let removeMenuTitles = Set([NSLocalizedString("View", comment: "View"), NSLocalizedString("Edit", comment: "Edit")])
-
-        if let mainMenu = NSApp.mainMenu {
-            let menus = mainMenu.items.filter { item in
-                return removeMenuTitles.contains(item.title)
-            }
-            for menu in menus {
-                mainMenu.removeItem(menu)
-            }
-        }
-        
+    func applicationDidFinishLaunching(_ notification: Notification) {        
         let appSettings = AppSettings()
         appSettings.applyLanguageSetting()
+
+        // 編集メニューは不要なので削除する
+        // うまくいっていないように見える…
+        if let mainMenu = NSApp.mainMenu {
+            if let editMenu = mainMenu.items.first(where: { $0.title == NSLocalizedString("Edit", comment: "Edit") }) {
+                mainMenu.removeItem(editMenu)
+            }
+        }
     }
 
     func applicationWillTerminate(_ notification: Notification) {
