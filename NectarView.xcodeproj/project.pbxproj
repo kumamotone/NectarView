@@ -8,6 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		D00E7DF62CC1B756007F3578 /* CustomTabView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D00E7DF52CC1B756007F3578 /* CustomTabView.swift */; };
+		D00E7DF82CC1BB6C007F3578 /* Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = D00E7DF72CC1BB6C007F3578 /* Info.plist */; };
 		D029CFA92CAC5E6500D2080C /* FileUtil.swift in Sources */ = {isa = PBXBuildFile; fileRef = D029CFA82CAC5E6500D2080C /* FileUtil.swift */; };
 		D029CFAC2CAC5F2000D2080C /* ArchiveUtil.swift in Sources */ = {isa = PBXBuildFile; fileRef = D029CFAB2CAC5F2000D2080C /* ArchiveUtil.swift */; };
 		D029CFAE2CAC5FE100D2080C /* ErrorUtil.swift in Sources */ = {isa = PBXBuildFile; fileRef = D029CFAD2CAC5FE100D2080C /* ErrorUtil.swift */; };
@@ -58,6 +59,7 @@
 
 /* Begin PBXFileReference section */
 		D00E7DF52CC1B756007F3578 /* CustomTabView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CustomTabView.swift; sourceTree = "<group>"; };
+		D00E7DF72CC1BB6C007F3578 /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		D029CFA82CAC5E6500D2080C /* FileUtil.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FileUtil.swift; sourceTree = "<group>"; };
 		D029CFAB2CAC5F2000D2080C /* ArchiveUtil.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ArchiveUtil.swift; sourceTree = "<group>"; };
 		D029CFAD2CAC5FE100D2080C /* ErrorUtil.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ErrorUtil.swift; sourceTree = "<group>"; };
@@ -210,6 +212,7 @@
 				D08EF1D42CAB22F600301FA8 /* Settings */,
 				D08EF1D72CAB236F00301FA8 /* Bookmarks */,
 				D07E8B1C2CA249D600C7E124 /* App.swift */,
+				D00E7DF72CC1BB6C007F3578 /* Info.plist */,
 				D0C2823B2CA85B5F0095D414 /* AppDelegate.swift */,
 				D0C2823F2CA865300095D414 /* Localizable.xcstrings */,
 				D0AABEC72CA22D0F00878C45 /* Assets.xcassets */,
@@ -351,6 +354,7 @@
 			files = (
 				D0AABEC82CA22D0F00878C45 /* Assets.xcassets in Resources */,
 				D0C282402CA865300095D414 /* Localizable.xcstrings in Resources */,
+				D00E7DF82CC1BB6C007F3578 /* Info.plist in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

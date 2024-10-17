@@ -26,6 +26,9 @@ struct MainApp: App {
                 .sheet(isPresented: $isBookmarkListPresented) {
                     BookmarkListView(imageLoader: imageLoader, isPresented: $isBookmarkListPresented)
                 }
+                .onOpenURL(perform: { url in
+                    imageLoader.loadImages(from: url)
+                })
         }
         .commands {
             CommandGroup(replacing: .appSettings) {
