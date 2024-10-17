@@ -1,0 +1,251 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>NectarView Help | NectarViewヘルプ</title>
+    <style>
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Helvetica', 'Arial', sans-serif;
+            line-height: 1.6;
+            color: #333;
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        h1, h2, h3 {
+            color: #2c3e50;
+        }
+        .section {
+            background-color: #f8f9fa;
+            border-left: 4px solid #3498db;
+            padding: 10px 20px;
+            margin-bottom: 20px;
+        }
+        .lang-switch {
+            text-align: right;
+            margin-bottom: 20px;
+        }
+        .en, .ja {
+            display: none;
+        }
+        code {
+            background-color: #f0f0f0;
+            padding: 2px 4px;
+            border-radius: 4px;
+        }
+        table {
+            border-collapse: collapse;
+            width: 100%;
+        }
+        th, td {
+            border: 1px solid #ddd;
+            padding: 8px;
+            text-align: left;
+        }
+        th {
+            background-color: #f2f2f2;
+        }
+    </style>
+</head>
+<body>
+    <div class="lang-switch">
+        <a href="#" onclick="switchLanguage('en')">English</a> | 
+        <a href="#" onclick="switchLanguage('ja')">日本語</a>
+    </div>
+
+    <h1 class="en">NectarView Help</h1>
+    <h1 class="ja">NectarViewヘルプ</h1>
+
+    <div class="section">
+        <h2 class="en">Getting Started</h2>
+        <h2 class="ja">はじめに</h2>
+        <p class="en">NectarView is a high-speed comic viewer for macOS. To start using NectarView:</p>
+        <p class="ja">NectarViewはmacOS用の高速漫画ビューアです。NectarViewの使用を開始するには：</p>
+        <ol>
+            <li class="en">Drag and drop image files, PDF files, or ZIP archives onto the application window.</li>
+            <li class="ja">画像ファイル、PDFファイル、またはZIPアーカイブをアプリケーションウィンドウにドラッグ＆ドロップします。</li>
+            <li class="en">Alternatively, use the 'Open' option from the File menu or press <code>Command+O</code> to select files.</li>
+            <li class="ja">または、ファイルメニューの「開く」オプションを使用するか、<code>Command+O</code>を押してファイルを選択します。</li>
+            <li class="en">NectarView will automatically display the images in the selected file or folder.</li>
+            <li class="ja">NectarViewは選択されたファイルまたはフォルダ内の画像を自動的に表示します。</li>
+        </ol>
+    </div>
+
+    <div class="section">
+        <h2 class="en">Navigation</h2>
+        <h2 class="ja">ナビゲーション</h2>
+        <ul>
+            <li class="en">Use left and right arrow keys to switch between images.</li>
+            <li class="ja">左右の矢印キーを使用して画像を切り替えます。</li>
+            <li class="en">Use the mouse wheel or trackpad to scroll vertically within an image.</li>
+            <li class="ja">マウスホイールまたはトラックパッドを使用して画像内を垂直方向にスクロールします。</li>
+            <li class="en">Press spacebar to toggle fullscreen mode.</li>
+            <li class="ja">スペースバーを押してフルスクリーンモードを切り替えます。</li>
+            <li class="en">Double-click to toggle window size between fit-to-screen and actual size.</li>
+            <li class="ja">ダブルクリックでウィンドウサイズを画面に合わせるサイズと実際のサイズで切り替えます。</li>
+        </ul>
+    </div>
+
+    <div class="section">
+        <h2 class="en">View Modes</h2>
+        <h2 class="ja">表示モード</h2>
+        <p class="en">NectarView offers three view modes:</p>
+        <p class="ja">NectarViewは3つの表示モードを提供します：</p>
+        <ul>
+            <li class="en">Single Page View (<code>Command+1</code>): Displays one page at a time.</li>
+            <li class="ja">単ページビュー（<code>Command+1</code>）：1ページずつ表示します。</li>
+            <li class="en">Spread View (Right to Left) (<code>Command+2</code>): Displays two pages side by side, right page first.</li>
+            <li class="ja">見開きビュー（右から左）（<code>Command+2</code>）：2ページを並べて表示し、右ページから始まります。</li>
+            <li class="en">Spread View (Left to Right) (<code>Command+3</code>): Displays two pages side by side, left page first.</li>
+            <li class="ja">見開きビュー（左から右）（<code>Command+3</code>）：2ページを並べて表示し、左ページから始まります。</li>
+        </ul>
+    </div>
+
+    <div class="section">
+        <h2 class="en">Zoom and Rotate</h2>
+        <h2 class="ja">ズームと回転</h2>
+        <table>
+            <tr>
+                <th class="en">Action</th>
+                <th class="ja">アクション</th>
+                <th class="en">Shortcut</th>
+                <th class="ja">ショートカット</th>
+            </tr>
+            <tr>
+                <td class="en">Zoom In</td>
+                <td class="ja">拡大</td>
+                <td><code>Command++</code></td>
+            </tr>
+            <tr>
+                <td class="en">Zoom Out</td>
+                <td class="ja">縮小</td>
+                <td><code>Command+-</code></td>
+            </tr>
+            <tr>
+                <td class="en">Reset Zoom</td>
+                <td class="ja">ズームリセット</td>
+                <td><code>Command+0</code></td>
+            </tr>
+            <tr>
+                <td class="en">Rotate 90° Clockwise</td>
+                <td class="ja">90°時計回りに回転</td>
+                <td><code>Command+R</code></td>
+            </tr>
+            <tr>
+                <td class="en">Rotate 90° Counterclockwise</td>
+                <td class="ja">90°反時計回りに回転</td>
+                <td><code>Command+L</code></td>
+            </tr>
+        </table>
+    </div>
+
+    <div class="section">
+        <h2 class="en">Bookmarks</h2>
+        <h2 class="ja">ブックマーク</h2>
+        <p class="en">NectarView allows you to bookmark your favorite pages:</p>
+        <p class="ja">NectarViewでは、お気に入りのページをブックマークできます：</p>
+        <ul>
+            <li class="en">Add/Remove Bookmark: <code>Command+B</code></li>
+            <li class="ja">ブックマークの追加/削除：<code>Command+B</code></li>
+            <li class="en">Go to Next Bookmark: <code>Command+]</code></li>
+            <li class="ja">次のブックマークへ：<code>Command+]</code></li>
+            <li class="en">Go to Previous Bookmark: <code>Command+[</code></li>
+            <li class="ja">前のブックマークへ：<code>Command+[</code></li>
+            <li class="en">Show Bookmark List: <code>Command+E</code></li>
+            <li class="ja">ブックマークリストの表示：<code>Command+E</code></li>
+        </ul>
+    </div>
+
+    <div class="section">
+        <h2 class="en">Auto Page Turn</h2>
+        <h2 class="ja">自動ページめくり</h2>
+        <p class="en">Enable auto page turn in the settings menu. You can adjust the interval to set how quickly pages turn automatically.</p>
+        <p class="ja">設定メニューで自動ページめくりを有効にします。間隔を調整して、ページが自動的にめくられる速さを設定できます。</p>
+    </div>
+
+    <div class="section">
+        <h2 class="en">Customization</h2>
+        <h2 class="ja">カスタマイズ</h2>
+        <p class="en">Access the Settings menu (<code>Command+,</code>) to customize:</p>
+        <p class="ja">設定メニュー（<code>Command+,</code>）にアクセスして以下をカスタマイズできます：</p>
+        <ul>
+            <li class="en">Background color</li>
+            <li class="ja">背景色</li>
+            <li class="en">Control bar color</li>
+            <li class="ja">コントロールバーの色</li>
+            <li class="en">Reading direction</li>
+            <li class="ja">読む方向</li>
+            <li class="en">Keyboard shortcuts</li>
+            <li class="ja">キーボードショートカット</li>
+            <li class="en">Language preference</li>
+            <li class="ja">言語設定</li>
+        </ul>
+    </div>
+
+    <div class="section">
+        <h2 class="en">Supported File Formats</h2>
+        <h2 class="ja">サポートされているファイル形式</h2>
+        <p class="en">NectarView supports the following file formats:</p>
+        <p class="ja">NectarViewは以下のファイル形式をサポートしています：</p>
+        <ul>
+            <li class="en">Images: PNG, JPEG, GIF, BMP, TIFF, WebP</li>
+            <li class="ja">画像：PNG、JPEG、GIF、BMP、TIFF、WebP</li>
+            <li class="en">Archives: ZIP</li>
+            <li class="ja">アーカイブ：ZIP</li>
+            <li class="en">Documents: PDF</li>
+            <li class="ja">ドキュメント：PDF</li>
+        </ul>
+    </div>
+
+    <div class="section">
+        <h2 class="en">Keyboard Shortcuts</h2>
+        <h2 class="ja">キーボードショートカット</h2>
+        <table>
+            <tr>
+                <th class="en">Action</th>
+                <th class="ja">アクション</th>
+                <th class="en">Shortcut</th>
+                <th class="ja">ショートカット</th>
+            </tr>
+            <tr>
+                <td class="en">Open File</td>
+                <td class="ja">ファイルを開く</td>
+                <td><code>Command+O</code></td>
+            </tr>
+            <tr>
+                <td class="en">Close Window</td>
+                <td class="ja">ウィンドウを閉じる</td>
+                <td><code>Command+W</code></td>
+            </tr>
+            <tr>
+                <td class="en">Quit Application</td>
+                <td class="ja">アプリケーションを終了</td>
+                <td><code>Command+Q</code></td>
+            </tr>
+            <tr>
+                <td class="en">Toggle Fullscreen</td>
+                <td class="ja">フルスクリーン切り替え</td>
+                <td><code>Command+Control+F</code></td>
+            </tr>
+            <tr>
+                <td class="en">Show Settings</td>
+                <td class="ja">設定を表示</td>
+                <td><code>Command+,</code></td>
+            </tr>
+        </table>
+    </div>
+
+    <script>
+        function switchLanguage(lang) {
+            document.querySelectorAll('.en, .ja').forEach(el => el.style.display = 'none');
+            document.querySelectorAll('.' + lang).forEach(el => el.style.display = 'block');
+            document.documentElement.lang = lang;
+        }
+
+        // Set initial language based on browser settings
+        const userLang = navigator.language || navigator.userLanguage;
+        switchLanguage(userLang.startsWith('ja') ? 'ja' : 'en');
+    </script>
+</body>
+</html>

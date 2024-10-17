@@ -1080,6 +1080,310 @@
     },
     "選択" : {
 
+    },
+    "NectarView Help" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "NectarView Help"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "NectarViewヘルプ"
+          }
+        }
+      }
+    },
+    "Getting Started" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Getting Started"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "はじめに"
+          }
+        }
+      }
+    },
+    "Drag and drop image files, PDF files, or ZIP archives onto the application window to open them. Alternatively, use the 'Open' option from the File menu or press Command+O to select files." : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Drag and drop image files, PDF files, or ZIP archives onto the application window to open them. Alternatively, use the 'Open' option from the File menu or press Command+O to select files."
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "画像ファイル、PDFファイル、またはZIPアーカイブをアプリケーションウィンドウにドラッグ＆ドロップして開きます。または、ファイルメニューの「開く」オプションを使用するか、Command+Oを押してファイルを選択します。"
+          }
+        }
+      }
+    },
+    "Navigation" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Navigation"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "ナビゲーション"
+          }
+        }
+      }
+    },
+    "• Use left and right arrow keys to switch between images.\n• Use the mouse wheel or trackpad to scroll.\n• Press spacebar to toggle fullscreen mode.\n• Double-click to toggle window size between fit-to-screen and actual size." : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "• Use left and right arrow keys to switch between images.\n• Use the mouse wheel or trackpad to scroll.\n• Press spacebar to toggle fullscreen mode.\n• Double-click to toggle window size between fit-to-screen and actual size."
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "• 左右の矢印キーを使用して画像を切り替えます。\n• マウスホイールまたはトラックパッドを使用してスクロールします。\n• スペースバーを押してフルスクリーンモードを切り替えます。\n• ダブルクリックでウィンドウサイズを画面に合わせるサイズと実際のサイズで切り替えます。"
+          }
+        }
+      }
+    },
+    "View Modes" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "View Modes"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "表示モード"
+          }
+        }
+      }
+    },
+    "• Single Page View (Command+1): Displays one page at a time.\n• Spread View (Right to Left) (Command+2): Displays two pages side by side, right page first.\n• Spread View (Left to Right) (Command+3): Displays two pages side by side, left page first." : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "• Single Page View (Command+1): Displays one page at a time.\n• Spread View (Right to Left) (Command+2): Displays two pages side by side, right page first.\n• Spread View (Left to Right) (Command+3): Displays two pages side by side, left page first."
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "• 単ページビュー（Command+1）：1ページずつ表示します。\n• 見開きビュー（右から左）（Command+2）：2ページを並べて表示し、右ページから始まります。\n• 見開きビュー（左から右）（Command+3）：2ページを並べて表示し、左ページから始まります。"
+          }
+        }
+      }
+    },
+    "Zoom and Rotate" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Zoom and Rotate"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "ズームと回転"
+          }
+        }
+      }
+    },
+    "• Zoom In: Command++\n• Zoom Out: Command+-\n• Reset Zoom: Command+0\n• Rotate 90° Clockwise: Command+R\n• Rotate 90° Counterclockwise: Command+L" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "• Zoom In: Command++\n• Zoom Out: Command+-\n• Reset Zoom: Command+0\n• Rotate 90° Clockwise: Command+R\n• Rotate 90° Counterclockwise: Command+L"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "• 拡大：Command++\n• 縮小：Command+-\n• ズームリセット：Command+0\n• 90°時計回りに回転：Command+R\n• 90°反時計回りに回転：Command+L"
+          }
+        }
+      }
+    },
+    "Bookmarks" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Bookmarks"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "ブックマーク"
+          }
+        }
+      }
+    },
+    "• Add/Remove Bookmark: Command+B\n• Go to Next Bookmark: Command+]\n• Go to Previous Bookmark: Command+[\n• Show Bookmark List: Command+E" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "• Add/Remove Bookmark: Command+B\n• Go to Next Bookmark: Command+]\n• Go to Previous Bookmark: Command+[\n• Show Bookmark List: Command+E"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "• ブックマークの追加/削除：Command+B\n• 次のブックマークへ：Command+]\n• 前のブックマークへ：Command+[\n• ブックマークリストの表示：Command+E"
+          }
+        }
+      }
+    },
+    "Auto Page Turn" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Auto Page Turn"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "自動ページめくり"
+          }
+        }
+      }
+    },
+    "Enable auto page turn in the settings menu. Adjust the interval to set how quickly pages turn automatically." : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Enable auto page turn in the settings menu. Adjust the interval to set how quickly pages turn automatically."
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "設定メニューで自動ページめくりを有効にします。間隔を調整して、ページが自動的にめくられる速さを設定します。"
+          }
+        }
+      }
+    },
+    "Customization" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Customization"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "カスタマイズ"
+          }
+        }
+      }
+    },
+    "Access the Settings menu (Command+,) to customize:\n• Background color\n• Control bar color\n• Reading direction\n• Keyboard shortcuts\n• Language preference" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Access the Settings menu (Command+,) to customize:\n• Background color\n• Control bar color\n• Reading direction\n• Keyboard shortcuts\n• Language preference"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "設定メニュー（Command+,）にアクセスして以下をカスタマイズできます：\n• 背景色\n• コントロールバーの色\n• 読む方向\n• キーボードショートカット\n• 言語設定"
+          }
+        }
+      }
+    },
+    "Supported File Formats" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Supported File Formats"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "サポートされているファイル形式"
+          }
+        }
+      }
+    },
+    "NectarView supports the following file formats:\n• Images: PNG, JPEG, GIF, BMP, TIFF, WebP\n• Archives: ZIP\n• Documents: PDF" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "NectarView supports the following file formats:\n• Images: PNG, JPEG, GIF, BMP, TIFF, WebP\n• Archives: ZIP\n• Documents: PDF"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "NectarViewは以下のファイル形式をサポートしています：\n• 画像：PNG、JPEG、GIF、BMP、TIFF、WebP\n• アーカイブ：ZIP\n• ドキュメント：PDF"
+          }
+        }
+      }
+    },
+    "Keyboard Shortcuts" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Keyboard Shortcuts"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "キーボードショートカット"
+          }
+        }
+      }
+    },
+    "• Open File: Command+O\n• Close Window: Command+W\n• Quit Application: Command+Q\n• Toggle Fullscreen: Command+Control+F\n• Show Settings: Command+," : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "• Open File: Command+O\n• Close Window: Command+W\n• Quit Application: Command+Q\n• Toggle Fullscreen: Command+Control+F\n• Show Settings: Command+,"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "• ファイルを開く：Command+O\n• ウィンドウを閉じる：Command+W\n• アプリケーションを終了：Command+Q\n• フルスクリーン切り替え：Command+Control+F\n• 設定を表示：Command+,"
+          }
+        }
+      }
     }
   },
   "version" : "1.0"

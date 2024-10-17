@@ -9,6 +9,7 @@
 /* Begin PBXBuildFile section */
 		D00E7DF62CC1B756007F3578 /* CustomTabView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D00E7DF52CC1B756007F3578 /* CustomTabView.swift */; };
 		D00E7DF82CC1BB6C007F3578 /* Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = D00E7DF72CC1BB6C007F3578 /* Info.plist */; };
+		D00E7DFC2CC1C3DB007F3578 /* HelpView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D00E7DFA2CC1C3DB007F3578 /* HelpView.swift */; };
 		D029CFA92CAC5E6500D2080C /* FileUtil.swift in Sources */ = {isa = PBXBuildFile; fileRef = D029CFA82CAC5E6500D2080C /* FileUtil.swift */; };
 		D029CFAC2CAC5F2000D2080C /* ArchiveUtil.swift in Sources */ = {isa = PBXBuildFile; fileRef = D029CFAB2CAC5F2000D2080C /* ArchiveUtil.swift */; };
 		D029CFAE2CAC5FE100D2080C /* ErrorUtil.swift in Sources */ = {isa = PBXBuildFile; fileRef = D029CFAD2CAC5FE100D2080C /* ErrorUtil.swift */; };
@@ -60,6 +61,7 @@
 /* Begin PBXFileReference section */
 		D00E7DF52CC1B756007F3578 /* CustomTabView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CustomTabView.swift; sourceTree = "<group>"; };
 		D00E7DF72CC1BB6C007F3578 /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		D00E7DFA2CC1C3DB007F3578 /* HelpView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HelpView.swift; sourceTree = "<group>"; };
 		D029CFA82CAC5E6500D2080C /* FileUtil.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FileUtil.swift; sourceTree = "<group>"; };
 		D029CFAB2CAC5F2000D2080C /* ArchiveUtil.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ArchiveUtil.swift; sourceTree = "<group>"; };
 		D029CFAD2CAC5FE100D2080C /* ErrorUtil.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ErrorUtil.swift; sourceTree = "<group>"; };
@@ -120,6 +122,14 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		D00E7DFB2CC1C3DB007F3578 /* Help */ = {
+			isa = PBXGroup;
+			children = (
+				D00E7DFA2CC1C3DB007F3578 /* HelpView.swift */,
+			);
+			path = Help;
+			sourceTree = "<group>";
+		};
 		D029CFAA2CAC5ED400D2080C /* Util */ = {
 			isa = PBXGroup;
 			children = (
@@ -206,6 +216,7 @@
 		D0AABEC02CA22D0E00878C45 /* NectarView */ = {
 			isa = PBXGroup;
 			children = (
+				D00E7DFB2CC1C3DB007F3578 /* Help */,
 				D029CFAA2CAC5ED400D2080C /* Util */,
 				D08EF19D2CAB143800301FA8 /* Foundation */,
 				D08EF1D32CAB22E100301FA8 /* Main */,
@@ -401,6 +412,7 @@
 				D08EF1DC2CAB261B00301FA8 /* WindowAccessor.swift in Sources */,
 				D0C2823C2CA85B5F0095D414 /* AppDelegate.swift in Sources */,
 				D07E8B2C2CA2598E00C7E124 /* SettingsView.swift in Sources */,
+				D00E7DFC2CC1C3DB007F3578 /* HelpView.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

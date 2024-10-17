@@ -6,6 +6,7 @@ struct MainApp: App {
     @NSApplicationDelegateAdaptor(AppDelegate.self) var appDelegate
     @State private var isSettingsPresented = false
     @State private var isBookmarkListPresented = false
+    @State private var isHelpPresented = false
     @StateObject private var appSettings = AppSettings()
     @StateObject private var imageLoader = ImageLoader()
 
@@ -25,6 +26,9 @@ struct MainApp: App {
                 }
                 .sheet(isPresented: $isBookmarkListPresented) {
                     BookmarkListView(imageLoader: imageLoader, isPresented: $isBookmarkListPresented)
+                }
+                .sheet(isPresented: $isHelpPresented) {
+                    HelpView()
                 }
                 .onOpenURL(perform: { url in
                     imageLoader.loadImages(from: url)
@@ -115,6 +119,11 @@ struct MainApp: App {
                     isBookmarkListPresented = true
                 }
                 .keyboardShortcut("e", modifiers: .command)
+            }
+            CommandGroup(replacing: .help) {
+                Button(NSLocalizedString("NectarView Help", comment: "")) {
+                    isHelpPresented = true
+                }
             }
         }
     }
