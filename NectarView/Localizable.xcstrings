@@ -109,7 +109,21 @@
       }
     },
     "Appearance" : {
-      "comment" : "Appearance tab"
+      "comment" : "Appearance tab",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Appearance"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "外観"
+          }
+        }
+      }
     },
     "Auto Page Turn Settings" : {
       "localizations" : {
@@ -247,7 +261,20 @@
       }
     },
     "English" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "English"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "英語"
+          }
+        }
+      }
     },
     "Error" : {
       "localizations" : {
@@ -319,10 +346,37 @@
       }
     },
     "General" : {
-      "comment" : "General tab"
+      "comment" : "General tab",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "General"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "一般"
+          }
+        }
+      }
     },
     "Language Changed" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Language Changed"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "言語が変更されました"
+          }
+        }
+      }
     },
     "NectarView" : {
       "comment" : "NectarView",
@@ -408,7 +462,20 @@
       }
     },
     "Please restart the application for the language change to take effect." : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Please restart the application for the language change to take effect."
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "言語の変更を反映するには、アプリケーションを再起動してください。"
+          }
+        }
+      }
     },
     "Previous Bookmark" : {
       "extractionState" : "manual",
@@ -444,7 +511,21 @@
       }
     },
     "Reading" : {
-      "comment" : "Reading tab"
+      "comment" : "Reading tab",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Reading"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "読書"
+          }
+        }
+      }
     },
     "Reading Direction" : {
       "localizations" : {
@@ -668,7 +749,21 @@
       }
     },
     "Select Language" : {
-      "comment" : "Language picker label"
+      "comment" : "Language picker label",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Select Language"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "言語を選択"
+          }
+        }
+      }
     },
     "Set Auto Page Turn Interval (0.5 to 30 seconds)" : {
       "localizations" : {
@@ -834,10 +929,37 @@
       }
     },
     "System Default" : {
-      "comment" : "System default language option"
+      "comment" : "System default language option",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "System Default"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "システムのデフォルト"
+          }
+        }
+      }
     },
     "Toggle Sidebar" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Toggle Sidebar"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "サイドバーの切り替え"
+          }
+        }
+      }
     },
     "UnsupportedFileFormat" : {
       "localizations" : {
@@ -856,7 +978,21 @@
       }
     },
     "UseRealisticAppearance" : {
-      "comment" : "Use realistic appearance toggle"
+      "comment" : "Use realistic appearance toggle",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Use Realistic Appearance"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "リアルな外観を使用"
+          }
+        }
+      }
     },
     "View" : {
       "comment" : "View",
@@ -927,7 +1063,20 @@
 
     },
     "日本語" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Japanese"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "日本語"
+          }
+        }
+      }
     },
     "選択" : {
 
