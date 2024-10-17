@@ -108,6 +108,9 @@
         }
       }
     },
+    "Appearance" : {
+      "comment" : "Appearance section header"
+    },
     "Auto Page Turn Settings" : {
       "localizations" : {
         "en" : {
@@ -852,6 +855,9 @@
           }
         }
       }
+    },
+    "UseRealisticAppearance" : {
+      "comment" : "Use realistic appearance toggle"
     },
     "View" : {
       "comment" : "View",

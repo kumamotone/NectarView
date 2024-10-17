@@ -9,6 +9,7 @@ class AppSettings: ObservableObject {
     @Published var zoomFactor: CGFloat = 1.0
     // 他のプロパティは変更なし
     @AppStorage("selectedLanguage") var selectedLanguage: String = "system"
+    @AppStorage("useRealisticAppearance") var useRealisticAppearance: Bool = false
 
     var body: some View {
         VStack {

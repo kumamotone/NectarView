@@ -29,6 +29,10 @@ struct SettingsView: View {
                 Toggle(NSLocalizedString("ReverseLeftRightKey", comment: "Reverse left-right key direction"), isOn: $appSettings.isLeftRightKeyReversed)
             }
 
+            Section(header: Text(NSLocalizedString("Appearance", comment: "Appearance section header"))) {
+                Toggle(NSLocalizedString("UseRealisticAppearance", comment: "Use realistic appearance toggle"), isOn: $appSettings.useRealisticAppearance)
+            }
+
             Section {
                 Button(NSLocalizedString("ResetSettings", comment: "ResetSettings")) {
                     appSettings.resetToDefaults()

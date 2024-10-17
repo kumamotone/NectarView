@@ -61,7 +61,7 @@ struct ImageDisplayView: View {
     var body: some View {
         Group {
             if appSettings.isSpreadViewEnabled {
-                SpreadView(imageLoader: imageLoader, geometry: geometry, scale: scale, offset: offset)
+                SpreadView(imageLoader: imageLoader, appSettings: appSettings, geometry: geometry, scale: scale, offset: offset)
             } else {
                 SinglePageView(imageLoader: imageLoader, scale: scale, offset: offset)
             }
@@ -94,6 +94,7 @@ struct SinglePageView: View {
 // 見開きページ
 struct SpreadView: View {
     @ObservedObject var imageLoader: ImageLoader
+    @ObservedObject var appSettings: AppSettings
     let geometry: GeometryProxy
     let scale: CGFloat
     let offset: CGSize
@@ -110,15 +111,38 @@ struct SpreadView: View {
                 ForEach([imageLoader.currentImages.0, imageLoader.currentImages.1].compactMap { $0 }, id: \.self) { index in
                     if index < imageLoader.images.count,
                        let image = imageLoader.getImage(for: imageLoader.images[index]) {
-                        Image(nsImage: image)
-                            .resizable()
-                            .scaledToFit()
-                            .frame(maxWidth: min(geometry.size.width / 2, geometry.size.height * (image.size.width / image.size.height)), maxHeight: geometry.size.height)
+                        BookPageView(image: image, geometry: geometry, isLeftPage: index == imageLoader.currentImages.0, appSettings: appSettings)
                     }
                 }
                 Spacer(minLength: 0)
             }
             .frame(maxWidth: .infinity)
+        }
+    }
+}
+
+struct BookPageView: View {
+    let image: NSImage
+    let geometry: GeometryProxy
+    let isLeftPage: Bool
+    @ObservedObject var appSettings: AppSettings
+    
+    var body: some View {
+        if appSettings.useRealisticAppearance {
+            Image(nsImage: image)
+                .resizable()
+                .scaledToFit()
+                .frame(maxWidth: min(geometry.size.width / 2, geometry.size.height * (image.size.width / image.size.height)), maxHeight: geometry.size.height)
+                .background(Color.white)
+                .cornerRadius(3)
+                .shadow(color: .gray.opacity(0.5), radius: 5, x: isLeftPage ? 5 : -5, y: 5)
+                .rotation3DEffect(.degrees(isLeftPage ? 5 : -5), axis: (x: 0, y: 1, z: 0))
+                .padding(.horizontal, 10)
+        } else {
+            Image(nsImage: image)
+                .resizable()
+                .scaledToFit()
+                .frame(maxWidth: min(geometry.size.width / 2, geometry.size.height * (image.size.width / image.size.height)), maxHeight: geometry.size.height)
         }
     }
 }
