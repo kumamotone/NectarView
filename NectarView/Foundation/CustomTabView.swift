@@ -19,17 +19,17 @@ public struct CustomTabView: View {
         HStack {
             Spacer()
             ForEach(0..<titles.count, id: \.self) { index in
-                VStack {
+                VStack(spacing: 4) {
                     Image(systemName: self.icons[index])
-                        .font(.largeTitle)
+                        .font(.system(size: 24))
+                        .frame(height: 24)
                     Text(self.titles[index])
+                        .font(.caption)
                 }
-                .frame(height: 30)
-                .padding(15)
+                .frame(width: 80, height: 50)
+                .padding(.vertical, 8)
                 .background(((self.selection == index) || (self.indexHovered == index)) ? Color.secondary.opacity(0.2) : Color.clear,
                             in: RoundedRectangle(cornerRadius: 8, style: .continuous))
-                .frame(height: 80)
-                .padding(.horizontal, 0)
                 .foregroundColor(self.selection == index ? Color.primary : Color.secondary)
                 .onHover(perform: { hovering in
                     if hovering {
@@ -44,7 +44,7 @@ public struct CustomTabView: View {
             }
             Spacer()
         }
-        .padding(0)
+        .padding(.vertical, 8)
         .background(Color(NSColor.windowBackgroundColor))
     }
 
