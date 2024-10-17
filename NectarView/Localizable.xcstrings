@@ -1258,13 +1258,13 @@
         "en" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Use Realistic Appearance"
+            "value" : "Use Realistic Appearance (in spread view)"
           }
         },
         "ja" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "リアルな外観を使用"
+            "value" : "リアルな外観を使用（見開きモード時）"
           }
         }
       }

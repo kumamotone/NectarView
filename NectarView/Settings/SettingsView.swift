@@ -55,7 +55,6 @@ struct AppearanceSettingsView: View {
         Form {
             ColorPicker(NSLocalizedString("BackgroundColor", comment: "BackgroundColor"), selection: $appSettings.backgroundColor)
             ColorPicker(NSLocalizedString("ControlBarColor", comment: "ControlBarColor"), selection: $appSettings.controlBarColor)
-            Toggle(NSLocalizedString("UseRealisticAppearance", comment: "Use realistic appearance toggle"), isOn: $appSettings.useRealisticAppearance)
         }
         .padding()
     }
@@ -69,6 +68,7 @@ struct ReadingSettingsView: View {
             Toggle(NSLocalizedString("Enable Spread View", comment: "Enable spread view toggle"), isOn: $appSettings.isSpreadViewEnabled)
             Toggle(NSLocalizedString("Right to Left Reading", comment: "Right to left reading toggle"), isOn: $appSettings.isRightToLeftReading)
             Toggle(NSLocalizedString("ReverseLeftRightKey", comment: "Reverse left-right key direction"), isOn: $appSettings.isLeftRightKeyReversed)
+            Toggle(NSLocalizedString("UseRealisticAppearance", comment: "Use realistic appearance toggle"), isOn: $appSettings.useRealisticAppearance)
         }
         .padding()
     }
