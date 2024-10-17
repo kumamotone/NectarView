@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>NectarView - macOS用漫画ビューア</title>
+    <title>NectarView - macOS Comic Viewer | macOS用漫画ビューア</title>
     <style>
         body {
             font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Helvetica', 'Arial', sans-serif;
@@ -22,101 +22,139 @@
             padding: 10px 20px;
             margin-bottom: 20px;
         }
+        .lang-switch {
+            text-align: right;
+            margin-bottom: 20px;
+        }
+        .en, .ja {
+            display: none;
+        }
     </style>
 </head>
 <body>
-    <h1>NectarView - macOS用高速漫画ビューア</h1>
+    <div class="lang-switch">
+        <a href="#" onclick="switchLanguage('en')">English</a> | 
+        <a href="#" onclick="switchLanguage('ja')">日本語</a>
+    </div>
+
+    <h1 class="en">NectarView - High-Speed Comic Viewer for macOS</h1>
+    <h1 class="ja">NectarView - macOS用高速漫画ビューア</h1>
     
-    <p>NectarViewは、macOSユーザーのために設計された高速で使いやすい漫画ビューアです。WindowsのHoneyViewの操作感を参考にしながら、macOSネイティブの機能を活用して、スムーズな漫画閲覧体験を提供します。</p>
+    <p class="en">NectarView is a fast and user-friendly comic viewer designed for macOS users. Inspired by the operability of HoneyView for Windows, it utilizes native macOS features to provide a smooth comic reading experience.</p>
+    <p class="ja">NectarViewは、macOSユーザーのために設計された高速で使いやすい漫画ビューアです。WindowsのHoneyViewの操作感を参考にしながら、macOSネイティブの機能を活用して、スムーズな漫画閲覧体験を提供します。</p>
 
-    <h2>主な特徴</h2>
+    <h2 class="en">Key Features</h2>
+    <h2 class="ja">主な特徴</h2>
 
     <div class="feature">
-        <h3>直感的な操作</h3>
+        <h3 class="en">Intuitive Operation</h3>
+        <h3 class="ja">直感的な操作</h3>
         <ul>
-            <li>ドラッグ＆ドロップでファイルを簡単に開く</li>
-            <li>ダブルクリックで全画面表示の切り替え</li>
-            <li>表示領域をドラッグしてウィンドウを移動</li>
+            <li class="en">Easy file opening with drag & drop</li>
+            <li class="ja">ドラッグ＆ドロップでファイルを簡単に開く</li>
+            <li class="en">Toggle fullscreen with double-click</li>
+            <li class="ja">ダブルクリックで全画面表示の切り替え</li>
+            <li class="en">Move window by dragging the display area</li>
+            <li class="ja">表示領域をドラッグしてウィンドウを移動</li>
         </ul>
     </div>
 
     <div class="feature">
-        <h3>柔軟な表示オプション</h3>
+        <h3 class="en">Flexible Display Options</h3>
+        <h3 class="ja">柔軟な表示オプション</h3>
         <ul>
-            <li>単ページ表示と見開き表示の切り替えが可能</li>
-            <li>左右読みの切り替えに対応</li>
-            <li>スライダーで素早く画像を切り替え</li>
-            <li>リアルな本の外観モード（見開き表示時）</li>
+            <li class="en">Switch between single page and spread view</li>
+            <li class="ja">単ページ表示と見開き表示の切り替えが可能</li>
+            <li class="en">Support for left-to-right and right-to-left reading</li>
+            <li class="ja">左右読みの切り替えに対応</li>
+            <li class="en">Quick image switching with slider</li>
+            <li class="ja">スライダーで素早く画像を切り替え</li>
+            <li class="en">Realistic book appearance mode (in spread view)</li>
+            <li class="ja">リアルな本の外観モード（見開き表示時）</li>
         </ul>
     </div>
 
     <div class="feature">
-        <h3>高速パフォーマンス</h3>
+        <h3 class="en">High-Speed Performance</h3>
+        <h3 class="ja">高速パフォーマンス</h3>
         <ul>
-            <li>ZIPファイルを解凍せずに直接開くことが可能</li>
-            <li>画像のプリフェッチによる高速な表示</li>
-            <li>macOSネイティブAPIを活用した効率的な処理</li>
+            <li class="en">Open ZIP files directly without extraction</li>
+            <li class="ja">ZIPファイルを解凍せずに直接開くことが可能</li>
+            <li class="en">Fast image display with prefetching</li>
+            <li class="ja">画像のプリフェッチによる高速な表示</li>
+            <li class="en">Efficient processing using native macOS APIs</li>
+            <li class="ja">macOSネイティブAPIを活用した効率的な処理</li>
         </ul>
     </div>
 
     <div class="feature">
-        <h3>使いやすいインターフェース</h3>
+        <h3 class="en">User-Friendly Interface</h3>
+        <h3 class="ja">使いやすいインターフェース</h3>
         <ul>
-            <li>シンプルで邪魔にならないUI</li>
-            <li>カスタマイズ可能な背景色とコントロールバーの色</li>
-            <li>キーボードショートカットによる操作</li>
+            <li class="en">Simple, non-intrusive UI</li>
+            <li class="ja">シンプルで邪魔にならないUI</li>
+            <li class="en">Customizable background and control bar colors</li>
+            <li class="ja">カスタマイズ可能な背景色とコントロールバーの色</li>
+            <li class="en">Keyboard shortcut operations</li>
+            <li class="ja">キーボードショートカットによる操作</li>
         </ul>
     </div>
 
     <div class="feature">
-        <h3>多言語対応</h3>
+        <h3 class="en">Multilingual Support</h3>
+        <h3 class="ja">多言語対応</h3>
         <ul>
-            <li>英語と日本語のインターフェースをサポート</li>
-            <li>システム言語に応じた自動切り替え</li>
+            <li class="en">English and Japanese interface</li>
+            <li class="ja">英語と日本語のインターフェースをサポート</li>
+            <li class="en">Automatic switching based on system language</li>
+            <li class="ja">システム言語に応じた自動切り替え</li>
         </ul>
     </div>
 
     <div class="feature">
-        <h3>高度な機能</h3>
+        <h3 class="en">Advanced Features</h3>
+        <h3 class="ja">高度な機能</h3>
         <ul>
-            <li>ブックマーク機能で好きな場所を保存</li>
-            <li>フォルダ内の画像を一括表示</li>
-            <li>PDFファイルのサポート</li>
+            <li class="en">Bookmark function to save favorite locations</li>
+            <li class="ja">ブックマーク機能で好きな場所を保存</li>
+            <li class="en">Batch display of images in a folder</li>
+            <li class="ja">フォルダ内の画像を一括表示</li>
+            <li class="en">PDF file support</li>
+            <li class="ja">PDFファイルのサポート</li>
+            <li class="en">Automatic page turning with adjustable interval</li>
+            <li class="ja">調整可能な間隔での自動ページめくり</li>
+            <li class="en">Image rotation support</li>
+            <li class="ja">画像回転機能</li>
         </ul>
     </div>
 
-    <h2>インストール方法</h2>
+    <!-- Add more sections here, following the same pattern -->
+
+    <h2 class="en">Installation</h2>
+    <h2 class="ja">インストール方法</h2>
     <ol>
-        <li><a href="https://github.com/kumamotone/NectarView/releases">最新のリリース</a>からNectarView.dmgをダウンロードします。</li>
-        <li>ダウンロードしたDMGファイルをマウントし、NectarView.appをApplicationsフォルダにドラッグ＆ドロップします。</li>
+        <li class="en">Download NectarView.dmg from the <a href="https://github.com/kumamotone/NectarView/releases">latest release</a>.</li>
+        <li class="ja"><a href="https://github.com/kumamotone/NectarView/releases">最新のリリース</a>からNectarView.dmgをダウンロードします。</li>
+        <li class="en">Mount the downloaded DMG file and drag NectarView.app to the Applications folder.</li>
+        <li class="ja">ダウンロードしたDMGファイルをマウントし、NectarView.appをApplicationsフォルダにドラッグ＆ドロップします。</li>
     </ol>
 
-    <h2>使用方法</h2>
-    <ol>
-        <li>NectarViewを起動します。</li>
-        <li>画像ファイル、PDFファイル、またはZIPアーカイブをアプリケーションウィンドウにドラッグ＆ドロップするか、「ファイルを開く」メニューから選択します。</li>
-        <li>左右の矢印キーまたはマウスホイールで画像を切り替えます。</li>
-        <li>スペースキーで全画面表示を切り替えます。</li>
-    </ol>
-
-    <h2>カスタマイズ</h2>
-    <p>NectarViewは以下の設定オプションを提供しています：</p>
-    <ul>
-        <li>背景色とコントロールバーの色をカスタマイズ</li>
-        <li>単ページ表示と見開き表示の切り替え</li>
-        <li>左右読みモードの切り替え</li>
-        <li>キーボードの左右キーの動作を反転</li>
-        <li>リアルな本の外観モードの有効化/無効化</li>
-    </ul>
-
-    <h2>開発</h2>
-    <p>NectarViewはSwiftUIを使用して開発されています。プロジェクトに貢献したい場合は、<a href="https://github.com/kumamotone/NectarView">GitHubリポジトリ</a>をご覧ください。</p>
-
-    <h2>ライセンス</h2>
-    <p>NectarViewは<a href="https://github.com/kumamotone/NectarView/blob/main/LICENSE">MITライセンス</a>の下で公開されています。</p>
+    <!-- Add more sections here, following the same pattern -->
 
     <footer>
         <p>&copy; 2024 <a href="https://github.com/kumamotone/NectarView">NectarView</a></p>
     </footer>
+
+    <script>
+        function switchLanguage(lang) {
+            document.querySelectorAll('.en, .ja').forEach(el => el.style.display = 'none');
+            document.querySelectorAll('.' + lang).forEach(el => el.style.display = 'block');
+            document.documentElement.lang = lang;
+        }
+
+        // Set initial language based on browser settings
+        const userLang = navigator.language || navigator.userLanguage;
+        switchLanguage(userLang.startsWith('ja') ? 'ja' : 'en');
+    </script>
 </body>
 </html>

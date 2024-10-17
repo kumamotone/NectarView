@@ -1,92 +1,40 @@
 # NectarView
 
-NectarViewは、macOS用に設計された高速で使いやすい漫画ビューアです。WindowsのHoneyViewの操作感を参考にしながら、macOSネイティブの機能を活用して、スムーズな漫画閲覧体験を提供します。
+NectarView is a high-speed, user-friendly comic viewer designed for macOS. Drawing inspiration from the intuitive operation of HoneyView for Windows, NectarView leverages native macOS features to deliver a smooth comic reading experience.
 
-## 特徴
+## Features
 
-- 直感的な操作
-  - ドラッグ＆ドロップでファイルを簡単に開く
-  - ダブルクリックで全画面表示の切り替え
-  - 表示領域をドラッグしてウィンドウを移動
+- Intuitive Operation
+  - Easy file opening with drag & drop
+  - Toggle fullscreen with double-click
+  - Move window by dragging the display area
 
-- 柔軟な表示オプション
-  - 単ページ表示と見開き表示の切り替えが可能
-  - 左右読みの切り替えに対応
-  - スライダーで素早く画像を切り替え
-  - リアルな本の外観モード（見開き表示時）
+- Flexible Display Options
+  - Switch between single page and spread view
+  - Support for left-to-right and right-to-left reading
+  - Quick image switching with slider
+  - Realistic book appearance mode (in spread view)
 
-- 高速パフォーマンス
-  - ZIPファイルを解凍せずに直接開くことが可能
-  - 画像のプリフェッチによる高速な表示
-  - macOSネイティブAPIを活用した効率的な処理
+- High-Speed Performance
+  - Open ZIP files directly without extraction
+  - Fast image display with prefetching
+  - Efficient processing using native macOS APIs
 
-- 使いやすいインターフェース
-  - シンプルで邪魔にならないUI
-  - カスタマイズ可能な背景色とコントロールバーの色
-  - キーボードショートカットによる操作
+- User-Friendly Interface
+  - Simple, non-intrusive UI
+  - Customizable background and control bar colors
+  - Keyboard shortcut operations
 
-- 多言語対応
-  - 英語と日本語のインターフェースをサポート
-  - システム言語に応じた自動切り替え
+- Multilingual Support
+  - English and Japanese interface
+  - Automatic switching based on system language
 
-- 高度な機能
-  - ブックマーク機能で好きな場所を保存
-  - フォルダ内の画像を一括表示
-  - PDFファイルのサポート
+- Advanced Features
+  - Bookmark function to save favorite locations
+  - Batch display of images in a folder
+  - PDF file support
 
-## インストール
+## Installation
 
-1. [最新のリリース](https://github.com/kumamotone/NectarView/releases)からNectarView.dmgをダウンロードします。
-2. ダウンロードしたDMGファイルをマウントし、NectarView.appをApplicationsフォルダにドラッグ＆ドロップします。
-
-```
-create-dmg \
-              --volname "NectarView Installer" \
-              --window-pos 200 120 \
-              --window-size 600 400 \
-              --icon-size 128 \
-              --icon "NectarView.app" 150 190 \
-              --hide-extension "NectarView.app" \
-              --app-drop-link 450 190 \
-              --no-internet-enable \
-              "NectarView.dmg" \
-              "/path/to/NectarView.app" # ここにパスを入力
-```
-
-## 使用方法
-
-1. NectarViewを起動します。
-2. 画像ファイル、PDFファイル、またはZIPアーカイブをアプリケーションウィンドウにドラッグ＆ドロップするか、「ファイルを開く」メニューから選択します。
-3. 左右の矢印キーまたはマウスホイールで画像を切り替えます。
-4. スペースキーで全画面表示を切り替えます。
-
-詳細な使用方法については、アプリケーション内のヘルプメニューを参照してください。
-
-## カスタマイズ
-
-NectarViewは豊富な設定オプションを提供しています：
-
-- 背景色とコントロールバーの色をカスタマイズ
-- 単ページ表示と見開き表示の切り替え
-- 左右読みモードの切り替え
-- キーボードの左右キーの動作を反転
-- リアルな本の外観モードの有効化/無効化
-
-これらの設定は、アプリケーション内の設定メニューからアクセスできます。
-
-## 開発
-
-NectarViewはSwiftUIを使用して開発されています。プロジェクトに貢献したい場合は、以下の手順に従ってください：
-
-1. このリポジトリをフォークし、ローカルにクローンします。
-2. Xcodeでプロジェクトを開きます。
-3. 新しい機能を追加するか、バグを修正します。
-4. 変更をコミットし、プルリクエストを作成します。
-
-## ライセンス
-
-NectarViewは[MITライセンス](LICENSE)の下で公開されています。
-
-## 連絡先
-
-質問や提案がある場合は、[Issuesページ](https://github.com/kumamotone/NectarView/issues)に投稿してください。
+1. Download NectarView.dmg from the [latest release](https://github.com/kumamotone/NectarView/releases).
+2. Mount the downloaded DMG file and drag NectarView.app to the Applications folder.
