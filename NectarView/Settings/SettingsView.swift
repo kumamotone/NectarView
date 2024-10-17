@@ -39,7 +39,7 @@ struct GeneralSettingsView: View {
                 Text("English").tag("en")
                 Text("日本語").tag("ja")
             }
-            .pickerStyle(SegmentedPickerStyle())
+            .pickerStyle(MenuPickerStyle())
             .onChange(of: appSettings.selectedLanguage) { _, newValue in
                 appSettings.changeLanguage(to: newValue)
             }
