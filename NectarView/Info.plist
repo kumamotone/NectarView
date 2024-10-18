@@ -6,40 +6,106 @@
     <array>
         <dict>
             <key>CFBundleTypeName</key>
-            <string>Image</string>
+            <string>Folders</string>
+            <key>CFBundleTypeRole</key>
+            <string>Viewer</string>
             <key>LSHandlerRank</key>
             <string>Alternate</string>
             <key>LSItemContentTypes</key>
             <array>
-                <string>public.png</string>
-                <string>public.jpeg</string>
-                <string>com.compuserve.gif</string>
-                <string>com.microsoft.bmp</string>
-                <string>public.tiff</string>
-                <string>org.webmproject.webp</string>
+                <string>public.folder</string>
             </array>
+            <key>LSTypeIsPackage</key>
+            <false/>
         </dict>
         <dict>
+            <key>CFBundleTypeExtensions</key>
+            <array>
+                <string>zip</string>
+            </array>
+            <key>CFBundleTypeMIMETypes</key>
+            <array>
+                <string>application/zip</string>
+                <string>application/x-zip</string>
+                <string>application/x-zip-compressed</string>
+            </array>
+            <key>CFBundleTypeName</key>
+            <string>Zip Archive</string>
+            <key>CFBundleTypeOSTypes</key>
+            <array>
+                <string>ZIP </string>
+                <string>ZIP_</string>
+            </array>
+            <key>CFBundleTypeRole</key>
+            <string>Viewer</string>
+            <key>LSHandlerRank</key>
+            <string>Alternate</string>
+            <key>LSItemContentTypes</key>
+            <array>
+                <string>com.pkware.zip-archive</string>
+                <string>public.zip-archive</string>
+            </array>
+            <key>NSDocumentClass</key>
+            <string>MyDocument</string>
+        </dict>
+        <dict>
+            <key>CFBundleTypeExtensions</key>
+            <array>
+                <string>pdf</string>
+            </array>
+            <key>CFBundleTypeMIMETypes</key>
+            <array>
+                <string>application/pdf</string>
+            </array>
             <key>CFBundleTypeName</key>
             <string>PDF</string>
+            <key>CFBundleTypeRole</key>
+            <string>Viewer</string>
             <key>LSHandlerRank</key>
             <string>Alternate</string>
             <key>LSItemContentTypes</key>
             <array>
                 <string>com.adobe.pdf</string>
             </array>
+            <key>NSDocumentClass</key>
+            <string>MyDocument</string>
         </dict>
         <dict>
+            <key>CFBundleTypeExtensions</key>
+            <array>
+                <string>png</string>
+                <string>jpg</string>
+                <string>jpeg</string>
+                <string>gif</string>
+                <string>bmp</string>
+                <string>tiff</string>
+                <string>webp</string>
+            </array>
+            <key>CFBundleTypeMIMETypes</key>
+            <array>
+                <string>image/png</string>
+                <string>image/jpeg</string>
+                <string>image/gif</string>
+                <string>image/webp</string>
+            </array>
             <key>CFBundleTypeName</key>
-            <string>ZIP Archive</string>
+            <string>Image</string>
+            <key>CFBundleTypeRole</key>
+            <string>Viewer</string>
             <key>LSHandlerRank</key>
             <string>Alternate</string>
             <key>LSItemContentTypes</key>
             <array>
-                <string>public.zip-archive</string>
+                <string>public.image</string>
             </array>
+            <key>LSTypeIsPackage</key>
+            <false/>
+            <key>NSDocumentClass</key>
+            <string>MyDocument</string>
         </dict>
     </array>
+    <key>LSApplicationCategoryType</key>
+    <string>public.app-category.utilities</string>
     <key>UTImportedTypeDeclarations</key>
     <array>
         <dict>
@@ -56,7 +122,5 @@
             </dict>
         </dict>
     </array>
-    <key>LSApplicationCategoryType</key>
-    <string>public.app-category.utilities</string>
 </dict>
 </plist>
