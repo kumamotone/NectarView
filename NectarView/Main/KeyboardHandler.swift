@@ -10,7 +10,7 @@ class KeyboardHandler {
     }
 
     static func handleKeyPress(event: NSEvent, imageLoader: ImageLoader, appSettings: AppSettings) -> NSEvent? {
-        let isLeftRightReversed = appSettings.isLeftRightKeyReversed
+        let useLeftKeyToGoNextWhenSinglePage = appSettings.useLeftKeyToGoNextWhenSinglePage
         let isSpreadView = appSettings.isSpreadViewEnabled
         let isRightToLeftReading = appSettings.isRightToLeftReading
 
@@ -29,7 +29,7 @@ class KeyboardHandler {
                     imageLoader.showPreviousImage()
                 }
             } else {
-                if isLeftRightReversed {
+                if useLeftKeyToGoNextWhenSinglePage {
                     imageLoader.showNextImage()
                 } else {
                     imageLoader.showPreviousImage()
@@ -44,7 +44,7 @@ class KeyboardHandler {
                     imageLoader.showNextImage()
                 }
             } else {
-                if isLeftRightReversed {
+                if useLeftKeyToGoNextWhenSinglePage {
                     imageLoader.showPreviousImage()
                 } else {
                     imageLoader.showNextImage()

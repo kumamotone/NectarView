@@ -866,43 +866,9 @@
         }
       }
     },
-    "Reverse Left/Right Keys" : {
-      "extractionState" : "stale",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Reverse Left/Right Keys"
-          }
-        },
-        "ja" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "左右キーを反転"
-          }
-        }
-      }
-    },
-    "ReverseKeyboardDirection" : {
-      "comment" : "Reverse keyboard direction",
-      "extractionState" : "manual",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Use the reverse (left) key to go to the next page"
-          }
-        },
-        "ja" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "左キーで次のページに進む"
-          }
-        }
-      }
-    },
     "ReverseLeftRightKey" : {
       "comment" : "Reverse left-right key direction",
+      "extractionState" : "stale",
       "localizations" : {
         "en" : {
           "stringUnit" : {
@@ -913,43 +879,7 @@
         "ja" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "左右キーの動作を反転"
-          }
-        }
-      }
-    },
-    "ReverseLeftRightKeySinglePage" : {
-      "comment" : "Reverse left-right key direction (single page mode)",
-      "extractionState" : "manual",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Reverse left-right key direction (single page mode)"
-          }
-        },
-        "ja" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "左右キーの動作を反転（単一ページモード）"
-          }
-        }
-      }
-    },
-    "ReverseUpDownKey" : {
-      "comment" : "Reverse up-down key direction",
-      "extractionState" : "manual",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Reverse up-down key direction"
-          }
-        },
-        "ja" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "上下キーの動作を反転"
+            "value" : "左キーで次のページに進む"
           }
         }
       }
@@ -1251,6 +1181,27 @@
           }
         }
       }
+    },
+    "useLeftKeyToGoNextWhenSinglePage" : {
+      "comment" : "Reverse left-right key direction (single page mode)",
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Reverse left-right key direction (single page mode)"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "左右キーの動作を反転（単一ページモード）"
+          }
+        }
+      }
+    },
+    "useLeftKeyToGoNextWhenSinglePageWhenSinglePage" : {
+      "comment" : "Reverse left-right key direction"
     },
     "UseRealisticAppearance" : {
       "comment" : "Use realistic appearance toggle",

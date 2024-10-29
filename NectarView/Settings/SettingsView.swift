@@ -67,7 +67,7 @@ struct ReadingSettingsView: View {
         Form {
             Toggle(NSLocalizedString("Enable Spread View", comment: "Enable spread view toggle"), isOn: $appSettings.isSpreadViewEnabled)
             Toggle(NSLocalizedString("Right to Left Reading", comment: "Right to left reading toggle"), isOn: $appSettings.isRightToLeftReading)
-            Toggle(NSLocalizedString("ReverseLeftRightKey", comment: "Reverse left-right key direction"), isOn: $appSettings.isLeftRightKeyReversed)
+            Toggle(NSLocalizedString("useLeftKeyToGoNextWhenSinglePageWhenSinglePage", comment: "Reverse left-right key direction"), isOn: $appSettings.useLeftKeyToGoNextWhenSinglePage)
             Toggle(NSLocalizedString("UseRealisticAppearance", comment: "Use realistic appearance toggle"), isOn: $appSettings.useRealisticAppearance)
         }
         .padding()

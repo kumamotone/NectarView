@@ -5,7 +5,7 @@ class AppSettings: ObservableObject {
     @AppStorage("controlBarColor") var controlBarColor: Color = Color.black.opacity(0.6)
     @AppStorage("isSpreadViewEnabled") var isSpreadViewEnabled: Bool = false
     @AppStorage("isRightToLeftReading") var isRightToLeftReading: Bool = false
-    @AppStorage("isLeftRightKeyReversed") var isLeftRightKeyReversed: Bool = true
+    @AppStorage("useLeftKeyToGoNextWhenSinglePage") var useLeftKeyToGoNextWhenSinglePage: Bool = true
     @Published var zoomFactor: CGFloat = 1.0
     @AppStorage("selectedLanguage") var selectedLanguage: String = "system"
     @AppStorage("useRealisticAppearance") var useRealisticAppearance: Bool = false
@@ -28,7 +28,7 @@ class AppSettings: ObservableObject {
         controlBarColor = Color.black.opacity(0.6)
         isSpreadViewEnabled = false
         isRightToLeftReading = false
-        isLeftRightKeyReversed = true
+        useLeftKeyToGoNextWhenSinglePage = true
         zoomFactor = 1.0
         selectedLanguage = "system"
         useRealisticAppearance = false

@@ -123,7 +123,7 @@ struct ContentView: View {
                                     .frame(width: geometry.size.width * 0.15)
                                     .contentShape(Rectangle())
                                     .onTapGesture {
-                                        if imageLoader.viewMode != .spreadRightToLeft || (imageLoader.viewMode == .single && appSettings.isLeftRightKeyReversed) {
+                                        if imageLoader.viewMode != .spreadRightToLeft || (imageLoader.viewMode == .single && appSettings.useLeftKeyToGoNextWhenSinglePage) {
                                             imageLoader.showPreviousImage()
                                         } else {
                                             imageLoader.showNextImage()
@@ -146,7 +146,7 @@ struct ContentView: View {
                                     .frame(width: geometry.size.width * 0.15)
                                     .contentShape(Rectangle())
                                     .onTapGesture {
-                                        if imageLoader.viewMode != .spreadRightToLeft || (imageLoader.viewMode == .single && appSettings.isLeftRightKeyReversed) {
+                                        if imageLoader.viewMode != .spreadRightToLeft || (imageLoader.viewMode == .single && appSettings.useLeftKeyToGoNextWhenSinglePage) {
                                             imageLoader.showNextImage()
                                         } else {
                                             imageLoader.showPreviousImage()
