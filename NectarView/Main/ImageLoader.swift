@@ -367,10 +367,21 @@ class ImageLoader: ObservableObject {
             }
         } catch {
             if (error as NSError).code == NSFileReadNoPermissionError {
-                // 権限がない場合、ユーザーに権限を要求
+                // 権限ダイアログが表示されることをユーザーに通知
+                DispatchQueue.main.async {
+                    let alert = NSAlert()
+                    alert.messageText = NSLocalizedString("PermissionRequired", comment: "")
+                    alert.informativeText = NSLocalizedString("PleaseCheckPermissionDialog", comment: "")
+                    alert.alertStyle = .informational
+                    alert.addButton(withTitle: NSLocalizedString("OK", comment: ""))
+                    alert.window.level = .floating
+                    
+                    alert.runModal()
+                }
+                
+                // 権限を要求
                 FileUtil.requestAccessForURL(folderURL) { success in
                     if success {
-                        // 権限が付与されたら、再度読み込みを試みる
                         self.loadImagesFromFileOrFolder(url: url)
                     }
                 }

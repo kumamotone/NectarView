@@ -1333,6 +1333,38 @@
           }
         }
       }
+    },
+    "PermissionRequired": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Permission Required"
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "アクセス許可が必要です"
+          }
+        }
+      }
+    },
+    "PleaseCheckPermissionDialog": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "A permission dialog has been displayed. Please check your screen and grant access to continue."
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "アクセス許可のダイアログが表示されています。画面を確認して、アクセスを許可してください。"
+          }
+        }
+      }
     }
   },
   "version" : "1.0"
