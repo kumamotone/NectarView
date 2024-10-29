@@ -76,14 +76,14 @@ struct SinglePageView: View {
 
     var body: some View {
         Group {
-            if let currentImageIndex = imageLoader.currentImages.0,
-               let image = imageLoader.getImage(for: imageLoader.images[currentImageIndex]) {
+            if imageLoader.images.isEmpty && imageLoader.isInitialLoad {
+                DropZoneView()
+            } else if let currentImageIndex = imageLoader.currentImages.0,
+                      let image = imageLoader.getImage(for: imageLoader.images[currentImageIndex]) {
                 Image(nsImage: image)
                     .resizable()
                     .scaledToFit()
                     .frame(maxWidth: .infinity, maxHeight: .infinity)
-            } else {
-                DropZoneView()
             }
         }
     }
@@ -118,7 +118,7 @@ struct SpreadView: View {
     let offset: CGSize
 
     var body: some View {
-        if imageLoader.images.isEmpty {
+        if imageLoader.images.isEmpty && imageLoader.isInitialLoad {
             DropZoneView()
         } else {
             HStack(spacing: 0) {

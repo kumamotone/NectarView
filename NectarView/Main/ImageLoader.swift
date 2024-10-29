@@ -23,6 +23,8 @@ class ImageLoader: ObservableObject {
 
     var zipEntryPaths: [String] = [] // for testing
 
+    @Published var isInitialLoad = true  // 追加
+
     // MARK: - Private properties
     private let imageExtensions = ["png", "jpg", "jpeg", "gif", "bmp", "tiff", "webp"]
     private var imageCache = NSCache<NSURL, NSImage>()
@@ -44,6 +46,7 @@ class ImageLoader: ObservableObject {
 
     // MARK: - Public methods
     func loadImages(from url: URL) {
+        isInitialLoad = false
         clearExistingData()
         clearZipData()
 
