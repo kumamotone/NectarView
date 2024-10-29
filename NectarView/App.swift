@@ -30,6 +30,7 @@ struct MainApp: App {
                 .sheet(isPresented: $isHelpPresented) {
                     HelpView()
                 }
+                .handlesExternalEvents(preferring: Set(arrayLiteral: "*"), allowing: Set(arrayLiteral: "*"))
                 .onOpenURL(perform: { url in
                     imageLoader.loadImages(from: url)
                 })

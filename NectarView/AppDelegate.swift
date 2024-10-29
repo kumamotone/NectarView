@@ -29,5 +29,14 @@ class AppDelegate: NSObject, NSApplicationDelegate {
     }
 
     func application(_ application: NSApplication, open urls: [URL]) {
+        if let window = NSApplication.shared.windows.first {
+            if let hostingView = window.contentView as? NSHostingView<ContentView> {
+                let contentView = hostingView.rootView
+                contentView.imageLoader.loadImages(from: urls[0])
+                
+                window.makeKeyAndOrderFront(nil)
+                NSApp.activate(ignoringOtherApps: true)
+            }
+        }
     }
 }
