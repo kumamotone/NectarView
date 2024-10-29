@@ -39,6 +39,7 @@
 		D0B295CE2CD19879007C3AAF /* image1.png in Resources */ = {isa = PBXBuildFile; fileRef = D0B295C92CD19878007C3AAF /* image1.png */; };
 		D0B295CF2CD19879007C3AAF /* image2.png in Resources */ = {isa = PBXBuildFile; fileRef = D0B295CA2CD19878007C3AAF /* image2.png */; };
 		D0B295D02CD19879007C3AAF /* image3.png in Resources */ = {isa = PBXBuildFile; fileRef = D0B295CB2CD19878007C3AAF /* image3.png */; };
+		D0B295D22CD19B1F007C3AAF /* ImageLoaderCurrentImageInfoTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D0B295D12CD19B1F007C3AAF /* ImageLoaderCurrentImageInfoTests.swift */; };
 		D0C2823C2CA85B5F0095D414 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = D0C2823B2CA85B5F0095D414 /* AppDelegate.swift */; };
 		D0C282402CA865300095D414 /* Localizable.xcstrings in Resources */ = {isa = PBXBuildFile; fileRef = D0C2823F2CA865300095D414 /* Localizable.xcstrings */; };
 		D0C282422CA8D6E50095D414 /* InstantTooltip.swift in Sources */ = {isa = PBXBuildFile; fileRef = D0C282412CA8D6E50095D414 /* InstantTooltip.swift */; };
@@ -100,6 +101,7 @@
 		D0B295C92CD19878007C3AAF /* image1.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = image1.png; sourceTree = "<group>"; };
 		D0B295CA2CD19878007C3AAF /* image2.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = image2.png; sourceTree = "<group>"; };
 		D0B295CB2CD19878007C3AAF /* image3.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = image3.png; sourceTree = "<group>"; };
+		D0B295D12CD19B1F007C3AAF /* ImageLoaderCurrentImageInfoTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageLoaderCurrentImageInfoTests.swift; sourceTree = "<group>"; };
 		D0C2823B2CA85B5F0095D414 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		D0C2823F2CA865300095D414 /* Localizable.xcstrings */ = {isa = PBXFileReference; lastKnownFileType = text.json.xcstrings; path = Localizable.xcstrings; sourceTree = "<group>"; };
 		D0C282412CA8D6E50095D414 /* InstantTooltip.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = InstantTooltip.swift; sourceTree = "<group>"; };
@@ -253,6 +255,7 @@
 				D0B295CC2CD19878007C3AAF /* TestData */,
 				D0B295C82CD19878007C3AAF /* TestData.zip */,
 				D0B295C52CD19873007C3AAF /* ImageLoaderBookmarkTests.swift */,
+				D0B295D12CD19B1F007C3AAF /* ImageLoaderCurrentImageInfoTests.swift */,
 				D0B295C42CD19873007C3AAF /* ImageLoaderWithRealFilesTests.swift */,
 				D0AABED52CA22D0F00878C45 /* NectarViewTests.swift */,
 				D04E2F472CAAEE4A000B45AD /* ImageLoaderTests.swift */,
@@ -458,6 +461,7 @@
 				D0B295C62CD19874007C3AAF /* ImageLoaderWithRealFilesTests.swift in Sources */,
 				D04E2F482CAAEE4A000B45AD /* ImageLoaderTests.swift in Sources */,
 				D0AABED62CA22D0F00878C45 /* NectarViewTests.swift in Sources */,
+				D0B295D22CD19B1F007C3AAF /* ImageLoaderCurrentImageInfoTests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
