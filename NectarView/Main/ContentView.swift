@@ -209,7 +209,7 @@ struct ContentView: View {
         })
         .applyContentViewModifiers(appSettings: appSettings, imageLoader: imageLoader)
         .onAppear {
-            KeyboardHandler.setupKeyboardHandler(for: self)
+            KeyboardHandler.setupKeyboardHandler(imageLoader: imageLoader, appSettings: appSettings)
             startMouseTracking()
             startTopControlsTimer()
         }

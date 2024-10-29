@@ -3,15 +3,13 @@ import AppKit
 import SwiftUI
 
 class KeyboardHandler {
-    static func setupKeyboardHandler(for contentView: ContentView) {
+    static func setupKeyboardHandler(imageLoader: ImageLoader, appSettings: AppSettings) {
         NSEvent.addLocalMonitorForEvents(matching: .keyDown) { event in
-            handleKeyPress(event: event, contentView: contentView)
+            handleKeyPress(event: event, imageLoader: imageLoader, appSettings: appSettings)
         }
     }
 
-    private static func handleKeyPress(event: NSEvent, contentView: ContentView) -> NSEvent? {
-        let imageLoader = contentView.imageLoader
-        let appSettings = contentView.appSettings
+    static func handleKeyPress(event: NSEvent, imageLoader: ImageLoader, appSettings: AppSettings) -> NSEvent? {
         let isLeftRightReversed = appSettings.isLeftRightKeyReversed
         let isSpreadView = appSettings.isSpreadViewEnabled
         let isRightToLeftReading = appSettings.isRightToLeftReading
