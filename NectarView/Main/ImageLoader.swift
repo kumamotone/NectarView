@@ -251,6 +251,20 @@ class ImageLoader: ObservableObject {
         updateCurrentImage()
     }
 
+    func getDisplayName(for url: URL, at index: Int) -> String {
+        if zipFileURL != nil {
+            let entryPath = zipEntryPaths[index]
+            let entryComponents = entryPath.split(separator: "|")
+            if entryComponents.count > 1 {
+                return String(entryComponents[1])
+            } else {
+                return (entryPath as NSString).lastPathComponent
+            }
+        } else {
+            return url.lastPathComponent
+        }
+    }
+
     // MARK: - Private methods
     private func clearExistingData() {
         images = []
