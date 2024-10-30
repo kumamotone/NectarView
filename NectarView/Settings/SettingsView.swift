@@ -9,7 +9,8 @@ struct SettingsView: View {
             CustomTabView(content: [
                 (title: NSLocalizedString("General", comment: "General tab"), icon: "gear", view: AnyView(GeneralSettingsView(appSettings: appSettings))),
                 (title: NSLocalizedString("Appearance", comment: "Appearance tab"), icon: "eyeglasses", view: AnyView(AppearanceSettingsView(appSettings: appSettings))),
-                (title: NSLocalizedString("Reading", comment: "Reading tab"), icon: "book", view: AnyView(ReadingSettingsView(appSettings: appSettings)))
+                (title: NSLocalizedString("Reading", comment: "Reading tab"), icon: "book", view: AnyView(ReadingSettingsView(appSettings: appSettings))),
+                (title: NSLocalizedString("Keyboard", comment: "Keyboard tab"), icon: "keyboard", view: AnyView(KeyboardSettingsView(appSettings: appSettings)))
             ])
             
             Button(NSLocalizedString("ResetSettings", comment: "ResetSettings")) {
@@ -67,7 +68,6 @@ struct ReadingSettingsView: View {
         Form {
             Toggle(NSLocalizedString("Enable Spread View", comment: "Enable spread view toggle"), isOn: $appSettings.isSpreadViewEnabled)
             Toggle(NSLocalizedString("Right to Left Reading", comment: "Right to left reading toggle"), isOn: $appSettings.isRightToLeftReading)
-            Toggle(NSLocalizedString("useLeftKeyToGoNextWhenSinglePageWhenSinglePage", comment: "Reverse left-right key direction"), isOn: $appSettings.useLeftKeyToGoNextWhenSinglePage)
             Toggle(NSLocalizedString("UseRealisticAppearance", comment: "Use realistic appearance toggle"), isOn: $appSettings.useRealisticAppearance)
         }
         .padding()

@@ -10,47 +10,36 @@ class KeyboardHandler {
     }
 
     static func handleKeyPress(event: NSEvent, imageLoader: ImageLoader, appSettings: AppSettings) -> NSEvent? {
-        let useLeftKeyToGoNextWhenSinglePage = appSettings.useLeftKeyToGoNextWhenSinglePage
-        let isSpreadView = appSettings.isSpreadViewEnabled
-        let isRightToLeftReading = appSettings.isRightToLeftReading
+        // 次のページ
+        if event.matchesShortcut(appSettings.nextPageShortcut) {
+            if appSettings.isSpreadViewEnabled && appSettings.isRightToLeftReading {
+                imageLoader.showPreviousImage()
+            } else {
+                imageLoader.showNextImage()
+            }
+            return nil
+        }
+        
+        // 前のページ
+        if event.matchesShortcut(appSettings.previousPageShortcut) {
+            if appSettings.isSpreadViewEnabled && appSettings.isRightToLeftReading {
+                imageLoader.showNextImage()
+            } else {
+                imageLoader.showPreviousImage()
+            }
+            return nil
+        }
 
+        // 他のキー操作
         switch event.keyCode {
-        case 126: // 上矢印キー
+        case Key.upArrow.rawValue:
             imageLoader.showPreviousImage()
             return nil
-        case 125: // 下矢印キー
+            
+        case Key.downArrow.rawValue:
             imageLoader.showNextImage()
             return nil
-        case 123: // 左矢印キー
-            if isSpreadView {
-                if isRightToLeftReading {
-                    imageLoader.showNextImage()
-                } else {
-                    imageLoader.showPreviousImage()
-                }
-            } else {
-                if useLeftKeyToGoNextWhenSinglePage {
-                    imageLoader.showNextImage()
-                } else {
-                    imageLoader.showPreviousImage()
-                }
-            }
-            return nil
-        case 124: // 右矢印キー
-            if isSpreadView {
-                if isRightToLeftReading {
-                    imageLoader.showPreviousImage()
-                } else {
-                    imageLoader.showNextImage()
-                }
-            } else {
-                if useLeftKeyToGoNextWhenSinglePage {
-                    imageLoader.showPreviousImage()
-                } else {
-                    imageLoader.showNextImage()
-                }
-            }
-            return nil
+            
         default:
             return event
         }

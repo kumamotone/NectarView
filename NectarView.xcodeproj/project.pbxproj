@@ -41,6 +41,9 @@
 		D0B295D02CD19879007C3AAF /* image3.png in Resources */ = {isa = PBXBuildFile; fileRef = D0B295CB2CD19878007C3AAF /* image3.png */; };
 		D0B295D22CD19B1F007C3AAF /* ImageLoaderCurrentImageInfoTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D0B295D12CD19B1F007C3AAF /* ImageLoaderCurrentImageInfoTests.swift */; };
 		D0B295D42CD19C28007C3AAF /* KeyboardHandlerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D0B295D32CD19C28007C3AAF /* KeyboardHandlerTests.swift */; };
+		D0B295D82CD1ABAA007C3AAF /* KeyboardShortcut.swift in Sources */ = {isa = PBXBuildFile; fileRef = D0B295D72CD1ABAA007C3AAF /* KeyboardShortcut.swift */; };
+		D0B295DA2CD1ABBF007C3AAF /* KeyboardSettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D0B295D92CD1ABBF007C3AAF /* KeyboardSettingsView.swift */; };
+		D0B295DC2CD1ABDB007C3AAF /* KeyboardHandler+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = D0B295DB2CD1ABDB007C3AAF /* KeyboardHandler+Extension.swift */; };
 		D0C2823C2CA85B5F0095D414 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = D0C2823B2CA85B5F0095D414 /* AppDelegate.swift */; };
 		D0C282402CA865300095D414 /* Localizable.xcstrings in Resources */ = {isa = PBXBuildFile; fileRef = D0C2823F2CA865300095D414 /* Localizable.xcstrings */; };
 		D0C282422CA8D6E50095D414 /* InstantTooltip.swift in Sources */ = {isa = PBXBuildFile; fileRef = D0C282412CA8D6E50095D414 /* InstantTooltip.swift */; };
@@ -104,6 +107,9 @@
 		D0B295CB2CD19878007C3AAF /* image3.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = image3.png; sourceTree = "<group>"; };
 		D0B295D12CD19B1F007C3AAF /* ImageLoaderCurrentImageInfoTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageLoaderCurrentImageInfoTests.swift; sourceTree = "<group>"; };
 		D0B295D32CD19C28007C3AAF /* KeyboardHandlerTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = KeyboardHandlerTests.swift; sourceTree = "<group>"; };
+		D0B295D72CD1ABAA007C3AAF /* KeyboardShortcut.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = KeyboardShortcut.swift; sourceTree = "<group>"; };
+		D0B295D92CD1ABBF007C3AAF /* KeyboardSettingsView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = KeyboardSettingsView.swift; sourceTree = "<group>"; };
+		D0B295DB2CD1ABDB007C3AAF /* KeyboardHandler+Extension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "KeyboardHandler+Extension.swift"; sourceTree = "<group>"; };
 		D0C2823B2CA85B5F0095D414 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		D0C2823F2CA865300095D414 /* Localizable.xcstrings */ = {isa = PBXFileReference; lastKnownFileType = text.json.xcstrings; path = Localizable.xcstrings; sourceTree = "<group>"; };
 		D0C282412CA8D6E50095D414 /* InstantTooltip.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = InstantTooltip.swift; sourceTree = "<group>"; };
@@ -173,6 +179,7 @@
 			children = (
 				D08EF1D62CAB235C00301FA8 /* Components */,
 				D0AABEC32CA22D0E00878C45 /* ContentView.swift */,
+				D0B295DB2CD1ABDB007C3AAF /* KeyboardHandler+Extension.swift */,
 				D08EF1DD2CAB26BE00301FA8 /* ContextMenu.swift */,
 				D07E8B1B2CA249D600C7E124 /* ImageLoader.swift */,
 				D0C4514C2CAC930E0057CDD5 /* ViewMode.swift */,
@@ -184,6 +191,8 @@
 		D08EF1D42CAB22F600301FA8 /* Settings */ = {
 			isa = PBXGroup;
 			children = (
+				D0B295D72CD1ABAA007C3AAF /* KeyboardShortcut.swift */,
+				D0B295D92CD1ABBF007C3AAF /* KeyboardSettingsView.swift */,
 				D07E8B292CA2597400C7E124 /* AppSettings.swift */,
 				D07E8B2B2CA2598E00C7E124 /* SettingsView.swift */,
 			);
@@ -431,6 +440,7 @@
 			files = (
 				D029CFA92CAC5E6500D2080C /* FileUtil.swift in Sources */,
 				D08EF1DA2CAB25F100301FA8 /* SliderPreviewView.swift in Sources */,
+				D0B295D82CD1ABAA007C3AAF /* KeyboardShortcut.swift in Sources */,
 				D029CFAE2CAC5FE100D2080C /* ErrorUtil.swift in Sources */,
 				D0C282422CA8D6E50095D414 /* InstantTooltip.swift in Sources */,
 				D0AABEC42CA22D0E00878C45 /* ContentView.swift in Sources */,
@@ -440,7 +450,9 @@
 				D029CFAC2CAC5F2000D2080C /* ArchiveUtil.swift in Sources */,
 				D0468D882CACCE170053E7F0 /* BookmarkManager.swift in Sources */,
 				D08EF19C2CAB142F00301FA8 /* NSColor+.swift in Sources */,
+				D0B295DA2CD1ABBF007C3AAF /* KeyboardSettingsView.swift in Sources */,
 				D0C4514D2CAC930E0057CDD5 /* ViewMode.swift in Sources */,
+				D0B295DC2CD1ABDB007C3AAF /* KeyboardHandler+Extension.swift in Sources */,
 				D08EF1DE2CAB26BE00301FA8 /* ContextMenu.swift in Sources */,
 				D07E8B1E2CA249D600C7E124 /* KeyboardHandler.swift in Sources */,
 				D08EF1D22CAB22D200301FA8 /* ImageDisplayView.swift in Sources */,

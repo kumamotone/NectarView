@@ -538,6 +538,9 @@
         }
       }
     },
+    "Keyboard" : {
+      "comment" : "Keyboard tab"
+    },
     "Keyboard Shortcuts" : {
       "localizations" : {
         "en" : {
@@ -701,6 +704,22 @@
         }
       }
     },
+    "PermissionRequired" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Permission Required"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "アクセス許可が必要です"
+          }
+        }
+      }
+    },
     "Please restart the application for the language change to take effect." : {
       "localizations" : {
         "en" : {
@@ -729,6 +748,22 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "フォルダを選択してください"
+          }
+        }
+      }
+    },
+    "PleaseCheckPermissionDialog" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "A permission dialog has been displayed. Please check your screen and grant access to continue."
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "アクセス許可のダイアログが表示されています。画面を確認して、アクセスを許可してください。"
           }
         }
       }
@@ -1200,9 +1235,6 @@
         }
       }
     },
-    "useLeftKeyToGoNextWhenSinglePageWhenSinglePage" : {
-      "comment" : "Reverse left-right key direction"
-    },
     "UseRealisticAppearance" : {
       "comment" : "Use realistic appearance toggle",
       "localizations" : {
@@ -1330,38 +1362,6 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "日本語"
-          }
-        }
-      }
-    },
-    "PermissionRequired": {
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Permission Required"
-          }
-        },
-        "ja": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "アクセス許可が必要です"
-          }
-        }
-      }
-    },
-    "PleaseCheckPermissionDialog": {
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "A permission dialog has been displayed. Please check your screen and grant access to continue."
-          }
-        },
-        "ja": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "アクセス許可のダイアログが表示されています。画面を確認して、アクセスを許可してください。"
           }
         }
       }

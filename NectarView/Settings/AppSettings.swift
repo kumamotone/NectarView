@@ -5,10 +5,54 @@ class AppSettings: ObservableObject {
     @AppStorage("controlBarColor") var controlBarColor: Color = Color.black.opacity(0.6)
     @AppStorage("isSpreadViewEnabled") var isSpreadViewEnabled: Bool = false
     @AppStorage("isRightToLeftReading") var isRightToLeftReading: Bool = false
-    @AppStorage("useLeftKeyToGoNextWhenSinglePage") var useLeftKeyToGoNextWhenSinglePage: Bool = true
     @Published var zoomFactor: CGFloat = 1.0
     @AppStorage("selectedLanguage") var selectedLanguage: String = "system"
     @AppStorage("useRealisticAppearance") var useRealisticAppearance: Bool = false
+    @AppStorage("customKeyboardShortcuts") private var customKeyboardShortcutsData: Data = Data()
+    @AppStorage("nextPageShortcut") private var nextPageShortcutData: Data = try! JSONEncoder().encode(KeyboardShortcut(key: .rightArrow, modifiers: []))
+    @AppStorage("previousPageShortcut") private var previousPageShortcutData: Data = try! JSONEncoder().encode(KeyboardShortcut(key: .leftArrow, modifiers: []))
+
+    var customKeyboardShortcuts: [String: String] {
+        get {
+            guard let decoded = try? JSONDecoder().decode([String: String].self, from: customKeyboardShortcutsData) else {
+                return [:]
+            }
+            return decoded
+        }
+        set {
+            if let encoded = try? JSONEncoder().encode(newValue) {
+                customKeyboardShortcutsData = encoded
+            }
+        }
+    }
+
+    var nextPageShortcut: KeyboardShortcut {
+        get {
+            if let decoded = try? JSONDecoder().decode(KeyboardShortcut.self, from: nextPageShortcutData) {
+                return decoded
+            }
+            return KeyboardShortcut(key: .rightArrow, modifiers: [])
+        }
+        set {
+            if let encoded = try? JSONEncoder().encode(newValue) {
+                nextPageShortcutData = encoded
+            }
+        }
+    }
+
+    var previousPageShortcut: KeyboardShortcut {
+        get {
+            if let decoded = try? JSONDecoder().decode(KeyboardShortcut.self, from: previousPageShortcutData) {
+                return decoded
+            }
+            return KeyboardShortcut(key: .leftArrow, modifiers: [])
+        }
+        set {
+            if let encoded = try? JSONEncoder().encode(newValue) {
+                previousPageShortcutData = encoded
+            }
+        }
+    }
 
     func changeLanguage(to language: String) {
         selectedLanguage = language
@@ -28,10 +72,11 @@ class AppSettings: ObservableObject {
         controlBarColor = Color.black.opacity(0.6)
         isSpreadViewEnabled = false
         isRightToLeftReading = false
-        useLeftKeyToGoNextWhenSinglePage = true
         zoomFactor = 1.0
         selectedLanguage = "system"
         useRealisticAppearance = false
+        nextPageShortcut = KeyboardShortcut(key: .rightArrow, modifiers: [])
+        previousPageShortcut = KeyboardShortcut(key: .leftArrow, modifiers: [])
         applyLanguageSetting()
     }
     
