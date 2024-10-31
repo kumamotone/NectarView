@@ -10,7 +10,7 @@ class KeyboardHandler {
     }
 
     static func handleKeyPress(event: NSEvent, imageLoader: ImageLoader, appSettings: AppSettings) -> NSEvent? {
-        // 次のページ
+        // ページ移動
         if event.matchesShortcut(appSettings.nextPageShortcut) {
             if appSettings.isSpreadViewEnabled && appSettings.isRightToLeftReading {
                 imageLoader.showPreviousImage()
@@ -20,7 +20,6 @@ class KeyboardHandler {
             return nil
         }
         
-        // 前のページ
         if event.matchesShortcut(appSettings.previousPageShortcut) {
             if appSettings.isSpreadViewEnabled && appSettings.isRightToLeftReading {
                 imageLoader.showNextImage()
@@ -30,7 +29,39 @@ class KeyboardHandler {
             return nil
         }
 
-        // 他のキー操作
+        // ブックマーク操作
+        if event.matchesShortcut(appSettings.addBookmarkShortcut) {
+            imageLoader.toggleBookmark()
+            return nil
+        }
+        
+        if event.matchesShortcut(appSettings.nextBookmarkShortcut) {
+            imageLoader.goToNextBookmark()
+            return nil
+        }
+        
+        if event.matchesShortcut(appSettings.previousBookmarkShortcut) {
+            imageLoader.goToPreviousBookmark()
+            return nil
+        }
+
+        // ズーム操作
+        if event.matchesShortcut(appSettings.zoomInShortcut) {
+            appSettings.zoomFactor *= 1.25
+            return nil
+        }
+        
+        if event.matchesShortcut(appSettings.zoomOutShortcut) {
+            appSettings.zoomFactor *= 0.8
+            return nil
+        }
+        
+        if event.matchesShortcut(appSettings.resetZoomShortcut) {
+            appSettings.zoomFactor = 1.0
+            return nil
+        }
+
+        // 他のキー操作（上下矢印は従来通り）
         switch event.keyCode {
         case Key.upArrow.rawValue:
             imageLoader.showPreviousImage()

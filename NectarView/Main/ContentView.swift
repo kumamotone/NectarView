@@ -202,6 +202,9 @@ struct ContentView: View {
                     isBookmarkListPresented: $isBookmarkListPresented
                 )
             }
+            .sheet(isPresented: $isBookmarkListPresented) {
+                BookmarkListView(imageLoader: imageLoader, isPresented: $isBookmarkListPresented)
+            }
         }
         .frame(minWidth: 400, minHeight: 400)
         .background(WindowAccessor { window in
@@ -209,7 +212,7 @@ struct ContentView: View {
         })
         .applyContentViewModifiers(appSettings: appSettings, imageLoader: imageLoader)
         .onAppear {
-            KeyboardHandler.setupKeyboardHandler(imageLoader: imageLoader, appSettings: appSettings)
+            setupKeyboardHandlers()
             startMouseTracking()
             startTopControlsTimer()
         }
@@ -221,9 +224,6 @@ struct ContentView: View {
         .navigationTitle(imageLoader.currentImageInfo)
         .sheet(isPresented: $isSettingsPresented) {
             SettingsView(appSettings: appSettings)
-        }
-        .sheet(isPresented: $isBookmarkListPresented) {
-            BookmarkListView(imageLoader: imageLoader, isPresented: $isBookmarkListPresented)
         }
         .onChange(of: appSettings.zoomFactor) { _, newValue in
             withAnimation(.spring()) {
@@ -356,6 +356,19 @@ struct ContentView: View {
     private func toggleSidebar() {
         withAnimation(.easeInOut(duration: 0.3)) {
             isSidebarVisible.toggle()
+        }
+    }
+
+    private func setupKeyboardHandlers() {
+        KeyboardHandler.setupKeyboardHandler(imageLoader: imageLoader, appSettings: appSettings)
+        
+        // ブックマークリストの表示制御用のイベントモニター
+        NSEvent.addLocalMonitorForEvents(matching: .keyDown) { event in
+            if event.matchesShortcut(appSettings.showBookmarkListShortcut) {
+                isBookmarkListPresented.toggle()
+                return nil
+            }
+            return event
         }
     }
 }

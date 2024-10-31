@@ -6,7 +6,7 @@ struct KeyboardSettingsView: View {
     
     var body: some View {
         Form {
-            Section {
+            Section(header: Text("Navigation")) {
                 VStack(alignment: .leading, spacing: 12) {
                     CustomizableShortcutRow(
                         title: "Next Page",
@@ -22,12 +22,65 @@ struct KeyboardSettingsView: View {
                     ) { newShortcut in
                         appSettings.previousPageShortcut = newShortcut
                     }
-                    KeyboardShortcutRow(title: "First Page", shortcut: "Home")
-                    KeyboardShortcutRow(title: "Last Page", shortcut: "End")
-                    KeyboardShortcutRow(title: "Add/Remove Bookmark", shortcut: "⌘B")
-                    KeyboardShortcutRow(title: "Next Bookmark", shortcut: "⌘]")
-                    KeyboardShortcutRow(title: "Previous Bookmark", shortcut: "⌘[")
-                    KeyboardShortcutRow(title: "Show Bookmark List", shortcut: "⌘E")
+                }
+            }
+            
+            Section(header: Text("Bookmarks")) {
+                VStack(alignment: .leading, spacing: 12) {
+                    CustomizableShortcutRow(
+                        title: "Add/Remove Bookmark",
+                        shortcut: appSettings.addBookmarkShortcut,
+                        isRecording: $isRecording
+                    ) { newShortcut in
+                        appSettings.addBookmarkShortcut = newShortcut
+                    }
+                    CustomizableShortcutRow(
+                        title: "Next Bookmark",
+                        shortcut: appSettings.nextBookmarkShortcut,
+                        isRecording: $isRecording
+                    ) { newShortcut in
+                        appSettings.nextBookmarkShortcut = newShortcut
+                    }
+                    CustomizableShortcutRow(
+                        title: "Previous Bookmark",
+                        shortcut: appSettings.previousBookmarkShortcut,
+                        isRecording: $isRecording
+                    ) { newShortcut in
+                        appSettings.previousBookmarkShortcut = newShortcut
+                    }
+                    CustomizableShortcutRow(
+                        title: "Show Bookmark List",
+                        shortcut: appSettings.showBookmarkListShortcut,
+                        isRecording: $isRecording
+                    ) { newShortcut in
+                        appSettings.showBookmarkListShortcut = newShortcut
+                    }
+                }
+            }
+            
+            Section(header: Text("Zoom")) {
+                VStack(alignment: .leading, spacing: 12) {
+                    CustomizableShortcutRow(
+                        title: "Zoom In",
+                        shortcut: appSettings.zoomInShortcut,
+                        isRecording: $isRecording
+                    ) { newShortcut in
+                        appSettings.zoomInShortcut = newShortcut
+                    }
+                    CustomizableShortcutRow(
+                        title: "Zoom Out",
+                        shortcut: appSettings.zoomOutShortcut,
+                        isRecording: $isRecording
+                    ) { newShortcut in
+                        appSettings.zoomOutShortcut = newShortcut
+                    }
+                    CustomizableShortcutRow(
+                        title: "Reset Zoom",
+                        shortcut: appSettings.resetZoomShortcut,
+                        isRecording: $isRecording
+                    ) { newShortcut in
+                        appSettings.resetZoomShortcut = newShortcut
+                    }
                 }
             }
         }

@@ -11,6 +11,13 @@ class AppSettings: ObservableObject {
     @AppStorage("customKeyboardShortcuts") private var customKeyboardShortcutsData: Data = Data()
     @AppStorage("nextPageShortcut") private var nextPageShortcutData: Data = try! JSONEncoder().encode(KeyboardShortcut(key: .rightArrow, modifiers: []))
     @AppStorage("previousPageShortcut") private var previousPageShortcutData: Data = try! JSONEncoder().encode(KeyboardShortcut(key: .leftArrow, modifiers: []))
+    @AppStorage("addBookmarkShortcut") private var addBookmarkShortcutData: Data = try! JSONEncoder().encode(KeyboardShortcut(key: .b, modifiers: .command))
+    @AppStorage("nextBookmarkShortcut") private var nextBookmarkShortcutData: Data = try! JSONEncoder().encode(KeyboardShortcut(key: .rightBracket, modifiers: .command))
+    @AppStorage("previousBookmarkShortcut") private var previousBookmarkShortcutData: Data = try! JSONEncoder().encode(KeyboardShortcut(key: .leftBracket, modifiers: .command))
+    @AppStorage("showBookmarkListShortcut") private var showBookmarkListShortcutData: Data = try! JSONEncoder().encode(KeyboardShortcut(key: .e, modifiers: .command))
+    @AppStorage("zoomInShortcut") private var zoomInShortcutData: Data = try! JSONEncoder().encode(KeyboardShortcut(key: .equal, modifiers: .command))
+    @AppStorage("zoomOutShortcut") private var zoomOutShortcutData: Data = try! JSONEncoder().encode(KeyboardShortcut(key: .minus, modifiers: .command))
+    @AppStorage("resetZoomShortcut") private var resetZoomShortcutData: Data = try! JSONEncoder().encode(KeyboardShortcut(key: .zero, modifiers: .command))
 
     var customKeyboardShortcuts: [String: String] {
         get {
@@ -54,6 +61,104 @@ class AppSettings: ObservableObject {
         }
     }
 
+    var addBookmarkShortcut: KeyboardShortcut {
+        get {
+            if let decoded = try? JSONDecoder().decode(KeyboardShortcut.self, from: addBookmarkShortcutData) {
+                return decoded
+            }
+            return KeyboardShortcut(key: .b, modifiers: .command)
+        }
+        set {
+            if let encoded = try? JSONEncoder().encode(newValue) {
+                addBookmarkShortcutData = encoded
+            }
+        }
+    }
+
+    var nextBookmarkShortcut: KeyboardShortcut {
+        get {
+            if let decoded = try? JSONDecoder().decode(KeyboardShortcut.self, from: nextBookmarkShortcutData) {
+                return decoded
+            }
+            return KeyboardShortcut(key: .rightBracket, modifiers: .command)
+        }
+        set {
+            if let encoded = try? JSONEncoder().encode(newValue) {
+                nextBookmarkShortcutData = encoded
+            }
+        }
+    }
+
+    var previousBookmarkShortcut: KeyboardShortcut {
+        get {
+            if let decoded = try? JSONDecoder().decode(KeyboardShortcut.self, from: previousBookmarkShortcutData) {
+                return decoded
+            }
+            return KeyboardShortcut(key: .leftBracket, modifiers: .command)
+        }
+        set {
+            if let encoded = try? JSONEncoder().encode(newValue) {
+                previousBookmarkShortcutData = encoded
+            }
+        }
+    }
+
+    var showBookmarkListShortcut: KeyboardShortcut {
+        get {
+            if let decoded = try? JSONDecoder().decode(KeyboardShortcut.self, from: showBookmarkListShortcutData) {
+                return decoded
+            }
+            return KeyboardShortcut(key: .e, modifiers: .command)
+        }
+        set {
+            if let encoded = try? JSONEncoder().encode(newValue) {
+                showBookmarkListShortcutData = encoded
+            }
+        }
+    }
+
+    var zoomInShortcut: KeyboardShortcut {
+        get {
+            if let decoded = try? JSONDecoder().decode(KeyboardShortcut.self, from: zoomInShortcutData) {
+                return decoded
+            }
+            return KeyboardShortcut(key: .equal, modifiers: .command)
+        }
+        set {
+            if let encoded = try? JSONEncoder().encode(newValue) {
+                zoomInShortcutData = encoded
+            }
+        }
+    }
+
+    var zoomOutShortcut: KeyboardShortcut {
+        get {
+            if let decoded = try? JSONDecoder().decode(KeyboardShortcut.self, from: zoomOutShortcutData) {
+                return decoded
+            }
+            return KeyboardShortcut(key: .minus, modifiers: .command)
+        }
+        set {
+            if let encoded = try? JSONEncoder().encode(newValue) {
+                zoomOutShortcutData = encoded
+            }
+        }
+    }
+
+    var resetZoomShortcut: KeyboardShortcut {
+        get {
+            if let decoded = try? JSONDecoder().decode(KeyboardShortcut.self, from: resetZoomShortcutData) {
+                return decoded
+            }
+            return KeyboardShortcut(key: .zero, modifiers: .command)
+        }
+        set {
+            if let encoded = try? JSONEncoder().encode(newValue) {
+                resetZoomShortcutData = encoded
+            }
+        }
+    }
+
     func changeLanguage(to language: String) {
         selectedLanguage = language
         applyLanguageSetting()
@@ -77,6 +182,13 @@ class AppSettings: ObservableObject {
         useRealisticAppearance = false
         nextPageShortcut = KeyboardShortcut(key: .rightArrow, modifiers: [])
         previousPageShortcut = KeyboardShortcut(key: .leftArrow, modifiers: [])
+        addBookmarkShortcut = KeyboardShortcut(key: .b, modifiers: .command)
+        nextBookmarkShortcut = KeyboardShortcut(key: .rightBracket, modifiers: .command)
+        previousBookmarkShortcut = KeyboardShortcut(key: .leftBracket, modifiers: .command)
+        showBookmarkListShortcut = KeyboardShortcut(key: .e, modifiers: .command)
+        zoomInShortcut = KeyboardShortcut(key: .equal, modifiers: .command)
+        zoomOutShortcut = KeyboardShortcut(key: .minus, modifiers: .command)
+        resetZoomShortcut = KeyboardShortcut(key: .zero, modifiers: .command)
         applyLanguageSetting()
     }
     
