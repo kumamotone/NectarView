@@ -29,6 +29,7 @@
 		D08EF1DA2CAB25F100301FA8 /* SliderPreviewView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D08EF1D92CAB25F100301FA8 /* SliderPreviewView.swift */; };
 		D08EF1DC2CAB261B00301FA8 /* WindowAccessor.swift in Sources */ = {isa = PBXBuildFile; fileRef = D08EF1DB2CAB261B00301FA8 /* WindowAccessor.swift */; };
 		D08EF1DE2CAB26BE00301FA8 /* ContextMenu.swift in Sources */ = {isa = PBXBuildFile; fileRef = D08EF1DD2CAB26BE00301FA8 /* ContextMenu.swift */; };
+		D092FC852CD5FF5100508BCF /* FilterMenuView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D092FC842CD5FF5100508BCF /* FilterMenuView.swift */; };
 		D0AABEC42CA22D0E00878C45 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D0AABEC32CA22D0E00878C45 /* ContentView.swift */; };
 		D0AABEC82CA22D0F00878C45 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = D0AABEC72CA22D0F00878C45 /* Assets.xcassets */; };
 		D0AABED62CA22D0F00878C45 /* NectarViewTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D0AABED52CA22D0F00878C45 /* NectarViewTests.swift */; };
@@ -88,6 +89,7 @@
 		D08EF1D92CAB25F100301FA8 /* SliderPreviewView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SliderPreviewView.swift; sourceTree = "<group>"; };
 		D08EF1DB2CAB261B00301FA8 /* WindowAccessor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WindowAccessor.swift; sourceTree = "<group>"; };
 		D08EF1DD2CAB26BE00301FA8 /* ContextMenu.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContextMenu.swift; sourceTree = "<group>"; };
+		D092FC842CD5FF5100508BCF /* FilterMenuView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FilterMenuView.swift; sourceTree = "<group>"; };
 		D0AABEBE2CA22D0E00878C45 /* NectarView.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = NectarView.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		D0AABEC32CA22D0E00878C45 /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
 		D0AABEC72CA22D0F00878C45 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
@@ -195,6 +197,7 @@
 			children = (
 				D08EF1CF2CAB22B000301FA8 /* TopControlsView.swift */,
 				D0B295C22CD19809007C3AAF /* SidebarView.swift */,
+				D092FC842CD5FF5100508BCF /* FilterMenuView.swift */,
 				D08EF1D12CAB22D200301FA8 /* ImageDisplayView.swift */,
 				D08EF1CD2CAB228200301FA8 /* BottomControlView.swift */,
 				D08EF1D92CAB25F100301FA8 /* SliderPreviewView.swift */,
@@ -440,6 +443,7 @@
 				D029CFAC2CAC5F2000D2080C /* ArchiveUtil.swift in Sources */,
 				D0468D882CACCE170053E7F0 /* BookmarkManager.swift in Sources */,
 				D08EF19C2CAB142F00301FA8 /* NSColor+.swift in Sources */,
+				D092FC852CD5FF5100508BCF /* FilterMenuView.swift in Sources */,
 				D0C4514D2CAC930E0057CDD5 /* ViewMode.swift in Sources */,
 				D08EF1DE2CAB26BE00301FA8 /* ContextMenu.swift in Sources */,
 				D07E8B1E2CA249D600C7E124 /* KeyboardHandler.swift in Sources */,

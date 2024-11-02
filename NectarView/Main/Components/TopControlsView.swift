@@ -26,6 +26,9 @@ struct TopControlsView: View {
                 BookmarkButton(imageLoader: imageLoader)
                 ViewModeButton(appSettings: appSettings, imageLoader: imageLoader)
                 ReadingDirectionButton(appSettings: appSettings, imageLoader: imageLoader)
+                FilterMenuView(imageLoader: imageLoader)
+                    .buttonStyle(TopControlButtonStyle())
+                    .instantTooltip(NSLocalizedString("Image Filter", comment: ""))
             }
             .padding(.top, 10)
             .padding(.horizontal, 10)

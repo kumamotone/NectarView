@@ -194,4 +194,19 @@ class ImageLoaderTests: XCTestCase {
             XCTAssertNil(imageLoader.currentImages.1)
         }
     }
+
+    func testImageFilters() {
+        let imageLoader = ImageLoader()
+        
+        // フィルタなしの状態を確認
+        XCTAssertEqual(imageLoader.currentFilter, .none)
+        
+        // フィルタを変更
+        imageLoader.updateFilter(.sepia)
+        XCTAssertEqual(imageLoader.currentFilter, .sepia)
+        
+        // フィルタをリセット
+        imageLoader.updateFilter(.none)
+        XCTAssertEqual(imageLoader.currentFilter, .none)
+    }
 }

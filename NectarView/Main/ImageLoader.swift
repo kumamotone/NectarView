@@ -3,6 +3,50 @@ import AppKit
 import ZIPFoundation
 import SwiftUI
 import PDFKit
+import CoreImage
+
+enum ImageFilter: String, CaseIterable {
+    case none = "None"
+    case sepia = "Sepia"
+    case mono = "Mono"
+    case noir = "Noir"
+    case invert = "Invert"
+    case vibrant = "Vibrant"
+    case fade = "Fade"
+    case chrome = "Chrome"
+    case instant = "Instant"
+    case process = "Process"
+    case tonal = "Tonal"
+    case transfer = "Transfer"
+    
+    var filterName: String? {
+        switch self {
+        case .none: return nil
+        case .sepia: return "CISepiaTone"
+        case .mono: return "CIPhotoEffectMono"
+        case .noir: return "CIPhotoEffectNoir"
+        case .invert: return "CIColorInvert"
+        case .vibrant: return "CIVibrance"
+        case .fade: return "CIPhotoEffectFade"
+        case .chrome: return "CIPhotoEffectChrome"
+        case .instant: return "CIPhotoEffectInstant"
+        case .process: return "CIPhotoEffectProcess"
+        case .tonal: return "CIPhotoEffectTonal"
+        case .transfer: return "CIPhotoEffectTransfer"
+        }
+    }
+    
+    var parameters: [String: Any] {
+        switch self {
+        case .sepia:
+            return [kCIInputIntensityKey: 1.0]
+        case .vibrant:
+            return [kCIInputAmountKey: 1.0]
+        default:
+            return [:]
+        }
+    }
+}
 
 class ImageLoader: ObservableObject {
     // MARK: - Published properties
@@ -24,6 +68,9 @@ class ImageLoader: ObservableObject {
     var zipEntryPaths: [String] = [] // for testing
 
     @Published var isInitialLoad = true  // 追加
+
+    @Published var currentFilter: ImageFilter = .none
+    private let context = CIContext()
 
     // MARK: - Private properties
     private let imageExtensions = ["png", "jpg", "jpeg", "gif", "bmp", "tiff", "webp"]
@@ -63,10 +110,14 @@ class ImageLoader: ObservableObject {
     }
 
     @MainActor func getImage(for url: URL) -> NSImage? {
-        if let cachedImage = imageCache.object(forKey: url as NSURL) {
+        let cacheKey = URL(string: "\(url.absoluteString)_\(currentFilter.rawValue)")!
+        
+        if let cachedImage = imageCache.object(forKey: cacheKey as NSURL) {
             return cachedImage
         }
-
+        
+        let originalImage: NSImage?
+        
         if url.scheme == "pdf" {
             guard let pdfDocument = currentPDFDocument,
                   let pageNumber = Int(url.host ?? ""),
@@ -84,9 +135,7 @@ class ImageLoader: ObservableObject {
             
             imageCache.setObject(image, forKey: url as NSURL)
             return image
-        }
-
-        if let zipArchive = currentZipArchive, zipFileURL != nil {
+        } else if let zipArchive = currentZipArchive, zipFileURL != nil {
             let index = images.firstIndex(of: url) ?? -1
             if index >= 0 && index < zipEntryPaths.count {
                 let entryPath = zipEntryPaths[index]
@@ -105,7 +154,10 @@ class ImageLoader: ObservableObject {
                             }
 
                             if let image = NSImage(data: imageData) {
-                                imageCache.setObject(image, forKey: url as NSURL)
+                                if let filteredImage = applyFilter(to: image) {
+                                    imageCache.setObject(filteredImage, forKey: cacheKey as NSURL)
+                                    return filteredImage
+                                }
                                 return image
                             }
                         }
@@ -120,7 +172,10 @@ class ImageLoader: ObservableObject {
                         }
 
                         if let image = NSImage(data: imageData) {
-                            imageCache.setObject(image, forKey: url as NSURL)
+                            if let filteredImage = applyFilter(to: image) {
+                                imageCache.setObject(filteredImage, forKey: cacheKey as NSURL)
+                                return filteredImage
+                            }
                             return image
                         }
                     }
@@ -129,9 +184,12 @@ class ImageLoader: ObservableObject {
                 }
             }
         } else {
-            // 通常のファイルシステム上の像の場合
+            // 通常のファイルシステム上の画像の場合
             if let image = NSImage(contentsOf: url) {
-                imageCache.setObject(image, forKey: url as NSURL)
+                if let filteredImage = applyFilter(to: image) {
+                    imageCache.setObject(filteredImage, forKey: cacheKey as NSURL)
+                    return filteredImage
+                }
                 return image
             }
         }
@@ -298,7 +356,7 @@ class ImageLoader: ObservableObject {
                        (imageExtensions.contains(entryPathExtension) || entryPathExtension == "zip")
             }.sorted { $0.path.localizedStandardCompare($1.path) == .orderedAscending }
 
-            // 書庫内書庫の処理
+            // ��庫内書庫の処理
             for entry in zipImageEntries where (entry.path as NSString).pathExtension.lowercased() == "zip" {
                 if let nestedArchive = try? archive.extractArchive(from: entry) {
                     nestedArchives[entry.path] = nestedArchive
@@ -552,5 +610,37 @@ class ImageLoader: ObservableObject {
             print("Failed to load PDF")
             ErrorUtil.showAlert(message: NSLocalizedString("FailedToLoadPDF", comment: ""))
         }
+    }
+
+    private func applyFilter(to image: NSImage) -> NSImage? {
+        guard currentFilter != .none,
+              let filterName = currentFilter.filterName,
+              let cgImage = image.cgImage(forProposedRect: nil, context: nil, hints: nil) else {
+            return image
+        }
+        
+        let ciImage = CIImage(cgImage: cgImage)
+        guard let filter = CIFilter(name: filterName) else { return image }
+        
+        filter.setValue(ciImage, forKey: kCIInputImageKey)
+        
+        // フィルタ固有のパラメータを設定
+        for (key, value) in currentFilter.parameters {
+            filter.setValue(value, forKey: key)
+        }
+        
+        guard let outputImage = filter.outputImage,
+              let cgOutput = context.createCGImage(outputImage, from: outputImage.extent) else {
+            return image
+        }
+        
+        return NSImage(cgImage: cgOutput, size: image.size)
+    }
+
+    func updateFilter(_ filter: ImageFilter) {
+        currentFilter = filter
+        // キャッシュをクリアして再描画を強制
+        imageCache.removeAllObjects()
+        objectWillChange.send()
     }
 }

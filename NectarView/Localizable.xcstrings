@@ -286,6 +286,24 @@
         }
       }
     },
+    "Chrome" : {
+      "comment" : "Chrome filter",
+      "extractionState" : "stale",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Chrome"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "クローム"
+          }
+        }
+      }
+    },
     "ControlBarColor" : {
       "comment" : "ControlBarColor",
       "localizations" : {
@@ -468,6 +486,24 @@
         }
       }
     },
+    "Fade" : {
+      "comment" : "Fade filter",
+      "extractionState" : "stale",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Fade"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "フェード"
+          }
+        }
+      }
+    },
     "Failed to read the file. Please make sure the file exists." : {
       "localizations" : {
         "en" : {
@@ -538,6 +574,59 @@
         }
       }
     },
+    "Image Filter" : {
+      "comment" : "Image Filter menu tooltip",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Image Filter"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "画像フィルタ"
+          }
+        }
+      }
+    },
+    "Instant" : {
+      "comment" : "Instant filter",
+      "extractionState" : "stale",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Instant"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "インスタント"
+          }
+        }
+      }
+    },
+    "Invert" : {
+      "comment" : "Invert filter",
+      "extractionState" : "stale",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Invert"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "色反転"
+          }
+        }
+      }
+    },
     "Keyboard Shortcuts" : {
       "localizations" : {
         "en" : {
@@ -566,6 +655,24 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "言語が変更されました"
+          }
+        }
+      }
+    },
+    "Mono" : {
+      "comment" : "Mono filter",
+      "extractionState" : "stale",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Mono"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "モノクロ"
           }
         }
       }
@@ -648,6 +755,42 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "次のブックマークへ"
+          }
+        }
+      }
+    },
+    "Noir" : {
+      "comment" : "Noir filter",
+      "extractionState" : "stale",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Noir"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "ノワール"
+          }
+        }
+      }
+    },
+    "None" : {
+      "comment" : "No filter",
+      "extractionState" : "stale",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "None"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "フィルタなし"
           }
         }
       }
@@ -794,6 +937,24 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "問題のファイルパス: %@"
+          }
+        }
+      }
+    },
+    "Process" : {
+      "comment" : "Process filter",
+      "extractionState" : "stale",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Process"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "プロセス"
           }
         }
       }
@@ -982,6 +1143,24 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "言語を選択"
+          }
+        }
+      }
+    },
+    "Sepia" : {
+      "comment" : "Sepia filter",
+      "extractionState" : "stale",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Sepia"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "セピア"
           }
         }
       }
@@ -1198,6 +1377,42 @@
         }
       }
     },
+    "Tonal" : {
+      "comment" : "Tonal filter",
+      "extractionState" : "stale",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Tonal"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "トーン"
+          }
+        }
+      }
+    },
+    "Transfer" : {
+      "comment" : "Transfer filter",
+      "extractionState" : "stale",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Transfer"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "転写"
+          }
+        }
+      }
+    },
     "UnsupportedFileFormat" : {
       "localizations" : {
         "en" : {
@@ -1257,6 +1472,24 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "リアルな外観を使用（見開きモード時）"
+          }
+        }
+      }
+    },
+    "Vibrant" : {
+      "comment" : "Vibrant filter",
+      "extractionState" : "stale",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Vibrant"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "鮮やか"
           }
         }
       }
