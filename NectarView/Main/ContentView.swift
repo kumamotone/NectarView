@@ -121,6 +121,8 @@ struct ContentView: View {
                             HStack(spacing: 0) {
                                 LinearGradient(gradient: Gradient(colors: [Color.white.opacity(isLeftCursorHovered ? 0.2 : 0), Color.clear]), startPoint: .leading, endPoint: .trailing)
                                     .frame(width: geometry.size.width * 0.15)
+                                    .frame(maxHeight: geometry.size.height * 0.4)
+                                    .frame(maxHeight: .infinity)
                                     .contentShape(Rectangle())
                                     .onTapGesture {
                                         if imageLoader.viewMode != .spreadRightToLeft || (imageLoader.viewMode == .single && appSettings.useLeftKeyToGoNextWhenSinglePage) {
@@ -144,6 +146,8 @@ struct ContentView: View {
                                 Spacer()
                                 LinearGradient(gradient: Gradient(colors: [Color.clear, Color.white.opacity(isRightCursorHovered ? 0.2 : 0)]), startPoint: .leading, endPoint: .trailing)
                                     .frame(width: geometry.size.width * 0.15)
+                                    .frame(maxHeight: geometry.size.height * 0.4)
+                                    .frame(maxHeight: .infinity)
                                     .contentShape(Rectangle())
                                     .onTapGesture {
                                         if imageLoader.viewMode != .spreadRightToLeft || (imageLoader.viewMode == .single && appSettings.useLeftKeyToGoNextWhenSinglePage) {
@@ -293,7 +297,7 @@ struct ContentView: View {
         }
     }
 
-    // 自動ページめくりの停止
+    // 自動ページ���くりの停止
     private func stopAutoScroll() {
         isAutoScrolling = false
         autoScrollTimer?.invalidate()
