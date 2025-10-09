@@ -471,6 +471,7 @@
       }
     },
     "Error loading ZIP file: (error.localizedDescription)" : {
+      "extractionState" : "stale",
       "localizations" : {
         "en" : {
           "stringUnit" : {
