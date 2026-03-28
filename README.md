@@ -119,7 +119,7 @@ Build and run with `⌘R` in Xcode.
 
 ### Dependencies (via Swift Package Manager)
 - [ZIPFoundation](https://github.com/weichsel/ZIPFoundation) — ZIP archive reading
-- [XADMaster (Swift)](https://github.com/kumamotone/XADMaster-Swift) — RAR, 7z, and other archive formats
+- [XADMasterSwift](https://github.com/kumamotone/XADMasterSwift) — RAR, 7z, and other archive formats
 
 ---
 
