@@ -73,6 +73,37 @@
         <dict>
             <key>CFBundleTypeExtensions</key>
             <array>
+                <string>rar</string>
+                <string>7z</string>
+                <string>tar</string>
+                <string>gz</string>
+                <string>bz2</string>
+                <string>xz</string>
+                <string>lha</string>
+                <string>lzh</string>
+                <string>cab</string>
+                <string>sit</string>
+                <string>sitx</string>
+            </array>
+            <key>CFBundleTypeName</key>
+            <string>Archive</string>
+            <key>CFBundleTypeRole</key>
+            <string>Viewer</string>
+            <key>LSHandlerRank</key>
+            <string>Alternate</string>
+            <key>LSItemContentTypes</key>
+            <array>
+                <string>com.rarlab.rar-archive</string>
+                <string>org.7-zip.7-zip-archive</string>
+                <string>public.tar-archive</string>
+                <string>org.gnu.gnu-zip-archive</string>
+                <string>public.bzip2-archive</string>
+                <string>org.tukaani.xz-archive</string>
+            </array>
+        </dict>
+        <dict>
+            <key>CFBundleTypeExtensions</key>
+            <array>
                 <string>png</string>
                 <string>jpg</string>
                 <string>jpeg</string>
@@ -104,6 +135,12 @@
             <string>MyDocument</string>
         </dict>
     </array>
+    <key>CFBundleDisplayName</key>
+    <string>NectarView</string>
+    <key>CFBundleShortVersionString</key>
+    <string>1.0</string>
+    <key>CFBundleVersion</key>
+    <string>1</string>
     <key>LSApplicationCategoryType</key>
     <string>public.app-category.utilities</string>
     <key>UTImportedTypeDeclarations</key>

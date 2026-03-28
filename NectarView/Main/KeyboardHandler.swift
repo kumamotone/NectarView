@@ -3,6 +3,11 @@ import AppKit
 import SwiftUI
 
 class KeyboardHandler {
+    private static let keyCodeUpArrow: UInt16 = 126
+    private static let keyCodeDownArrow: UInt16 = 125
+    private static let keyCodeLeftArrow: UInt16 = 123
+    private static let keyCodeRightArrow: UInt16 = 124
+
     static func setupKeyboardHandler(imageLoader: ImageLoader, appSettings: AppSettings) {
         NSEvent.addLocalMonitorForEvents(matching: .keyDown) { event in
             handleKeyPress(event: event, imageLoader: imageLoader, appSettings: appSettings)
@@ -15,13 +20,13 @@ class KeyboardHandler {
         let isRightToLeftReading = appSettings.isRightToLeftReading
 
         switch event.keyCode {
-        case 126: // 上矢印キー
+        case keyCodeUpArrow:
             imageLoader.showPreviousImage()
             return nil
-        case 125: // 下矢印キー
+        case keyCodeDownArrow:
             imageLoader.showNextImage()
             return nil
-        case 123: // 左矢印キー
+        case keyCodeLeftArrow:
             if isSpreadView {
                 if isRightToLeftReading {
                     imageLoader.showNextImage()
@@ -36,7 +41,7 @@ class KeyboardHandler {
                 }
             }
             return nil
-        case 124: // 右矢印キー
+        case keyCodeRightArrow:
             if isSpreadView {
                 if isRightToLeftReading {
                     imageLoader.showPreviousImage()

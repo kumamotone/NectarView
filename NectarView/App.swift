@@ -1,10 +1,8 @@
 import SwiftUI
-import SwiftData
 
 @main
 struct MainApp: App {
     @NSApplicationDelegateAdaptor(AppDelegate.self) var appDelegate
-    @State private var isSettingsPresented = false
     @State private var isBookmarkListPresented = false
     @State private var isHelpPresented = false
     @StateObject private var appSettings = AppSettings()
@@ -21,9 +19,6 @@ struct MainApp: App {
                 .onAppear {
                     imageLoader.updateViewMode(appSettings: appSettings)
                 }
-                .sheet(isPresented: $isSettingsPresented) {
-                    SettingsView(appSettings: appSettings)
-                }
                 .sheet(isPresented: $isBookmarkListPresented) {
                     BookmarkListView(imageLoader: imageLoader, isPresented: $isBookmarkListPresented)
                 }
@@ -36,12 +31,7 @@ struct MainApp: App {
                 })
         }
         .commands {
-            CommandGroup(replacing: .appSettings) {
-                Button(NSLocalizedString("Settings", comment: "")) {
-                    isSettingsPresented = true
-                }
-                .keyboardShortcut(",", modifiers: .command)
-            }
+            CommandGroup(replacing: .textEditing) { }
             CommandGroup(replacing: .newItem) {
                 Button(NSLocalizedString("Open", comment: "")) {
                     imageLoader.openFile()
@@ -126,6 +116,10 @@ struct MainApp: App {
                     isHelpPresented = true
                 }
             }
+        }
+
+        Settings {
+            SettingsView()
         }
     }
 }

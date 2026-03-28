@@ -7,7 +7,7 @@ struct BookmarkListView: View {
     var body: some View {
         VStack {
             HStack {
-                Text("Bookmarks")
+                Text(NSLocalizedString("Bookmarks", comment: "Bookmarks"))
                     .font(.headline)
                 Spacer()
                 Button(action: {
@@ -26,7 +26,7 @@ struct BookmarkListView: View {
                         isPresented = false
                     }) {
                         HStack {
-                            Text("Page \(index + 1)")
+                            Text(String(format: NSLocalizedString("Page %d", comment: "Page number"), index + 1))
                             Spacer()
                             if let image = imageLoader.getImage(for: imageLoader.images[index]) {
                                 Image(nsImage: image)

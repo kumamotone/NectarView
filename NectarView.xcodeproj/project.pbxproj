@@ -3,19 +3,18 @@
 	archiveVersion = 1;
 	classes = {
 	};
-	objectVersion = 56;
+	objectVersion = 60;
 	objects = {
 
 /* Begin PBXBuildFile section */
-		D00E7DF62CC1B756007F3578 /* CustomTabView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D00E7DF52CC1B756007F3578 /* CustomTabView.swift */; };
 		D00E7DF82CC1BB6C007F3578 /* Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = D00E7DF72CC1BB6C007F3578 /* Info.plist */; };
 		D00E7DFC2CC1C3DB007F3578 /* HelpView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D00E7DFA2CC1C3DB007F3578 /* HelpView.swift */; };
 		D029CFA92CAC5E6500D2080C /* FileUtil.swift in Sources */ = {isa = PBXBuildFile; fileRef = D029CFA82CAC5E6500D2080C /* FileUtil.swift */; };
 		D029CFAC2CAC5F2000D2080C /* ArchiveUtil.swift in Sources */ = {isa = PBXBuildFile; fileRef = D029CFAB2CAC5F2000D2080C /* ArchiveUtil.swift */; };
 		D029CFAE2CAC5FE100D2080C /* ErrorUtil.swift in Sources */ = {isa = PBXBuildFile; fileRef = D029CFAD2CAC5FE100D2080C /* ErrorUtil.swift */; };
+		D033C51E2F77980000288910 /* XADMasterSwift in Frameworks */ = {isa = PBXBuildFile; productRef = D033C51D2F77980000288910 /* XADMasterSwift */; };
 		D0468D882CACCE170053E7F0 /* BookmarkManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = D0468D872CACCE170053E7F0 /* BookmarkManager.swift */; };
 		D04E2F482CAAEE4A000B45AD /* ImageLoaderTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D04E2F472CAAEE4A000B45AD /* ImageLoaderTests.swift */; };
-		D07E8B102CA22E8B00C7E124 /* SDWebImageSwiftUI in Frameworks */ = {isa = PBXBuildFile; productRef = D07E8B0F2CA22E8B00C7E124 /* SDWebImageSwiftUI */; };
 		D07E8B162CA2449000C7E124 /* ZIPFoundation in Frameworks */ = {isa = PBXBuildFile; productRef = D07E8B152CA2449000C7E124 /* ZIPFoundation */; };
 		D07E8B1E2CA249D600C7E124 /* KeyboardHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = D07E8B172CA249D600C7E124 /* KeyboardHandler.swift */; };
 		D07E8B222CA249D600C7E124 /* ImageLoader.swift in Sources */ = {isa = PBXBuildFile; fileRef = D07E8B1B2CA249D600C7E124 /* ImageLoader.swift */; };
@@ -32,7 +31,6 @@
 		D092FC852CD5FF5100508BCF /* FilterMenuView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D092FC842CD5FF5100508BCF /* FilterMenuView.swift */; };
 		D0AABEC42CA22D0E00878C45 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D0AABEC32CA22D0E00878C45 /* ContentView.swift */; };
 		D0AABEC82CA22D0F00878C45 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = D0AABEC72CA22D0F00878C45 /* Assets.xcassets */; };
-		D0AABED62CA22D0F00878C45 /* NectarViewTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D0AABED52CA22D0F00878C45 /* NectarViewTests.swift */; };
 		D0B295C32CD19809007C3AAF /* SidebarView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D0B295C22CD19809007C3AAF /* SidebarView.swift */; };
 		D0B295C62CD19874007C3AAF /* ImageLoaderWithRealFilesTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D0B295C42CD19873007C3AAF /* ImageLoaderWithRealFilesTests.swift */; };
 		D0B295C72CD19874007C3AAF /* ImageLoaderBookmarkTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D0B295C52CD19873007C3AAF /* ImageLoaderBookmarkTests.swift */; };
@@ -69,7 +67,6 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
-		D00E7DF52CC1B756007F3578 /* CustomTabView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CustomTabView.swift; sourceTree = "<group>"; };
 		D00E7DF72CC1BB6C007F3578 /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		D00E7DFA2CC1C3DB007F3578 /* HelpView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HelpView.swift; sourceTree = "<group>"; };
 		D029CFA82CAC5E6500D2080C /* FileUtil.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FileUtil.swift; sourceTree = "<group>"; };
@@ -95,7 +92,6 @@
 		D0AABEC72CA22D0F00878C45 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		D0AABECC2CA22D0F00878C45 /* NectarView.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = NectarView.entitlements; sourceTree = "<group>"; };
 		D0AABED12CA22D0F00878C45 /* NectarViewTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = NectarViewTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
-		D0AABED52CA22D0F00878C45 /* NectarViewTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NectarViewTests.swift; sourceTree = "<group>"; };
 		D0AABEDB2CA22D0F00878C45 /* NectarViewUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = NectarViewUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		D0B295C22CD19809007C3AAF /* SidebarView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SidebarView.swift; sourceTree = "<group>"; };
 		D0B295C42CD19873007C3AAF /* ImageLoaderWithRealFilesTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ImageLoaderWithRealFilesTests.swift; sourceTree = "<group>"; };
@@ -120,7 +116,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				D07E8B102CA22E8B00C7E124 /* SDWebImageSwiftUI in Frameworks */,
+				D033C51E2F77980000288910 /* XADMasterSwift in Frameworks */,
 				D07E8B162CA2449000C7E124 /* ZIPFoundation in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -163,7 +159,6 @@
 		D08EF19D2CAB143800301FA8 /* Foundation */ = {
 			isa = PBXGroup;
 			children = (
-				D00E7DF52CC1B756007F3578 /* CustomTabView.swift */,
 				D08EF19B2CAB142F00301FA8 /* NSColor+.swift */,
 				D08EF1DB2CAB261B00301FA8 /* WindowAccessor.swift */,
 			);
@@ -263,7 +258,6 @@
 				D0B295C52CD19873007C3AAF /* ImageLoaderBookmarkTests.swift */,
 				D0B295D12CD19B1F007C3AAF /* ImageLoaderCurrentImageInfoTests.swift */,
 				D0B295C42CD19873007C3AAF /* ImageLoaderWithRealFilesTests.swift */,
-				D0AABED52CA22D0F00878C45 /* NectarViewTests.swift */,
 				D04E2F472CAAEE4A000B45AD /* ImageLoaderTests.swift */,
 			);
 			path = NectarViewTests;
@@ -305,8 +299,8 @@
 			);
 			name = NectarView;
 			packageProductDependencies = (
-				D07E8B0F2CA22E8B00C7E124 /* SDWebImageSwiftUI */,
 				D07E8B152CA2449000C7E124 /* ZIPFoundation */,
+				D033C51D2F77980000288910 /* XADMasterSwift */,
 			);
 			productName = NectarView;
 			productReference = D0AABEBE2CA22D0E00878C45 /* NectarView.app */;
@@ -382,8 +376,8 @@
 			);
 			mainGroup = D0AABEB52CA22D0E00878C45;
 			packageReferences = (
-				D0AABEEE2CA22E1700878C45 /* XCRemoteSwiftPackageReference "SDWebImageSwiftUI" */,
 				D07E8B142CA2448F00C7E124 /* XCRemoteSwiftPackageReference "ZIPFoundation" */,
+				D033C51C2F77980000288910 /* XCLocalSwiftPackageReference "../XADMasterSwift/XADMasterSwift" */,
 			);
 			productRefGroup = D0AABEBF2CA22D0E00878C45 /* Products */;
 			projectDirPath = "";
@@ -439,7 +433,6 @@
 				D0AABEC42CA22D0E00878C45 /* ContentView.swift in Sources */,
 				D08EF1D02CAB22B000301FA8 /* TopControlsView.swift in Sources */,
 				D07E8B2A2CA2597400C7E124 /* AppSettings.swift in Sources */,
-				D00E7DF62CC1B756007F3578 /* CustomTabView.swift in Sources */,
 				D029CFAC2CAC5F2000D2080C /* ArchiveUtil.swift in Sources */,
 				D0468D882CACCE170053E7F0 /* BookmarkManager.swift in Sources */,
 				D08EF19C2CAB142F00301FA8 /* NSColor+.swift in Sources */,
@@ -467,7 +460,6 @@
 				D0B295C72CD19874007C3AAF /* ImageLoaderBookmarkTests.swift in Sources */,
 				D0B295C62CD19874007C3AAF /* ImageLoaderWithRealFilesTests.swift in Sources */,
 				D04E2F482CAAEE4A000B45AD /* ImageLoaderTests.swift in Sources */,
-				D0AABED62CA22D0F00878C45 /* NectarViewTests.swift in Sources */,
 				D0B295D22CD19B1F007C3AAF /* ImageLoaderCurrentImageInfoTests.swift in Sources */,
 				D0B295D42CD19C28007C3AAF /* KeyboardHandlerTests.swift in Sources */,
 			);
@@ -552,7 +544,7 @@
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				INFOPLIST_FILE = NectarView/Info.plist;
 				LOCALIZATION_PREFERS_STRING_CATALOGS = YES;
-				MACOSX_DEPLOYMENT_TARGET = 14.5;
+				MACOSX_DEPLOYMENT_TARGET = 14.0;
 				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
 				MTL_FAST_MATH = YES;
 				ONLY_ACTIVE_ARCH = YES;
@@ -610,7 +602,7 @@
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				INFOPLIST_FILE = NectarView/Info.plist;
 				LOCALIZATION_PREFERS_STRING_CATALOGS = YES;
-				MACOSX_DEPLOYMENT_TARGET = 14.5;
+				MACOSX_DEPLOYMENT_TARGET = 14.0;
 				MTL_ENABLE_DEBUG_INFO = NO;
 				MTL_FAST_MATH = YES;
 				SDKROOT = macosx;
@@ -627,7 +619,7 @@
 				CODE_SIGN_ENTITLEMENTS = NectarView/NectarView.entitlements;
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
-				CURRENT_PROJECT_VERSION = 1;
+				CURRENT_PROJECT_VERSION = 3;
 				DEVELOPMENT_ASSET_PATHS = "\"NectarView/Preview Content\"";
 				DEVELOPMENT_TEAM = MJ5P76RQHU;
 				ENABLE_HARDENED_RUNTIME = YES;
@@ -639,7 +631,7 @@
 					"@executable_path/../Frameworks",
 				);
 				MACOSX_DEPLOYMENT_TARGET = 14.0;
-				MARKETING_VERSION = 1.0;
+				MARKETING_VERSION = 1.1.0;
 				PRODUCT_BUNDLE_IDENTIFIER = dev.kuma.NectarView;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_EMIT_LOC_STRINGS = YES;
@@ -656,7 +648,7 @@
 				CODE_SIGN_ENTITLEMENTS = NectarView/NectarView.entitlements;
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
-				CURRENT_PROJECT_VERSION = 1;
+				CURRENT_PROJECT_VERSION = 3;
 				DEVELOPMENT_ASSET_PATHS = "\"NectarView/Preview Content\"";
 				DEVELOPMENT_TEAM = MJ5P76RQHU;
 				ENABLE_HARDENED_RUNTIME = YES;
@@ -668,7 +660,7 @@
 					"@executable_path/../Frameworks",
 				);
 				MACOSX_DEPLOYMENT_TARGET = 14.0;
-				MARKETING_VERSION = 1.0;
+				MARKETING_VERSION = 1.1.0;
 				PRODUCT_BUNDLE_IDENTIFIER = dev.kuma.NectarView;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_EMIT_LOC_STRINGS = YES;
@@ -686,7 +678,7 @@
 				DEVELOPMENT_TEAM = MJ5P76RQHU;
 				GENERATE_INFOPLIST_FILE = YES;
 				MACOSX_DEPLOYMENT_TARGET = 14.0;
-				MARKETING_VERSION = 1.0;
+				MARKETING_VERSION = 1.1.0;
 				PRODUCT_BUNDLE_IDENTIFIER = dev.kuma.NectarViewTests;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_EMIT_LOC_STRINGS = NO;
@@ -705,7 +697,7 @@
 				DEVELOPMENT_TEAM = MJ5P76RQHU;
 				GENERATE_INFOPLIST_FILE = YES;
 				MACOSX_DEPLOYMENT_TARGET = 14.0;
-				MARKETING_VERSION = 1.0;
+				MARKETING_VERSION = 1.1.0;
 				PRODUCT_BUNDLE_IDENTIFIER = dev.kuma.NectarViewTests;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_EMIT_LOC_STRINGS = NO;
@@ -722,7 +714,7 @@
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = MJ5P76RQHU;
 				GENERATE_INFOPLIST_FILE = YES;
-				MARKETING_VERSION = 1.0;
+				MARKETING_VERSION = 1.1.0;
 				PRODUCT_BUNDLE_IDENTIFIER = dev.kuma.NectarViewUITests;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_EMIT_LOC_STRINGS = NO;
@@ -739,7 +731,7 @@
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = MJ5P76RQHU;
 				GENERATE_INFOPLIST_FILE = YES;
-				MARKETING_VERSION = 1.0;
+				MARKETING_VERSION = 1.1.0;
 				PRODUCT_BUNDLE_IDENTIFIER = dev.kuma.NectarViewUITests;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_EMIT_LOC_STRINGS = NO;
@@ -789,30 +781,28 @@
 		};
 /* End XCConfigurationList section */
 
+/* Begin XCLocalSwiftPackageReference section */
+		D033C51C2F77980000288910 /* XCLocalSwiftPackageReference "../XADMasterSwift/XADMasterSwift" */ = {
+			isa = XCLocalSwiftPackageReference;
+			relativePath = ../XADMasterSwift/XADMasterSwift;
+		};
+/* End XCLocalSwiftPackageReference section */
+
 /* Begin XCRemoteSwiftPackageReference section */
 		D07E8B142CA2448F00C7E124 /* XCRemoteSwiftPackageReference "ZIPFoundation" */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/weichsel/ZIPFoundation.git";
 			requirement = {
 				kind = upToNextMajorVersion;
-				minimumVersion = 0.9.19;
-			};
-		};
-		D0AABEEE2CA22E1700878C45 /* XCRemoteSwiftPackageReference "SDWebImageSwiftUI" */ = {
-			isa = XCRemoteSwiftPackageReference;
-			repositoryURL = "https://github.com/SDWebImage/SDWebImageSwiftUI";
-			requirement = {
-				kind = upToNextMajorVersion;
-				minimumVersion = 3.1.2;
+				minimumVersion = 0.9.20;
 			};
 		};
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
-		D07E8B0F2CA22E8B00C7E124 /* SDWebImageSwiftUI */ = {
+		D033C51D2F77980000288910 /* XADMasterSwift */ = {
 			isa = XCSwiftPackageProductDependency;
-			package = D0AABEEE2CA22E1700878C45 /* XCRemoteSwiftPackageReference "SDWebImageSwiftUI" */;
-			productName = SDWebImageSwiftUI;
+			productName = XADMasterSwift;
 		};
 		D07E8B152CA2449000C7E124 /* ZIPFoundation */ = {
 			isa = XCSwiftPackageProductDependency;

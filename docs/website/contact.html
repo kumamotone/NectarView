@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>NectarView - Contact | お問い合わせ</title>
+    <style>
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Helvetica', 'Arial', sans-serif;
+            line-height: 1.6;
+            color: #333;
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        h1, h2 {
+            color: #2c3e50;
+        }
+        .section {
+            background-color: #f8f9fa;
+            border-left: 4px solid #3498db;
+            padding: 15px 20px;
+            margin-bottom: 20px;
+        }
+        .lang-switch {
+            text-align: right;
+            margin-bottom: 20px;
+        }
+        .en, .ja {
+            display: none;
+        }
+        .email-contact {
+            background-color: #e8f4f8;
+            border: 2px solid #3498db;
+            border-radius: 10px;
+            padding: 25px;
+            text-align: center;
+            margin: 30px 0;
+        }
+        .email-address {
+            font-size: 1.2em;
+            font-weight: bold;
+            color: #2c3e50;
+            background-color: #ffffff;
+            padding: 10px 20px;
+            border-radius: 5px;
+            display: inline-block;
+            margin: 10px 0;
+        }
+        .contact-info {
+            background-color: #fff3cd;
+            border: 1px solid #ffeaa7;
+            border-radius: 5px;
+            padding: 15px;
+            margin: 20px 0;
+        }
+        .back-links {
+            text-align: center;
+            margin-top: 40px;
+            padding-top: 20px;
+            border-top: 1px solid #ddd;
+        }
+        .back-links a {
+            margin: 0 10px;
+            color: #3498db;
+            text-decoration: none;
+        }
+        .back-links a:hover {
+            text-decoration: underline;
+        }
+    </style>
+</head>
+<body>
+    <div class="lang-switch">
+        <a href="#" onclick="switchLanguage('en')">English</a> | 
+        <a href="#" onclick="switchLanguage('ja')">日本語</a>
+    </div>
+
+    <h1 class="en">Contact Us</h1>
+    <h1 class="ja">お問い合わせ</h1>
+
+    <div class="email-contact">
+        <h2 class="en">Email Contact</h2>
+        <h2 class="ja">メールでのお問い合わせ</h2>
+        <p class="en">Please send your inquiries to:</p>
+        <p class="ja">お問い合わせは以下のメールアドレスまでお送りください：</p>
+        <div class="email-address">
+            <a href="mailto:desper1jp@gmail.com">desper1jp@gmail.com</a>
+        </div>
+    </div>
+
+    <div class="contact-info">
+        <h3 class="en">When contacting us, please include:</h3>
+        <h3 class="ja">お問い合わせの際は、以下の情報をお知らせください：</h3>
+        <ul>
+            <li class="en">Your macOS version</li>
+            <li class="ja">お使いのmacOSのバージョン</li>
+            <li class="en">NectarView version (found in About NectarView)</li>
+            <li class="ja">NectarViewのバージョン（「NectarViewについて」で確認できます）</li>
+            <li class="en">Detailed description of the issue or suggestion</li>
+            <li class="ja">問題や提案の詳細な説明</li>
+            <li class="en">Steps to reproduce the issue (if applicable)</li>
+            <li class="ja">問題を再現する手順（該当する場合）</li>
+        </ul>
+    </div>
+
+    <div class="back-links">
+        <a href="index.html" class="en">← Back to Home</a><a href="index.html" class="ja">← ホームに戻る</a>
+    </div>
+
+    <script>
+        function switchLanguage(lang) {
+            document.querySelectorAll('.en, .ja').forEach(el => el.style.display = 'none');
+            document.querySelectorAll('.' + lang).forEach(el => el.style.display = 'block');
+            document.documentElement.lang = lang;
+        }
+
+        // Set initial language based on browser settings
+        const userLang = navigator.language || navigator.userLanguage;
+        switchLanguage(userLang.startsWith('ja') ? 'ja' : 'en');
+    </script>
+</body>
+</html>

@@ -84,6 +84,7 @@ struct SinglePageView: View {
                     .resizable()
                     .scaledToFit()
                     .frame(maxWidth: .infinity, maxHeight: .infinity)
+                    .focusable(false)
             }
         }
     }
@@ -153,11 +154,13 @@ struct BookPageView: View {
                 .shadow(color: .gray.opacity(0.5), radius: 5, x: isLeftPage ? 5 : -5, y: 5)
                 .rotation3DEffect(.degrees(isLeftPage ? 5 : -5), axis: (x: 0, y: 1, z: 0))
                 .padding(.horizontal, 10)
+                .focusable(false)
         } else {
             Image(nsImage: image)
                 .resizable()
                 .scaledToFit()
                 .frame(maxWidth: min(geometry.size.width / 2, geometry.size.height * (image.size.width / image.size.height)), maxHeight: geometry.size.height)
+                .focusable(false)
         }
     }
 }
