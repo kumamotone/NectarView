@@ -3,7 +3,6 @@ import SwiftUI
 // コンテキスト(右クリック)メニュー
 struct ContextMenuContent: View {
     @ObservedObject var imageLoader: ImageLoader
-    @Binding var isSettingsPresented: Bool
     @Binding var isBookmarkListPresented: Bool
     @EnvironmentObject var appSettings: AppSettings
 
@@ -52,7 +51,7 @@ struct ContextMenuContent: View {
         Divider()
 
         Button(action: {
-            isSettingsPresented = true
+            NSApp.sendAction(Selector(("showSettingsWindow:")), to: nil, from: nil)
         }) {
             Text(NSLocalizedString("Settings", comment: ""))
             Image(systemName: "gear")

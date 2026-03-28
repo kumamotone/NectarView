@@ -1,0 +1,29 @@
+name: Build and Test
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+jobs:
+  build:
+    runs-on: macos-14
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Build
+        run: |
+          xcodebuild -project NectarView.xcodeproj \
+            -scheme NectarView \
+            -destination 'platform=macOS' \
+            -skipPackagePluginValidation \
+            build
+
+      - name: Test
+        run: |
+          xcodebuild -project NectarView.xcodeproj \
+            -scheme NectarView \
+            -destination 'platform=macOS' \
+            -skipPackagePluginValidation \
+            test

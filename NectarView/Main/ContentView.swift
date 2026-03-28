@@ -40,11 +40,11 @@ struct ContentView: View {
     @State private var isDraggingImage: Bool = false
 
     // モーダルの表示非表示
-    @State private var isSettingsPresented: Bool = false
     @State private var isBookmarkListPresented: Bool = false
 
-    // マウスを定期的に監視 なんでもいい
-    @State private var mouseTrackingTimer: Timer?
+    // パスワード入力
+    @State private var passwordInput: String = ""
+
 
     @State private var isSidebarVisible: Bool = false
     @State private var sidebarWidth: CGFloat = 200
@@ -202,7 +202,6 @@ struct ContentView: View {
             .contextMenu {
                 ContextMenuContent(
                     imageLoader: imageLoader,
-                    isSettingsPresented: $isSettingsPresented,
                     isBookmarkListPresented: $isBookmarkListPresented
                 )
             }
@@ -212,22 +211,50 @@ struct ContentView: View {
             window.isMovableByWindowBackground = false
         })
         .applyContentViewModifiers(appSettings: appSettings, imageLoader: imageLoader)
+        .onContinuousHover { phase in
+            switch phase {
+            case .active(let location):
+                let frame = NSApplication.shared.windows.first?.frame
+                let height = frame?.size.height ?? 800
+                withAnimation {
+                    isBottomControlVisible = location.y > height - 100
+                    if !isInitialDisplay {
+                        isTopControlsVisible = location.y < 100
+                    }
+                }
+            case .ended:
+                withAnimation {
+                    isBottomControlVisible = false
+                    if !isInitialDisplay {
+                        isTopControlsVisible = false
+                    }
+                }
+            }
+        }
         .onAppear {
             KeyboardHandler.setupKeyboardHandler(imageLoader: imageLoader, appSettings: appSettings)
-            startMouseTracking()
             startTopControlsTimer()
         }
         .onDisappear {
-            stopMouseTracking()
             stopAutoScroll()
             stopTopControlsTimer()
         }
         .navigationTitle(imageLoader.currentImageInfo)
-        .sheet(isPresented: $isSettingsPresented) {
-            SettingsView(appSettings: appSettings)
-        }
         .sheet(isPresented: $isBookmarkListPresented) {
             BookmarkListView(imageLoader: imageLoader, isPresented: $isBookmarkListPresented)
+        }
+        .alert(NSLocalizedString("PasswordRequired", comment: ""), isPresented: $imageLoader.needsPassword) {
+            SecureField(NSLocalizedString("EnterPassword", comment: ""), text: $passwordInput)
+            Button(NSLocalizedString("OK", comment: "")) {
+                imageLoader.retryWithPassword(passwordInput)
+                passwordInput = ""
+            }
+            Button(NSLocalizedString("Cancel", comment: ""), role: .cancel) {
+                imageLoader.cancelPasswordEntry()
+                passwordInput = ""
+            }
+        } message: {
+            Text(NSLocalizedString("PasswordRequiredMessage", comment: ""))
         }
         .onChange(of: appSettings.zoomFactor) { _, newValue in
             withAnimation(.spring()) {
@@ -237,40 +264,6 @@ struct ContentView: View {
                 }
             }
         }
-    }
-
-    // マウを定期的に監視
-    private func startMouseTracking() {
-        mouseTrackingTimer = Timer.scheduledTimer(withTimeInterval: 0.16, repeats: true) { _ in
-            if let window = NSApplication.shared.windows.first {
-                let mouseLocation = NSEvent.mouseLocation
-                let windowFrame = window.frame
-
-                if windowFrame.contains(mouseLocation) {
-                    let localMouseLocation = window.convertFromScreen(NSRect(origin: mouseLocation, size: .zero)).origin
-
-                    withAnimation {
-                        isBottomControlVisible = localMouseLocation.y < 100
-                        if !isInitialDisplay {
-                            isTopControlsVisible = localMouseLocation.y > windowFrame.size.height - 100
-                        }
-                    }
-                } else {
-                    withAnimation {
-                        isBottomControlVisible = false
-                        if !isInitialDisplay {
-                            isTopControlsVisible = false
-                        }
-                    }
-                }
-            }
-        }
-    }
-
-    // マウスの監視を停止
-    private func stopMouseTracking() {
-        mouseTrackingTimer?.invalidate()
-        mouseTrackingTimer = nil
     }
 
     // フルスクリーンの切り替え

@@ -20,7 +20,16 @@ class FileUtil {
         panel.allowsMultipleSelection = false
         panel.canChooseDirectories = true
         panel.canChooseFiles = true
-        panel.allowedContentTypes = [.folder, .image, .archive]
+        panel.allowedContentTypes = [
+            .folder, .image, .archive,
+            UTType(filenameExtension: "rar")!,
+            UTType(filenameExtension: "7z")!,
+            UTType(filenameExtension: "lha")!,
+            UTType(filenameExtension: "lzh")!,
+            UTType(filenameExtension: "cab")!,
+            UTType(filenameExtension: "sit")!,
+            UTType(filenameExtension: "sitx")!,
+        ]
 
         panel.begin { result in
             if result == .OK {

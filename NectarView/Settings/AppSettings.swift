@@ -41,6 +41,5 @@ class AppSettings: ObservableObject {
         } else {
             UserDefaults.standard.set([selectedLanguage], forKey: "AppleLanguages")
         }
-        UserDefaults.standard.synchronize()
     }
 }

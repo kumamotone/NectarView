@@ -1,4 +1,5 @@
 import SwiftUI
+import UniformTypeIdentifiers
 
 struct SidebarView: View {
     @ObservedObject var imageLoader: ImageLoader
@@ -64,7 +65,7 @@ struct SidebarView: View {
         panel.canChooseFiles = true
         panel.canChooseDirectories = true
         panel.allowsMultipleSelection = false
-        panel.allowedContentTypes = [.folder, .zip]
+        panel.allowedContentTypes = [.folder, .archive, .image]
 
         if panel.runModal() == .OK {
             imageLoader.loadImages(from: panel.url!)
