@@ -9,7 +9,7 @@
 A fast, native comic and manga viewer inspired by [HoneyView](https://en.bandisoft.com/honeyview/).
 Open archives directly, enjoy smooth page turning, and immerse yourself in reading.
 
-[![Mac App Store](https://developer.apple.com/assets/elements/badges/download-on-the-mac-app-store.svg)](https://apps.apple.com/app/nectarview/id6753213525)
+[![Download on the Mac App Store](https://img.shields.io/badge/Mac%20App%20Store-Download-0071e3?style=for-the-badge&logo=apple&logoColor=white)](https://apps.apple.com/app/nectarview/id6753213525)
 
 [![GitHub Release](https://img.shields.io/github/v/release/kumamotone/NectarView?style=flat-square&color=C5CF3A)](https://github.com/kumamotone/NectarView/releases)
 [![License](https://img.shields.io/github/license/kumamotone/NectarView?style=flat-square)](LICENSE)
@@ -79,7 +79,7 @@ Open archives directly, enjoy smooth page turning, and immerse yourself in readi
 
 ### Mac App Store (Recommended)
 
-[![Mac App Store](https://developer.apple.com/assets/elements/badges/download-on-the-mac-app-store.svg)](https://apps.apple.com/app/nectarview/id6753213525)
+[![Download on the Mac App Store](https://img.shields.io/badge/Mac%20App%20Store-Download-0071e3?style=for-the-badge&logo=apple&logoColor=white)](https://apps.apple.com/app/nectarview/id6753213525)
 
 ### Manual Install
 
