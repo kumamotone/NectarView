@@ -1,0 +1,1 @@
+Comic-Viewer,Bildbetrachter,RAR,ZIP,7z,Archiv,PDF,Manga,Doppelseite,Lesezeichen,Filter,Vollbild

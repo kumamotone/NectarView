@@ -1,0 +1,40 @@
+NectarView es un visor de cómics e imágenes rápido y ligero para macOS — ahora compatible con RAR, 7z, ZIP, TAR y más de 30 formatos de archivo directamente, sin necesidad de extracción. Inspirado en la usabilidad de HoneyView en Windows, aprovecha las funciones nativas de macOS para ofrecer una experiencia de lectura fluida.
+
+Controles intuitivos
+	•	Abre archivos fácilmente mediante arrastrar y soltar
+	•	Abre archivos desde el menú contextual
+	•	Activa el modo pantalla completa con un doble clic
+	•	Arrastra el área de visualización para mover la ventana
+
+Compatibilidad con múltiples archivos comprimidos
+	•	Abre RAR, 7z, ZIP, TAR, LhA, CAB, StuffIt y más
+	•	Compatibilidad con archivos protegidos por contraseña
+	•	Detección automática de formato por contenido del archivo
+
+Opciones de visualización flexibles
+	•	Cambia entre página única y doble página
+	•	Compatible con lectura de izquierda a derecha y de derecha a izquierda
+	•	Navega rápidamente por las imágenes con un deslizador
+	•	Apariencia de libro realista en la vista de doble página
+
+Alto rendimiento
+	•	Abre archivos comprimidos directamente sin extracción
+	•	Visualización rápida con precarga de imágenes
+	•	Procesamiento eficiente con las API nativas de macOS
+
+Interfaz intuitiva
+	•	Interfaz simple y sin distracciones
+	•	Colores de fondo y barra de controles personalizables
+	•	Ventana de ajustes nativa de macOS
+	•	Atajos de teclado disponibles
+
+Compatibilidad multiidioma
+	•	Interfaz disponible en inglés y japonés
+	•	Cambio automático según el idioma del sistema
+
+Funciones avanzadas
+	•	Función de marcadores para guardar posiciones favoritas
+	•	Visualización por lotes de imágenes en una carpeta
+	•	Compatibilidad con PDF con renderizado Retina
+	•	Paso de página automático con intervalos ajustables
+	•	Rotación de imagen y efectos de filtro (Sepia, Mono, Noir y más)

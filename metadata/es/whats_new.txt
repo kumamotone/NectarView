@@ -1,0 +1,8 @@
+Novedades en la versión 1.1.0:
+
+• Compatibilidad con múltiples archivos: Abre RAR, 7z, TAR, LhA, CAB, StuffIt y más de 30 formatos directamente
+• Archivos protegidos con contraseña: Introduce contraseñas para archivos cifrados
+• Ajustes nativos: Ajustes rediseñados con apariencia nativa de macOS
+• PDF Retina: Renderizado PDF nítido en pantallas de alta resolución
+• Navegación más rápida: Precarga de imágenes para un paso de página más fluido
+• Mayor estabilidad: Eliminadas dependencias no utilizadas y corregidas APIs obsoletas

@@ -1,0 +1,8 @@
+What's New in 1.1.0:
+
+• Multi-Archive Support: Open RAR, 7z, TAR, LhA, CAB, StuffIt and 30+ archive formats directly
+• Password-Protected Archives: Enter passwords for encrypted archives
+• Native Settings: Redesigned settings with macOS-native look
+• Retina PDF: Crisp PDF rendering on high-DPI displays
+• Faster Browsing: Image prefetching for smoother page turns
+• Improved Stability: Removed unused dependencies and fixed deprecated APIs
