@@ -135,6 +135,8 @@
             <string>MyDocument</string>
         </dict>
     </array>
+    <key>ITSAppUsesNonExemptEncryption</key>
+    <false/>
     <key>CFBundleDisplayName</key>
     <string>NectarView</string>
     <key>CFBundleShortVersionString</key>
