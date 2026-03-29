@@ -19,8 +19,13 @@ struct SettingsView: View {
                 .tabItem {
                     Label(NSLocalizedString("Reading", comment: "Reading tab"), systemImage: "book")
                 }
+
+            TipJarSettingsView()
+                .tabItem {
+                    Label("Tip Jar", systemImage: "heart.fill")
+                }
         }
-        .frame(width: 450, height: 250)
+        .frame(width: 500, height: 400)
     }
 }
 
@@ -85,6 +90,14 @@ struct AppearanceSettingsView: View {
             }
         }
         .formStyle(.grouped)
+    }
+}
+
+struct TipJarSettingsView: View {
+    @State private var isPresented = true
+
+    var body: some View {
+        TipJarView(isPresented: $isPresented)
     }
 }
 
