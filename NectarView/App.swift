@@ -129,6 +129,10 @@ struct MainApp: App {
 
                 Divider()
 
+                Button(NSLocalizedString("Send Feedback…", comment: "")) {
+                    NSWorkspace.shared.open(URL(string: "https://docs.google.com/forms/d/e/1FAIpQLSfj9PO8YEY4zhoLYB2_iZMD-1qzwBqLlDqZ6qGkBKqzlrs3CA/viewform")!)
+                }
+
                 Button(NSLocalizedString("Tip Jar…", comment: "")) {
                     isTipJarPresented = true
                 }

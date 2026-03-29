@@ -129,6 +129,7 @@ Build and run with `⌘R` in Xcode.
 - [Mac App Store](https://apps.apple.com/app/nectarview/id6753213525)
 - [Privacy Policy](https://kumamotone.github.io/NectarView/privacy-policy.html)
 - [Contact](https://kumamotone.github.io/NectarView/contact.html)
+- [Send Feedback](https://docs.google.com/forms/d/e/1FAIpQLSfj9PO8YEY4zhoLYB2_iZMD-1qzwBqLlDqZ6qGkBKqzlrs3CA/viewform)
 
 ---
 
