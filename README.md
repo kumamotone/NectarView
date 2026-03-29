@@ -132,6 +132,15 @@ Build and run with `⌘R` in Xcode.
 
 ---
 
+## Support
+
+NectarView is free and open source. If you find it useful, please consider supporting development:
+
+[![GitHub Sponsors](https://img.shields.io/badge/GitHub%20Sponsors-Support-ea4aaa?style=for-the-badge&logo=githubsponsors&logoColor=white)](https://github.com/sponsors/kumamotone)
+[![Buy Me a Coffee](https://img.shields.io/badge/Buy%20Me%20a%20Coffee-Support-FFDD00?style=for-the-badge&logo=buymeacoffee&logoColor=black)](https://buymeacoffee.com/kumamotone)
+
+---
+
 ## License
 
 This project is open source. See the [LICENSE](LICENSE) file for details.

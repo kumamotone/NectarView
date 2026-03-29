@@ -5,6 +5,7 @@ struct MainApp: App {
     @NSApplicationDelegateAdaptor(AppDelegate.self) var appDelegate
     @State private var isBookmarkListPresented = false
     @State private var isHelpPresented = false
+    @State private var isTipJarPresented = false
     @StateObject private var appSettings = AppSettings()
     @StateObject private var imageLoader = ImageLoader()
 
@@ -24,6 +25,9 @@ struct MainApp: App {
                 }
                 .sheet(isPresented: $isHelpPresented) {
                     HelpView()
+                }
+                .sheet(isPresented: $isTipJarPresented) {
+                    TipJarView(isPresented: $isTipJarPresented)
                 }
                 .handlesExternalEvents(preferring: Set(arrayLiteral: "*"), allowing: Set(arrayLiteral: "*"))
                 .onOpenURL(perform: { url in
@@ -114,6 +118,12 @@ struct MainApp: App {
             CommandGroup(replacing: .help) {
                 Button(NSLocalizedString("NectarView Help", comment: "")) {
                     isHelpPresented = true
+                }
+
+                Divider()
+
+                Button(NSLocalizedString("Tip Jar…", comment: "")) {
+                    isTipJarPresented = true
                 }
             }
         }

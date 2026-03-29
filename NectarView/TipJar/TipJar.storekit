@@ -1,0 +1,79 @@
+{
+  "identifier" : "TipJar",
+  "nonRenewingSubscriptions" : [
+
+  ],
+  "products" : [
+    {
+      "displayPrice" : "1.99",
+      "familyShareable" : false,
+      "internalID" : "tip_small",
+      "localizations" : [
+        {
+          "description" : "Buy the developer a coffee",
+          "displayName" : "Coffee",
+          "locale" : "en_US"
+        },
+        {
+          "description" : "開発者にコーヒーを一杯",
+          "displayName" : "コーヒー",
+          "locale" : "ja"
+        }
+      ],
+      "productID" : "dev.kuma.NectarView.tip.small",
+      "referenceName" : "Small Tip",
+      "type" : "NonConsumable"
+    },
+    {
+      "displayPrice" : "4.99",
+      "familyShareable" : false,
+      "internalID" : "tip_medium",
+      "localizations" : [
+        {
+          "description" : "Buy the developer a cake",
+          "displayName" : "Cake",
+          "locale" : "en_US"
+        },
+        {
+          "description" : "開発者にケーキを一つ",
+          "displayName" : "ケーキ",
+          "locale" : "ja"
+        }
+      ],
+      "productID" : "dev.kuma.NectarView.tip.medium",
+      "referenceName" : "Medium Tip",
+      "type" : "NonConsumable"
+    },
+    {
+      "displayPrice" : "9.99",
+      "familyShareable" : false,
+      "internalID" : "tip_large",
+      "localizations" : [
+        {
+          "description" : "Buy the developer a dinner",
+          "displayName" : "Dinner",
+          "locale" : "en_US"
+        },
+        {
+          "description" : "開発者にディナーを一食",
+          "displayName" : "ディナー",
+          "locale" : "ja"
+        }
+      ],
+      "productID" : "dev.kuma.NectarView.tip.large",
+      "referenceName" : "Large Tip",
+      "type" : "NonConsumable"
+    }
+  ],
+  "settings" : {
+    "_applicationInternalID" : "NectarView",
+    "_developerTeamID" : ""
+  },
+  "subscriptionGroups" : [
+
+  ],
+  "version" : {
+    "major" : 3,
+    "minor" : 0
+  }
+}
