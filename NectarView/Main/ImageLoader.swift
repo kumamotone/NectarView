@@ -115,7 +115,9 @@ class ImageLoader: ObservableObject {
     // MARK: - Public methods
     func loadImages(from url: URL) {
         isInitialLoad = false
+        ReviewRequester.recordFileOpen()
         clearExistingData()
+
         clearArchiveData()
 
         let ext = url.pathExtension.lowercased()
@@ -223,15 +225,20 @@ class ImageLoader: ObservableObject {
     }
 
     func toggleBookmark() {
-        if bookmarks.contains(currentIndex) {
-            bookmarks.removeAll { $0 == currentIndex }
-        } else {
+        let isAdding = !bookmarks.contains(currentIndex)
+        if isAdding {
             bookmarks.append(currentIndex)
             bookmarks.sort()
+        } else {
+            bookmarks.removeAll { $0 == currentIndex }
         }
 
         if let url = archiveFileURL ?? images.first?.deletingLastPathComponent() {
             bookmarkManager.saveBookmarks(bookmarks, for: url)
+        }
+
+        if isAdding {
+            ReviewRequester.requestReviewIfNeeded()
         }
     }
 
@@ -755,5 +762,8 @@ class ImageLoader: ObservableObject {
         currentFilter = filter
         imageCache.removeAllObjects()
         objectWillChange.send()
+        if filter != .none {
+            ReviewRequester.requestReviewIfNeeded()
+        }
     }
 }

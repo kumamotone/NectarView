@@ -52,6 +52,7 @@ class TipJarStore: ObservableObject {
                 await transaction.finish()
                 purchasedIDs.insert(product.id)
                 purchaseResult = .success
+                ReviewRequester.requestReviewIfNeeded()
             case .userCancelled:
                 purchaseResult = .cancelled
             case .pending:

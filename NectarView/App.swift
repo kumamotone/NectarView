@@ -1,8 +1,10 @@
 import SwiftUI
+import StoreKit
 
 @main
 struct MainApp: App {
     @NSApplicationDelegateAdaptor(AppDelegate.self) var appDelegate
+    @Environment(\.requestReview) private var requestReview
     @State private var isBookmarkListPresented = false
     @State private var isHelpPresented = false
     @State private var isTipJarPresented = false
@@ -29,6 +31,9 @@ struct MainApp: App {
                 .sheet(isPresented: $isTipJarPresented) {
                     TipJarView(isPresented: $isTipJarPresented)
                 }
+                .onReceive(NotificationCenter.default.publisher(for: .requestAppReview)) { _ in
+                    requestReview()
+                }
                 .handlesExternalEvents(preferring: Set(arrayLiteral: "*"), allowing: Set(arrayLiteral: "*"))
                 .onOpenURL(perform: { url in
                     imageLoader.loadImages(from: url)
@@ -53,6 +58,7 @@ struct MainApp: App {
                     appSettings.isSpreadViewEnabled = true
                     appSettings.isRightToLeftReading = true
                     imageLoader.updateViewMode(appSettings: appSettings)
+                    ReviewRequester.requestReviewIfNeeded()
                 }
                 .keyboardShortcut("2", modifiers: .command)
 
@@ -60,6 +66,7 @@ struct MainApp: App {
                     appSettings.isSpreadViewEnabled = true
                     appSettings.isRightToLeftReading = false
                     imageLoader.updateViewMode(appSettings: appSettings)
+                    ReviewRequester.requestReviewIfNeeded()
                 }
                 .keyboardShortcut("3", modifiers: .command)
 

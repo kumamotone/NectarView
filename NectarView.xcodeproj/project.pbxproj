@@ -11,6 +11,7 @@
 		D00E7DFC2CC1C3DB007F3578 /* HelpView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D00E7DFA2CC1C3DB007F3578 /* HelpView.swift */; };
 		AA5B69BE5EEBCF793FC94E36 /* TipJarStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA23BB6B2DF1202E82941278 /* TipJarStore.swift */; };
 		AAD711799C4C91376C26BD27 /* TipJarView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AAE15941C07E057D0C8372AD /* TipJarView.swift */; };
+		AAF1E2D3C4B5A67890FEDCBA /* ReviewRequester.swift in Sources */ = {isa = PBXBuildFile; fileRef = AAB1C2D3E4F5067890ABCDEF /* ReviewRequester.swift */; };
 		D029CFA92CAC5E6500D2080C /* FileUtil.swift in Sources */ = {isa = PBXBuildFile; fileRef = D029CFA82CAC5E6500D2080C /* FileUtil.swift */; };
 		D029CFAC2CAC5F2000D2080C /* ArchiveUtil.swift in Sources */ = {isa = PBXBuildFile; fileRef = D029CFAB2CAC5F2000D2080C /* ArchiveUtil.swift */; };
 		D029CFAE2CAC5FE100D2080C /* ErrorUtil.swift in Sources */ = {isa = PBXBuildFile; fileRef = D029CFAD2CAC5FE100D2080C /* ErrorUtil.swift */; };
@@ -73,6 +74,7 @@
 		D00E7DFA2CC1C3DB007F3578 /* HelpView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HelpView.swift; sourceTree = "<group>"; };
 		AA23BB6B2DF1202E82941278 /* TipJarStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TipJarStore.swift; sourceTree = "<group>"; };
 		AAE15941C07E057D0C8372AD /* TipJarView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TipJarView.swift; sourceTree = "<group>"; };
+		AAB1C2D3E4F5067890ABCDEF /* ReviewRequester.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReviewRequester.swift; sourceTree = "<group>"; };
 		D029CFA82CAC5E6500D2080C /* FileUtil.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FileUtil.swift; sourceTree = "<group>"; };
 		D029CFAB2CAC5F2000D2080C /* ArchiveUtil.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ArchiveUtil.swift; sourceTree = "<group>"; };
 		D029CFAD2CAC5FE100D2080C /* ErrorUtil.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ErrorUtil.swift; sourceTree = "<group>"; };
@@ -155,6 +157,7 @@
 			children = (
 				AA23BB6B2DF1202E82941278 /* TipJarStore.swift */,
 				AAE15941C07E057D0C8372AD /* TipJarView.swift */,
+				AAB1C2D3E4F5067890ABCDEF /* ReviewRequester.swift */,
 			);
 			path = TipJar;
 			sourceTree = "<group>";
@@ -486,6 +489,7 @@
 				D00E7DFC2CC1C3DB007F3578 /* HelpView.swift in Sources */,
 				AA5B69BE5EEBCF793FC94E36 /* TipJarStore.swift in Sources */,
 				AAD711799C4C91376C26BD27 /* TipJarView.swift in Sources */,
+				AAF1E2D3C4B5A67890FEDCBA /* ReviewRequester.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
