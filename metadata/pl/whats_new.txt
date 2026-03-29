@@ -1,0 +1,8 @@
+Co nowego w wersji 1.1.0:
+
+• Obsługa wielu archiwów: Otwieraj bezpośrednio RAR, 7z, TAR, LhA, CAB, StuffIt i ponad 30 formatów archiwów
+• Archiwa chronione hasłem: Wprowadzaj hasła do zaszyfrowanych archiwów
+• Natywne ustawienia: Przeprojektowane ustawienia z natywnym wyglądem macOS
+• Retina PDF: Wyraźne renderowanie PDF na wyświetlaczach high-DPI
+• Szybsze przeglądanie: Wstępne pobieranie obrazów dla płynniejszego przewracania stron
+• Lepsza stabilność: Usunięto nieużywane zależności i naprawiono przestarzałe API

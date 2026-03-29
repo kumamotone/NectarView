@@ -1,0 +1,8 @@
+1.1.0 Sürümündeki Yenilikler:
+
+• Çoklu Arşiv Desteği: RAR, 7z, TAR, LhA, CAB, StuffIt ve 30'dan fazla arşiv formatını doğrudan açın
+• Parola Korumalı Arşivler: Şifrelenmiş arşivler için parola girin
+• Yerel Ayarlar: macOS'un yerel görünümüyle yeniden tasarlanmış ayarlar
+• Retina PDF: Yüksek DPI ekranlarda keskin PDF görüntüleme
+• Daha Hızlı Tarama: Daha akıcı sayfa geçişleri için görüntü ön yükleme
+• Geliştirilmiş Kararlılık: Kullanılmayan bağımlılıklar kaldırıldı ve kullanım dışı API'lar düzeltildi

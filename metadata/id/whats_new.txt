@@ -1,0 +1,8 @@
+Yang Baru di Versi 1.1.0:
+
+• Dukungan Multi-Arsip: Buka RAR, 7z, TAR, LhA, CAB, StuffIt dan 30+ format arsip secara langsung
+• Arsip Berpassword: Masukkan kata sandi untuk arsip terenkripsi
+• Pengaturan Native: Pengaturan yang didesain ulang dengan tampilan native macOS
+• PDF Retina: Rendering PDF tajam di layar high-DPI
+• Penelusuran Lebih Cepat: Prefetching gambar untuk pergantian halaman yang lebih mulus
+• Stabilitas Lebih Baik: Menghapus dependensi yang tidak digunakan dan memperbaiki API yang tidak berlaku

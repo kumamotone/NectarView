@@ -1,0 +1,8 @@
+Novidades na versão 1.1.0:
+
+• Suporte a Múltiplos Arquivos: Abra RAR, 7z, TAR, LhA, CAB, StuffIt e mais de 30 formatos diretamente
+• Arquivos com Senha: Insira senhas para arquivos criptografados
+• Configurações Nativas: Configurações redesenhadas com visual nativo do macOS
+• PDF Retina: Renderização nítida de PDF em telas de alta resolução
+• Navegação Mais Rápida: Pré-carregamento de imagens para viradas de página mais suaves
+• Estabilidade Melhorada: Dependências desnecessárias removidas e APIs obsoletas corrigidas

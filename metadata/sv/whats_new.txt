@@ -1,0 +1,8 @@
+Nyheter i version 1.1.0:
+
+• Stöd för flera arkiv: Öppna RAR, 7z, TAR, LhA, CAB, StuffIt och fler än 30 arkivformat direkt
+• Lösenordsskyddade arkiv: Ange lösenord för krypterade arkiv
+• Native-inställningar: Omdesignade inställningar med macOS-nativt utseende
+• Retina PDF: Skarp PDF-rendering på high-DPI-skärmar
+• Snabbare bläddring: Förhämtning av bilder för smidigare sidvändningar
+• Förbättrad stabilitet: Oanvända beroenden borttagna och föråldrade API:er åtgärdade

@@ -1,0 +1,8 @@
+Baharu dalam Versi 1.1.0:
+
+• Sokongan Pelbagai Arkib: Buka RAR, 7z, TAR, LhA, CAB, StuffIt dan lebih 30 format arkib secara terus
+• Arkib Dilindungi Kata Laluan: Masukkan kata laluan untuk arkib yang disulitkan
+• Tetapan Natif: Tetapan yang direkabentuk semula dengan tampilan natif macOS
+• PDF Retina: Paparan PDF jernih pada skrin high-DPI
+• Pelayaran Lebih Pantas: Pramuatan imej untuk penukaran halaman yang lebih lancar
+• Kestabilan Dipertingkat: Mengalih keluar kebergantungan yang tidak digunakan dan memperbaiki API yang lapuk

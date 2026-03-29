@@ -1,0 +1,8 @@
+Uutta versiossa 1.1.0:
+
+• Useiden arkistojen tuki: Avaa RAR, 7z, TAR, LhA, CAB, StuffIt ja yli 30 arkistoformaattia suoraan
+• Salasanasuojatut arkistot: Syötä salasanat salatuille arkistoille
+• Natiiviasetukset: Uudelleensuunnitellut asetukset macOS-natiivilla ulkoasulla
+• Retina PDF: Tarkka PDF-renderöinti korkean DPI:n näytöillä
+• Nopeampi selaus: Kuvien esihaku sujuvampaa sivunkääntöä varten
+• Parannettu vakaus: Poistettu käyttämättömät riippuvuudet ja korjattu vanhentuneet API:t

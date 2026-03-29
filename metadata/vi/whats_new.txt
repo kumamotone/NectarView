@@ -1,0 +1,8 @@
+Có gì mới trong phiên bản 1.1.0:
+
+• Hỗ Trợ Nhiều Kho Lưu Trữ: Mở trực tiếp RAR, 7z, TAR, LhA, CAB, StuffIt và hơn 30 định dạng lưu trữ
+• Kho Lưu Trữ Có Mật Khẩu: Nhập mật khẩu cho các kho lưu trữ được mã hóa
+• Cài Đặt Gốc: Cài đặt được thiết kế lại với giao diện macOS thuần gốc
+• PDF Retina: Hiển thị PDF sắc nét trên màn hình high-DPI
+• Duyệt Nhanh Hơn: Tải trước hình ảnh để lật trang mượt mà hơn
+• Ổn Định Hơn: Xóa các phụ thuộc không dùng và sửa các API lỗi thời
