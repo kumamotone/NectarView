@@ -27,8 +27,43 @@ struct SettingsView: View {
 struct GeneralSettingsView: View {
     @ObservedObject var appSettings: AppSettings
 
+    private let languages: [(tag: String, name: String)] = [
+        ("system", NSLocalizedString("System Default", comment: "")),
+        ("en", "English"),
+        ("ja", "日本語"),
+        ("zh-Hans", "简体中文"),
+        ("zh-Hant", "繁體中文"),
+        ("ko", "한국어"),
+        ("fr", "Français"),
+        ("de", "Deutsch"),
+        ("es", "Español"),
+        ("pt-BR", "Português (Brasil)"),
+        ("it", "Italiano"),
+        ("nl", "Nederlands"),
+        ("pl", "Polski"),
+        ("tr", "Türkçe"),
+        ("ru", "Русский"),
+        ("th", "ไทย"),
+        ("vi", "Tiếng Việt"),
+        ("id", "Bahasa Indonesia"),
+        ("ms", "Bahasa Melayu"),
+        ("sv", "Svenska"),
+        ("da", "Dansk"),
+        ("nb", "Norsk bokmål"),
+        ("fi", "Suomi"),
+    ]
+
     var body: some View {
         Form {
+            Picker(NSLocalizedString("Select Language", comment: "Language picker label"), selection: $appSettings.selectedLanguage) {
+                ForEach(languages, id: \.tag) { lang in
+                    Text(lang.name).tag(lang.tag)
+                }
+            }
+            .onChange(of: appSettings.selectedLanguage) { _, newValue in
+                appSettings.changeLanguage(to: newValue)
+            }
+
             Section {
                 Button(NSLocalizedString("ResetSettings", comment: "ResetSettings")) {
                     appSettings.resetToDefaults()
