@@ -29,15 +29,6 @@ struct GeneralSettingsView: View {
 
     var body: some View {
         Form {
-            Picker(NSLocalizedString("Select Language", comment: "Language picker label"), selection: $appSettings.selectedLanguage) {
-                Text(NSLocalizedString("System Default", comment: "System default language option")).tag("system")
-                Text("English").tag("en")
-                Text("日本語").tag("ja")
-            }
-            .onChange(of: appSettings.selectedLanguage) { _, newValue in
-                appSettings.changeLanguage(to: newValue)
-            }
-
             Section {
                 Button(NSLocalizedString("ResetSettings", comment: "ResetSettings")) {
                     appSettings.resetToDefaults()
