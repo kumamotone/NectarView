@@ -4750,6 +4750,142 @@
         }
       }
     },
+    "New Window": {
+      "localizations": {
+        "da": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Nyt vindue"
+          }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Neues Fenster"
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "New Window"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Nueva ventana"
+          }
+        },
+        "fi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Uusi ikkuna"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Nouvelle fenêtre"
+          }
+        },
+        "id": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Jendela Baru"
+          }
+        },
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Nuova finestra"
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "新規ウインドウ"
+          }
+        },
+        "ko": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "새로운 윈도우"
+          }
+        },
+        "ms": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Tetingkap Baharu"
+          }
+        },
+        "nb": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Nytt vindu"
+          }
+        },
+        "nl": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Nieuw venster"
+          }
+        },
+        "pl": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Nowe okno"
+          }
+        },
+        "pt-BR": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Nova Janela"
+          }
+        },
+        "ru": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Новое окно"
+          }
+        },
+        "sv": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Nytt fönster"
+          }
+        },
+        "th": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "หน้าต่างใหม่"
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Yeni Pencere"
+          }
+        },
+        "vi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Cửa sổ mới"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "新建窗口"
+          }
+        },
+        "zh-Hant": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "新增視窗"
+          }
+        }
+      }
+    },
     "Next Bookmark": {
       "extractionState": "manual",
       "localizations": {
@@ -7812,40 +7948,10 @@
     },
     "Send Feedback…": {
       "localizations": {
-        "en": {
+        "da": {
           "stringUnit": {
             "state": "translated",
-            "value": "Send Feedback…"
-          }
-        },
-        "ja": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "フィードバックを送る…"
-          }
-        },
-        "zh-Hans": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "发送反馈…"
-          }
-        },
-        "zh-Hant": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "傳送回饋…"
-          }
-        },
-        "ko": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "피드백 보내기…"
-          }
-        },
-        "fr": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Envoyer un commentaire…"
+            "value": "Send feedback…"
           }
         },
         "de": {
@@ -7854,28 +7960,28 @@
             "value": "Feedback senden…"
           }
         },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Send Feedback…"
+          }
+        },
         "es": {
           "stringUnit": {
             "state": "translated",
             "value": "Enviar comentarios…"
           }
         },
-        "pt-BR": {
+        "fi": {
           "stringUnit": {
             "state": "translated",
-            "value": "Enviar feedback…"
+            "value": "Lähetä palautetta…"
           }
         },
-        "th": {
+        "fr": {
           "stringUnit": {
             "state": "translated",
-            "value": "ส่งคำติชม…"
-          }
-        },
-        "vi": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Gửi phản hồi…"
+            "value": "Envoyer un commentaire…"
           }
         },
         "id": {
@@ -7890,22 +7996,16 @@
             "value": "Invia feedback…"
           }
         },
-        "pl": {
+        "ja": {
           "stringUnit": {
             "state": "translated",
-            "value": "Wyślij opinię…"
+            "value": "フィードバックを送る…"
           }
         },
-        "tr": {
+        "ko": {
           "stringUnit": {
             "state": "translated",
-            "value": "Geri Bildirim Gönder…"
-          }
-        },
-        "ru": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Отправить отзыв…"
+            "value": "피드백 보내기…"
           }
         },
         "ms": {
@@ -7914,10 +8014,34 @@
             "value": "Hantar Maklum Balas…"
           }
         },
+        "nb": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Send tilbakemelding…"
+          }
+        },
         "nl": {
           "stringUnit": {
             "state": "translated",
             "value": "Feedback versturen…"
+          }
+        },
+        "pl": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Wyślij opinię…"
+          }
+        },
+        "pt-BR": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Enviar feedback…"
+          }
+        },
+        "ru": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Отправить отзыв…"
           }
         },
         "sv": {
@@ -7926,22 +8050,34 @@
             "value": "Skicka feedback…"
           }
         },
-        "da": {
+        "th": {
           "stringUnit": {
             "state": "translated",
-            "value": "Send feedback…"
+            "value": "ส่งคำติชม…"
           }
         },
-        "nb": {
+        "tr": {
           "stringUnit": {
             "state": "translated",
-            "value": "Send tilbakemelding…"
+            "value": "Geri Bildirim Gönder…"
           }
         },
-        "fi": {
+        "vi": {
           "stringUnit": {
             "state": "translated",
-            "value": "Lähetä palautetta…"
+            "value": "Gửi phản hồi…"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "发送反馈…"
+          }
+        },
+        "zh-Hant": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "傳送回饋…"
           }
         }
       }
@@ -12019,5 +12155,5 @@
       }
     }
   },
-  "version": "1.0"
+  "version": "1.1"
 }

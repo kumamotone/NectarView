@@ -42,6 +42,13 @@ struct MainApp: App {
         .commands {
             CommandGroup(replacing: .textEditing) { }
             CommandGroup(replacing: .newItem) {
+                Button(NSLocalizedString("New Window", comment: "")) {
+                    if let window = NSApp.windows.first(where: { $0.canBecomeMain }) {
+                        window.makeKeyAndOrderFront(nil)
+                    }
+                }
+                .keyboardShortcut("n", modifiers: .command)
+
                 Button(NSLocalizedString("Open", comment: "")) {
                     imageLoader.openFile()
                 }
