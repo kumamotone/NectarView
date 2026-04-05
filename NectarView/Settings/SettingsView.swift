@@ -1,4 +1,5 @@
 import SwiftUI
+import NectarCore
 
 struct SettingsView: View {
     @StateObject private var appSettings = AppSettings()

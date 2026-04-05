@@ -1,4 +1,5 @@
 import SwiftUI
+import NectarCore
 
 // コンテキスト(右クリック)メニュー
 struct ContextMenuContent: View {

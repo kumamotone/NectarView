@@ -1,4 +1,5 @@
 import SwiftUI
+import NectarCore
 
 struct FilterMenuView: View {
     @ObservedObject var imageLoader: ImageLoader

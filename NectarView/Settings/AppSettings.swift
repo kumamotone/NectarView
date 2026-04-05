@@ -1,6 +1,7 @@
 import SwiftUI
+import NectarCore
 
-class AppSettings: ObservableObject {
+class AppSettings: ObservableObject, AppSettingsProtocol {
     @AppStorage("backgroundColor") var backgroundColor: Color = .black
     @AppStorage("controlBarColor") var controlBarColor: Color = Color.black.opacity(0.6)
     @AppStorage("isSpreadViewEnabled") var isSpreadViewEnabled: Bool = false

@@ -1,4 +1,5 @@
 import SwiftUI
+import NectarCore
 
 // スライダーの上にマウスを置いたときに、その画像を表示するための領域
 struct SliderPreviewView: View {
@@ -13,7 +14,7 @@ struct SliderPreviewView: View {
            sliderHoverIndex >= 0 && sliderHoverIndex < imageLoader.images.count,
            let previewImage = imageLoader.getImage(for: imageLoader.images[sliderHoverIndex]) {
             VStack {
-                Image(nsImage: previewImage)
+                Image(platformImage: previewImage)
                     .resizable()
                     .scaledToFit()
                     .frame(width: geometry.size.width * 0.4, height: geometry.size.height * 0.4)
