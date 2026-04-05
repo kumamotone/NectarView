@@ -1,7 +1,6 @@
 import Foundation
 import AppKit
 import SwiftUI
-import NectarCore
 
 class KeyboardHandler {
     private static let keyCodeUpArrow: UInt16 = 126

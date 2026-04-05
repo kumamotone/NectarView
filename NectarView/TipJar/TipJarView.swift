@@ -1,6 +1,5 @@
 import SwiftUI
 import StoreKit
-import NectarCore
 
 struct TipJarView: View {
     @StateObject private var store = TipJarStore()

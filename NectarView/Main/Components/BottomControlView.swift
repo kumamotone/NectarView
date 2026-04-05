@@ -1,5 +1,4 @@
 import SwiftUI
-import NectarCore
 
 // 下部のコントロール
 struct BottomControlsView: View {

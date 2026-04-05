@@ -1,5 +1,4 @@
 import SwiftUI
-import NectarCore
 
 private struct SizeKey: PreferenceKey {
     static let defaultValue: CGSize = .zero
@@ -81,7 +80,7 @@ struct SinglePageView: View {
                 DropZoneView()
             } else if let currentImageIndex = imageLoader.currentImages.0,
                       let image = imageLoader.getImage(for: imageLoader.images[currentImageIndex]) {
-                Image(platformImage: image)
+                Image(nsImage: image)
                     .resizable()
                     .scaledToFit()
                     .frame(maxWidth: .infinity, maxHeight: .infinity)
@@ -139,14 +138,14 @@ struct SpreadView: View {
 }
 
 struct BookPageView: View {
-    let image: PlatformImage
+    let image: NSImage
     let geometry: GeometryProxy
     let isLeftPage: Bool
     @ObservedObject var appSettings: AppSettings
     
     var body: some View {
         if appSettings.useRealisticAppearance {
-            Image(platformImage: image)
+            Image(nsImage: image)
                 .resizable()
                 .scaledToFit()
                 .frame(maxWidth: min(geometry.size.width / 2, geometry.size.height * (image.size.width / image.size.height)), maxHeight: geometry.size.height)
@@ -157,7 +156,7 @@ struct BookPageView: View {
                 .padding(.horizontal, 10)
                 .focusable(false)
         } else {
-            Image(platformImage: image)
+            Image(nsImage: image)
                 .resizable()
                 .scaledToFit()
                 .frame(maxWidth: min(geometry.size.width / 2, geometry.size.height * (image.size.width / image.size.height)), maxHeight: geometry.size.height)

@@ -1,5 +1,4 @@
 import SwiftUI
-import NectarCore
 
 struct BookmarkListView: View {
     @ObservedObject var imageLoader: ImageLoader
@@ -30,7 +29,7 @@ struct BookmarkListView: View {
                             Text(String(format: NSLocalizedString("Page %d", comment: "Page number"), index + 1))
                             Spacer()
                             if let image = imageLoader.getImage(for: imageLoader.images[index]) {
-                                Image(platformImage: image)
+                                Image(nsImage: image)
                                     .resizable()
                                     .scaledToFit()
                                     .frame(width: 50, height: 50)

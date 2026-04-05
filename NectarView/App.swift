@@ -1,6 +1,5 @@
 import SwiftUI
 import StoreKit
-import NectarCore
 
 @main
 struct MainApp: App {
@@ -21,7 +20,6 @@ struct MainApp: App {
             ContentView(imageLoader: imageLoader)
                 .environmentObject(appSettings)
                 .onAppear {
-                    imageLoader.setupXADSupport()
                     imageLoader.updateViewMode(appSettings: appSettings)
                 }
                 .sheet(isPresented: $isBookmarkListPresented) {

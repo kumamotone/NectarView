@@ -1,5 +1,4 @@
 import SwiftUI
-import NectarCore
 
 struct ContentView: View {
     // MARK: - Observed Objects

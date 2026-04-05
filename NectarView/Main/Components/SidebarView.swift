@@ -1,6 +1,5 @@
 import SwiftUI
 import UniformTypeIdentifiers
-import NectarCore
 
 struct SidebarView: View {
     @ObservedObject var imageLoader: ImageLoader
