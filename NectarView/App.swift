@@ -10,6 +10,7 @@ struct MainApp: App {
     @State private var isTipJarPresented = false
     @StateObject private var appSettings = AppSettings()
     @StateObject private var imageLoader = ImageLoader()
+    @StateObject private var tipJarStore = TipJarStore()
 
     init() {
         NSWindow.allowsAutomaticWindowTabbing = false
@@ -21,6 +22,9 @@ struct MainApp: App {
                 .environmentObject(appSettings)
                 .onAppear {
                     imageLoader.updateViewMode(appSettings: appSettings)
+                }
+                .task {
+                    await tipJarStore.loadProducts()
                 }
                 .sheet(isPresented: $isBookmarkListPresented) {
                     BookmarkListView(imageLoader: imageLoader, isPresented: $isBookmarkListPresented)
@@ -140,8 +144,10 @@ struct MainApp: App {
                     NSWorkspace.shared.open(URL(string: "https://docs.google.com/forms/d/e/1FAIpQLSfj9PO8YEY4zhoLYB2_iZMD-1qzwBqLlDqZ6qGkBKqzlrs3CA/viewform")!)
                 }
 
-                Button(NSLocalizedString("Tip Jar…", comment: "")) {
-                    isTipJarPresented = true
+                if !tipJarStore.products.isEmpty {
+                    Button(NSLocalizedString("Tip Jar…", comment: "")) {
+                        isTipJarPresented = true
+                    }
                 }
             }
         }

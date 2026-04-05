@@ -2,6 +2,7 @@ import SwiftUI
 
 struct SettingsView: View {
     @StateObject private var appSettings = AppSettings()
+    @StateObject private var tipJarStore = TipJarStore()
 
     var body: some View {
         TabView {
@@ -20,12 +21,17 @@ struct SettingsView: View {
                     Label(NSLocalizedString("Reading", comment: "Reading tab"), systemImage: "book")
                 }
 
-            TipJarSettingsView()
-                .tabItem {
-                    Label("Tip Jar", systemImage: "heart.fill")
-                }
+            if !tipJarStore.products.isEmpty {
+                TipJarSettingsView()
+                    .tabItem {
+                        Label("Tip Jar", systemImage: "heart.fill")
+                    }
+            }
         }
         .frame(width: 500, height: 400)
+        .task {
+            await tipJarStore.loadProducts()
+        }
     }
 }
 
