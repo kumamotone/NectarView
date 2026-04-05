@@ -20,9 +20,9 @@
           "locale" : "ja"
         }
       ],
-      "productID" : "dev.kuma.NectarView.tip.small",
+      "productID" : "dev.kuma.NectarView.tip.small.c2",
       "referenceName" : "Small Tip",
-      "type" : "NonConsumable"
+      "type" : "Consumable"
     },
     {
       "displayPrice" : "4.99",
@@ -40,9 +40,9 @@
           "locale" : "ja"
         }
       ],
-      "productID" : "dev.kuma.NectarView.tip.medium",
+      "productID" : "dev.kuma.NectarView.tip.medium.c",
       "referenceName" : "Medium Tip",
-      "type" : "NonConsumable"
+      "type" : "Consumable"
     },
     {
       "displayPrice" : "9.99",
@@ -60,9 +60,9 @@
           "locale" : "ja"
         }
       ],
-      "productID" : "dev.kuma.NectarView.tip.large",
+      "productID" : "dev.kuma.NectarView.tip.large.c",
       "referenceName" : "Large Tip",
-      "type" : "NonConsumable"
+      "type" : "Consumable"
     }
   ],
   "settings" : {

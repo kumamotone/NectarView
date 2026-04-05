@@ -3,30 +3,19 @@ import StoreKit
 @MainActor
 class TipJarStore: ObservableObject {
     static let productIDs: [String] = [
-        "dev.kuma.NectarView.tip.small",
-        "dev.kuma.NectarView.tip.medium",
-        "dev.kuma.NectarView.tip.large"
+        "dev.kuma.NectarView.tip.small.c2",
+        "dev.kuma.NectarView.tip.medium.c",
+        "dev.kuma.NectarView.tip.large.c"
     ]
 
     @Published var products: [Product] = []
-    @Published var purchasedIDs: Set<String> = []
     @Published var isLoading = false
     @Published var purchaseResult: PurchaseResult?
-
-    private var transactionListener: Task<Void, Never>?
 
     enum PurchaseResult: Equatable {
         case success
         case cancelled
         case error(String)
-    }
-
-    init() {
-        transactionListener = listenForTransactions()
-    }
-
-    deinit {
-        transactionListener?.cancel()
     }
 
     func loadProducts() async {
@@ -39,8 +28,6 @@ class TipJarStore: ObservableObject {
         } catch {
             print("Failed to load products: \(error)")
         }
-
-        await updatePurchasedProducts()
     }
 
     func purchase(_ product: Product) async {
@@ -50,7 +37,6 @@ class TipJarStore: ObservableObject {
             case .success(let verification):
                 let transaction = try checkVerified(verification)
                 await transaction.finish()
-                purchasedIDs.insert(product.id)
                 purchaseResult = .success
                 ReviewRequester.requestReviewIfNeeded()
             case .userCancelled:
@@ -62,31 +48,6 @@ class TipJarStore: ObservableObject {
             }
         } catch {
             purchaseResult = .error(error.localizedDescription)
-        }
-    }
-
-    func isPurchased(_ product: Product) -> Bool {
-        purchasedIDs.contains(product.id)
-    }
-
-    private func updatePurchasedProducts() async {
-        var purchased: Set<String> = []
-        for await result in Transaction.currentEntitlements {
-            if case .verified(let transaction) = result {
-                purchased.insert(transaction.productID)
-            }
-        }
-        purchasedIDs = purchased
-    }
-
-    private func listenForTransactions() -> Task<Void, Never> {
-        Task.detached {
-            for await result in Transaction.updates {
-                if case .verified(let transaction) = result {
-                    await transaction.finish()
-                    await self.updatePurchasedProducts()
-                }
-            }
         }
     }
 
