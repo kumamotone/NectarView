@@ -10014,6 +10014,7 @@
       }
     },
     "TipJar.FanBadge" : {
+      "extractionState" : "stale",
       "localizations" : {
         "da" : {
           "stringUnit" : {
@@ -10150,6 +10151,7 @@
       }
     },
     "TipJar.Purchased" : {
+      "extractionState" : "stale",
       "localizations" : {
         "da" : {
           "stringUnit" : {

@@ -23,10 +23,12 @@ class TipJarStore: ObservableObject {
         defer { isLoading = false }
 
         do {
+            print("[TipJarStore] Loading products for IDs: \(Self.productIDs)")
             let products = try await Product.products(for: Self.productIDs)
+            print("[TipJarStore] Loaded \(products.count) products: \(products.map { $0.id })")
             self.products = products.sorted { $0.price < $1.price }
         } catch {
-            print("Failed to load products: \(error)")
+            print("[TipJarStore] Failed to load products: \(error)")
         }
     }
 
