@@ -21,6 +21,7 @@ jobs:
             -scheme NectarView \
             -destination 'platform=macOS' \
             -skipPackagePluginValidation \
+            CODE_SIGNING_ALLOWED=NO \
             build
 
       - name: Test
@@ -29,4 +30,5 @@ jobs:
             -scheme NectarView \
             -destination 'platform=macOS' \
             -skipPackagePluginValidation \
+            CODE_SIGNING_ALLOWED=NO \
             test
