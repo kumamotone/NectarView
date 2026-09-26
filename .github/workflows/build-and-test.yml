@@ -12,6 +12,9 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
+      - name: Checkout XADMasterSwift
+        run: git clone --depth 1 --recurse-submodules https://github.com/kumamotone/XADMasterSwift.git ../XADMasterSwift/XADMasterSwift
+
       - name: Build
         run: |
           xcodebuild -project NectarView.xcodeproj \
