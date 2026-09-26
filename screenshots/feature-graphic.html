@@ -1,0 +1,1099 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>NectarView Feature Graphics</title>
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <style>
+        :root {
+            --width: 1280px;
+            --height: 800px;
+            --accent: #e2b714;
+            --text-primary: #ffffff;
+            --text-secondary: rgba(255, 255, 255, 0.7);
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        body {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            background: #222;
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Helvetica Neue', sans-serif;
+            padding: 30px 0;
+        }
+
+        /* === Controls === */
+        .controls {
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            background: #222;
+            padding: 16px 0 20px;
+            display: flex;
+            gap: 8px;
+            flex-wrap: wrap;
+            justify-content: center;
+        }
+        .controls button {
+            padding: 8px 16px;
+            border: 1px solid #555;
+            background: #444;
+            color: #fff;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 13px;
+        }
+        .controls button.active {
+            background: var(--accent);
+            color: #000;
+            border-color: var(--accent);
+        }
+
+        .slide-label {
+            color: #888;
+            font-size: 13px;
+            margin: 24px 0 8px;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+        }
+        .slide-label:first-of-type { margin-top: 0; }
+
+        /* === Shared Slide Styles === */
+        .slide {
+            width: var(--width);
+            height: var(--height);
+            position: relative;
+            overflow: hidden;
+            display: flex;
+            align-items: center;
+            flex-shrink: 0;
+        }
+
+        .slide::before {
+            content: '';
+            position: absolute;
+            inset: 0;
+            z-index: 0;
+        }
+
+        /* === Slide Backgrounds === */
+        .slide-1 { background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%); }
+        .slide-1::before {
+            background-image:
+                radial-gradient(circle at 20% 80%, rgba(226, 183, 20, 0.08) 0%, transparent 50%),
+                radial-gradient(circle at 80% 20%, rgba(52, 152, 219, 0.08) 0%, transparent 50%);
+        }
+
+        .slide-2 { background: linear-gradient(135deg, #0f2027 0%, #203a43 50%, #2c5364 100%); }
+        .slide-2::before {
+            background-image:
+                radial-gradient(circle at 75% 75%, rgba(44, 83, 100, 0.3) 0%, transparent 50%),
+                radial-gradient(circle at 25% 25%, rgba(226, 183, 20, 0.06) 0%, transparent 50%);
+        }
+
+        .slide-3 { background: linear-gradient(135deg, #1a1a2e 0%, #2d1b4e 100%); }
+        .slide-3::before {
+            background-image:
+                radial-gradient(circle at 70% 30%, rgba(139, 92, 246, 0.1) 0%, transparent 50%),
+                radial-gradient(circle at 30% 70%, rgba(226, 183, 20, 0.06) 0%, transparent 50%);
+        }
+
+        .slide-4 { background: linear-gradient(135deg, #1b2838 0%, #1a3a2a 100%); }
+        .slide-4::before {
+            background-image:
+                radial-gradient(circle at 80% 60%, rgba(52, 211, 153, 0.08) 0%, transparent 50%),
+                radial-gradient(circle at 20% 40%, rgba(226, 183, 20, 0.06) 0%, transparent 50%);
+        }
+
+        /* === Text Area (left side) === */
+        .text-area {
+            flex: 0 0 480px;
+            padding: 60px 30px 60px 70px;
+            z-index: 2;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+
+        .app-icon {
+            width: 72px;
+            height: 72px;
+            border-radius: 16px;
+            margin-bottom: 18px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.3);
+        }
+
+        .slide-title {
+            font-size: 48px;
+            font-weight: 700;
+            color: var(--text-primary);
+            letter-spacing: -0.5px;
+            line-height: 1.15;
+        }
+        .slide-title .accent { color: var(--accent); }
+
+        .slide-subtitle {
+            font-size: 18px;
+            color: var(--text-secondary);
+            margin-top: 12px;
+            line-height: 1.5;
+        }
+
+        .features-pills {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+            margin-top: 20px;
+        }
+
+        .pill {
+            padding: 5px 14px;
+            background: rgba(255, 255, 255, 0.1);
+            border: 1px solid rgba(255, 255, 255, 0.15);
+            border-radius: 20px;
+            font-size: 14px;
+            color: var(--text-secondary);
+            white-space: nowrap;
+        }
+
+        .feature-list {
+            list-style: none;
+            margin-top: 20px;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+        .feature-list li {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            color: var(--text-secondary);
+            font-size: 17px;
+        }
+        .feature-list .icon {
+            width: 32px;
+            height: 32px;
+            border-radius: 8px;
+            background: rgba(255, 255, 255, 0.08);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+            color: var(--accent);
+        }
+        .feature-list .icon svg {
+            width: 18px;
+            height: 18px;
+        }
+        .format-badge .fmt-icon {
+            color: var(--text-secondary);
+        }
+        .format-badge .fmt-icon svg {
+            width: 22px;
+            height: 22px;
+        }
+
+        /* === Screenshot Area (right side) === */
+        .screenshots-area {
+            flex: 1;
+            position: relative;
+            height: 100%;
+            z-index: 1;
+        }
+
+        .screenshot {
+            position: absolute;
+            border-radius: 8px;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.45), 0 2px 8px rgba(0, 0, 0, 0.2);
+            overflow: hidden;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        .screenshot img {
+            display: block;
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        /* Glow */
+        .glow {
+            position: absolute;
+            width: 250px;
+            height: 250px;
+            border-radius: 50%;
+            z-index: 0;
+            pointer-events: none;
+        }
+
+        /* ============================
+           SLIDE 1: Hero (Big hero + two thumbnails)
+           ============================ */
+        .slide-1 .s1-shot-1 {
+            width: 600px; height: 400px;
+            top: 200px; left: 80px;
+            transform: perspective(900px) rotateY(-8deg) rotateX(2deg);
+            z-index: 3;
+        }
+        .slide-1 .s1-shot-2 {
+            width: 320px; height: 210px;
+            top: 30px; left: 80px;
+            transform: perspective(600px) rotateY(-4deg);
+            z-index: 1;
+        }
+        .slide-1 .s1-shot-3 {
+            width: 320px; height: 210px;
+            top: 30px; left: 430px;
+            transform: perspective(600px) rotateY(-4deg);
+            z-index: 1;
+        }
+        .slide-1 .glow {
+            top: 45%; left: 380px;
+            transform: translateY(-50%);
+            background: radial-gradient(circle, rgba(226, 183, 20, 0.15) 0%, transparent 70%);
+        }
+
+        /* ============================
+           SLIDE 2: Reading Modes
+           ============================ */
+        .slide-2 .s2-shot-spread {
+            width: 420px; height: 300px;
+            top: 40px; left: 20px;
+            transform: perspective(600px) rotateY(-3deg);
+        }
+        .slide-2 .s2-shot-single {
+            width: 360px; height: 290px;
+            top: 60px; left: 380px;
+            transform: perspective(600px) rotateY(-2deg);
+            z-index: 1;
+        }
+        .slide-2 .s2-label-spread,
+        .slide-2 .s2-label-single {
+            position: absolute;
+            padding: 5px 14px;
+            background: rgba(226, 183, 20, 0.9);
+            color: #000;
+            font-size: 12px;
+            font-weight: 700;
+            border-radius: 4px;
+            z-index: 10;
+            letter-spacing: 0.5px;
+        }
+        .slide-2 .s2-label-spread {
+            bottom: 430px; left: 32px;
+        }
+        .slide-2 .s2-label-single {
+            bottom: 420px; left: 392px;
+        }
+        .slide-2 .s2-shot-nav {
+            width: 660px; height: 220px;
+            bottom: 30px; left: 50px;
+            transform: perspective(600px) rotateX(2deg);
+            z-index: 2;
+        }
+        .slide-2 .glow {
+            top: 40%; left: 300px;
+            transform: translateY(-50%);
+            background: radial-gradient(circle, rgba(44, 83, 100, 0.2) 0%, transparent 70%);
+        }
+
+        /* ============================
+           SLIDE 3: Archive Support
+           ============================ */
+        .slide-3 .format-grid {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 20px;
+            z-index: 2;
+        }
+        .slide-3 .format-badge {
+            width: 140px;
+            height: 100px;
+            background: rgba(255, 255, 255, 0.06);
+            border: 1px solid rgba(255, 255, 255, 0.12);
+            border-radius: 12px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            gap: 6px;
+        }
+        .slide-3 .format-badge .fmt-icon {
+            font-size: 24px;
+        }
+        .slide-3 .format-badge .fmt-name {
+            font-size: 16px;
+            font-weight: 600;
+            color: var(--text-primary);
+        }
+        .slide-3 .format-badge .fmt-ext {
+            font-size: 10px;
+            color: var(--text-secondary);
+        }
+        .slide-3 .glow {
+            top: 50%; left: 55%;
+            transform: translate(-50%, -50%);
+            width: 300px; height: 300px;
+            background: radial-gradient(circle, rgba(139, 92, 246, 0.12) 0%, transparent 70%);
+        }
+
+        /* ============================
+           SLIDE 4: Advanced Features
+           ============================ */
+        .slide-4 .s4-shot {
+            width: 580px; height: 400px;
+            top: 50%; left: 50%;
+            transform: translate(-50%, -50%) perspective(600px) rotateY(-3deg);
+        }
+        .slide-4 .glow {
+            top: 50%; left: 55%;
+            transform: translate(-50%, -50%);
+            background: radial-gradient(circle, rgba(52, 211, 153, 0.12) 0%, transparent 70%);
+        }
+    </style>
+</head>
+<body>
+
+<!-- Language switcher -->
+<div class="controls">
+    <button class="active" onclick="switchLang('en', this)">English</button>
+    <button onclick="switchLang('ja', this)">日本語</button>
+    <button onclick="switchLang('zh-Hans', this)">简体中文</button>
+    <button onclick="switchLang('zh-Hant', this)">繁體中文</button>
+    <button onclick="switchLang('ko', this)">한국어</button>
+    <button onclick="switchLang('fr', this)">Fran&ccedil;ais</button>
+    <button onclick="switchLang('de', this)">Deutsch</button>
+    <button onclick="switchLang('es', this)">Espa&ntilde;ol</button>
+    <button onclick="switchLang('pt-BR', this)">Portugu&ecirc;s (BR)</button>
+    <button onclick="switchLang('pt-PT', this)">Portugu&ecirc;s (PT)</button>
+    <button onclick="switchLang('it', this)">Italiano</button>
+    <button onclick="switchLang('nl', this)">Nederlands</button>
+    <button onclick="switchLang('sv', this)">Svenska</button>
+    <button onclick="switchLang('da', this)">Dansk</button>
+    <button onclick="switchLang('nb', this)">Norsk (Bokm&aring;l)</button>
+    <button onclick="switchLang('no', this)">Norsk</button>
+    <button onclick="switchLang('fi', this)">Suomi</button>
+    <button onclick="switchLang('pl', this)">Polski</button>
+    <button onclick="switchLang('cs', this)">&#268;e&#353;tina</button>
+    <button onclick="switchLang('sk', this)">Sloven&#269;ina</button>
+    <button onclick="switchLang('hu', this)">Magyar</button>
+    <button onclick="switchLang('ro', this)">Rom&#226;n&#259;</button>
+    <button onclick="switchLang('hr', this)">Hrvatski</button>
+    <button onclick="switchLang('tr', this)">T&uuml;rk&ccedil;e</button>
+    <button onclick="switchLang('ru', this)">&#1056;&#1091;&#1089;&#1089;&#1082;&#1080;&#1081;</button>
+    <button onclick="switchLang('uk', this)">&#1059;&#1082;&#1088;&#1072;&#1111;&#1085;&#1089;&#1100;&#1082;&#1072;</button>
+    <button onclick="switchLang('el', this)">&#917;&#955;&#955;&#951;&#957;&#953;&#954;&#940;</button>
+    <button onclick="switchLang('ca', this)">Catal&agrave;</button>
+    <button onclick="switchLang('th', this)">&#3652;&#3607;&#3618;</button>
+    <button onclick="switchLang('vi', this)">Ti&#7871;ng Vi&#7879;t</button>
+    <button onclick="switchLang('id', this)">Indonesia</button>
+    <button onclick="switchLang('ms', this)">Melayu</button>
+    <button onclick="switchLang('hi', this)">&#2361;&#2367;&#2344;&#2381;&#2342;&#2368;</button>
+    <button onclick="switchLang('ar-SA', this)">&#1575;&#1604;&#1593;&#1585;&#1576;&#1610;&#1577;</button>
+    <button onclick="switchLang('he', this)">&#1506;&#1489;&#1512;&#1497;&#1514;</button>
+    <button onclick="switchLang('en-AU', this)">English (AU)</button>
+    <button onclick="switchLang('en-CA', this)">English (CA)</button>
+    <button onclick="switchLang('en-GB', this)">English (GB)</button>
+    <button onclick="switchLang('es-MX', this)">Espa&ntilde;ol (MX)</button>
+    <button onclick="switchLang('fr-CA', this)">Fran&ccedil;ais (CA)</button>
+</div>
+
+<!-- ==================== SLIDE 1: Hero ==================== -->
+<div class="slide-label">1 / 4 &mdash; Hero</div>
+<div class="slide slide-1" id="slide-1">
+    <div class="glow"></div>
+    <div class="text-area">
+        <img class="app-icon" src="../NectarView/Assets.xcassets/AppIcon.appiconset/256-mac.png" alt="NectarView">
+        <div class="slide-title">Nectar<span class="accent">View</span></div>
+        <div class="slide-subtitle" data-i18n="hero-tagline">The Next Gen Manga &amp; Comic Viewer for macOS</div>
+        <div class="features-pills">
+            <span class="pill" data-i18n="pill-archive">ZIP / RAR / 7z / PDF</span>
+            <span class="pill" data-i18n="pill-spread">Spread View</span>
+            <span class="pill" data-i18n="pill-fast">Blazing Fast</span>
+            <span class="pill" data-i18n="pill-free">Free &amp; Open Source</span>
+        </div>
+    </div>
+    <div class="screenshots-area">
+        <div class="screenshot s1-shot-2"><img src="Screenshot_SinglePage.png" alt="Single Page"></div>
+        <div class="screenshot s1-shot-3"><img src="ScreenShot_Navigation.png" alt="Navigation"></div>
+        <div class="screenshot s1-shot-1"><img src="ScreenShot_Top.png" alt="Spread View"></div>
+    </div>
+</div>
+
+<!-- ==================== SLIDE 2: Reading Modes ==================== -->
+<div class="slide-label">2 / 4 &mdash; Reading Modes</div>
+<div class="slide slide-2" id="slide-2">
+    <div class="glow"></div>
+    <div class="text-area">
+        <div class="slide-title" data-i18n="modes-title">Read Your <span class="accent">Way</span></div>
+        <div class="slide-subtitle" data-i18n="modes-subtitle">Single page, spread view, or realistic book mode. Left-to-right or right-to-left &mdash; it&rsquo;s your choice.</div>
+        <ul class="feature-list">
+            <li><span class="icon"><i data-lucide="book-open"></i></span> <span data-i18n="modes-f1">Spread view with page binding</span></li>
+            <li><span class="icon"><i data-lucide="file-text"></i></span> <span data-i18n="modes-f2">Clean single-page mode</span></li>
+            <li><span class="icon"><i data-lucide="arrow-left-right"></i></span> <span data-i18n="modes-f3">LTR &amp; RTL reading direction</span></li>
+            <li><span class="icon"><i data-lucide="library"></i></span> <span data-i18n="modes-f4">Realistic 3D book appearance</span></li>
+        </ul>
+    </div>
+    <div class="screenshots-area">
+        <span class="s2-label-spread" data-i18n="label-spread">SPREAD</span>
+        <div class="screenshot s2-shot-spread"><img src="ScreenShot_Top.png" alt="Spread View"></div>
+        <span class="s2-label-single" data-i18n="label-single">SINGLE</span>
+        <div class="screenshot s2-shot-single"><img src="Screenshot_SinglePage.png" alt="Single Page"></div>
+        <div class="screenshot s2-shot-nav"><img src="ScreenShot_Navigation.png" alt="Navigation"></div>
+    </div>
+</div>
+
+<!-- ==================== SLIDE 3: Archive Support ==================== -->
+<div class="slide-label">3 / 4 &mdash; Archive Support</div>
+<div class="slide slide-3" id="slide-3">
+    <div class="glow"></div>
+    <div class="text-area">
+        <div class="slide-title" data-i18n="archive-title">Open <span class="accent">Anything</span></div>
+        <div class="slide-subtitle" data-i18n="archive-subtitle">Open archives directly without extraction. Blazing fast with background prefetching.</div>
+        <ul class="feature-list">
+            <li><span class="icon"><i data-lucide="zap"></i></span> <span data-i18n="archive-f1">No extraction needed</span></li>
+            <li><span class="icon"><i data-lucide="lock"></i></span> <span data-i18n="archive-f2">Password-protected archives</span></li>
+            <li><span class="icon"><i data-lucide="rocket"></i></span> <span data-i18n="archive-f3">Background prefetching</span></li>
+        </ul>
+    </div>
+    <div class="screenshots-area">
+        <div class="format-grid">
+            <div class="format-badge"><span class="fmt-icon"><i data-lucide="file-archive"></i></span><span class="fmt-name">ZIP</span></div>
+            <div class="format-badge"><span class="fmt-icon"><i data-lucide="file-archive"></i></span><span class="fmt-name">RAR</span></div>
+            <div class="format-badge"><span class="fmt-icon"><i data-lucide="file-archive"></i></span><span class="fmt-name">7z</span></div>
+            <div class="format-badge"><span class="fmt-icon"><i data-lucide="file-text"></i></span><span class="fmt-name">PDF</span></div>
+            <div class="format-badge"><span class="fmt-icon"><i data-lucide="file-archive"></i></span><span class="fmt-name">TAR</span><span class="fmt-ext">gz / bz2 / xz</span></div>
+            <div class="format-badge"><span class="fmt-icon"><i data-lucide="file-archive"></i></span><span class="fmt-name">LHA</span><span class="fmt-ext">lzh</span></div>
+            <div class="format-badge"><span class="fmt-icon"><i data-lucide="image"></i></span><span class="fmt-name">Images</span><span class="fmt-ext" data-i18n="fmt-images-ext">PNG JPG GIF WebP</span></div>
+            <div class="format-badge"><span class="fmt-icon"><i data-lucide="file-archive"></i></span><span class="fmt-name">CAB</span><span class="fmt-ext">sit / sitx</span></div>
+        </div>
+    </div>
+</div>
+
+<!-- ==================== SLIDE 4: Advanced Features ==================== -->
+<div class="slide-label">4 / 4 &mdash; Advanced Features</div>
+<div class="slide slide-4" id="slide-4">
+    <div class="glow"></div>
+    <div class="text-area">
+        <div class="slide-title" data-i18n="adv-title">Packed with <span class="accent">Power</span></div>
+        <div class="slide-subtitle" data-i18n="adv-subtitle">Everything you need for the perfect reading experience, built right in.</div>
+        <ul class="feature-list">
+            <li><span class="icon"><i data-lucide="palette"></i></span> <span data-i18n="adv-f1">12 real-time image filters</span></li>
+            <li><span class="icon"><i data-lucide="bookmark"></i></span> <span data-i18n="adv-f2">Bookmark &amp; quick navigation</span></li>
+            <li><span class="icon"><i data-lucide="timer"></i></span> <span data-i18n="adv-f3">Auto page turn (0.5&ndash;30s)</span></li>
+            <li><span class="icon"><i data-lucide="search"></i></span> <span data-i18n="adv-f4">5x zoom with pinch &amp; pan</span></li>
+            <li><span class="icon"><i data-lucide="rotate-cw"></i></span> <span data-i18n="adv-f5">Image rotation (90&deg; CW/CCW)</span></li>
+            <li><span class="icon"><i data-lucide="keyboard"></i></span> <span data-i18n="adv-f6">Full keyboard shortcuts</span></li>
+        </ul>
+    </div>
+    <div class="screenshots-area">
+        <div class="screenshot s4-shot"><img src="ScreenShot_Navigation.png" alt="Navigation and Controls"></div>
+    </div>
+</div>
+
+<script>
+const i18n = {
+    en: {
+        "hero-tagline": "The Next Gen Manga & Comic Viewer for macOS",
+        "pill-archive": "ZIP / RAR / 7z / PDF",
+        "pill-spread": "Spread View",
+        "pill-fast": "Blazing Fast",
+        "pill-free": "Free & Open Source",
+        "modes-title": "Read Your Way",
+        "modes-subtitle": "Single page, spread view, or realistic book mode.\nLeft-to-right or right-to-left \u2014 it\u2019s your choice.",
+        "modes-f1": "Spread view with page binding",
+        "modes-f2": "Clean single-page mode",
+        "modes-f3": "LTR & RTL reading direction",
+        "modes-f4": "Realistic 3D book appearance",
+        "label-spread": "SPREAD",
+        "label-single": "SINGLE",
+        "archive-title": "Open Anything",
+        "archive-subtitle": "Open archives directly without extraction.\nBlazing fast with background prefetching.",
+        "archive-f1": "No extraction needed",
+        "archive-f2": "Password-protected archives",
+        "archive-f3": "Background prefetching",
+        "fmt-images-ext": "PNG JPG GIF WebP",
+        "adv-title": "Packed with Power",
+        "adv-subtitle": "Everything you need for the perfect reading experience, built right in.",
+        "adv-f1": "12 real-time image filters",
+        "adv-f2": "Bookmark & quick navigation",
+        "adv-f3": "Auto page turn (0.5\u201330s)",
+        "adv-f4": "5x zoom with pinch & pan",
+        "adv-f5": "Image rotation (90\u00b0 CW/CCW)",
+        "adv-f6": "Full keyboard shortcuts"
+    },
+    ja: {
+        "hero-tagline": "macOS\u7528 \u6b21\u4e16\u4ee3\u30de\u30f3\u30ac\u30fb\u30b3\u30df\u30c3\u30af\u30d3\u30e5\u30fc\u30a2",
+        "pill-archive": "ZIP / RAR / 7z / PDF",
+        "pill-spread": "\u898b\u958b\u304d\u8868\u793a",
+        "pill-fast": "\u9ad8\u901f\u8868\u793a",
+        "pill-free": "\u7121\u6599\u30fb\u30aa\u30fc\u30d7\u30f3\u30bd\u30fc\u30b9",
+        "modes-title": "\u81ea\u5206\u597d\u307f\u306e\u8aad\u307f\u65b9\u3067",
+        "modes-subtitle": "\u5358\u30da\u30fc\u30b8\u3001\u898b\u958b\u304d\u3001\u30ea\u30a2\u30eb\u306a\u672c\u306e\u5916\u89b3\u30e2\u30fc\u30c9\u3002\n\u5de6\u7db4\u3058\u3082\u53f3\u7db4\u3058\u3082\u81ea\u7531\u81ea\u5728\u3002",
+        "modes-f1": "\u898b\u958b\u304d\u8868\u793a\uff08\u30da\u30fc\u30b8\u7db4\u3058\u5bfe\u5fdc\uff09",
+        "modes-f2": "\u30b7\u30f3\u30d7\u30eb\u306a\u5358\u30da\u30fc\u30b8\u30e2\u30fc\u30c9",
+        "modes-f3": "\u5de6\u53f3\u4e21\u65b9\u5411\u306e\u8aad\u307f\u9032\u884c",
+        "modes-f4": "\u30ea\u30a2\u30eb\u306a3D\u672c\u306e\u5916\u89b3",
+        "label-spread": "\u898b\u958b\u304d",
+        "label-single": "\u5358\u30da\u30fc\u30b8",
+        "archive-title": "\u4f55\u3067\u3082\u958b\u3051\u308b",
+        "archive-subtitle": "\u30a2\u30fc\u30ab\u30a4\u30d6\u3092\u89e3\u51cd\u305b\u305a\u306b\u76f4\u63a5\u958b\u304f\u3002\n\u30d0\u30c3\u30af\u30b0\u30e9\u30a6\u30f3\u30c9\u30d7\u30ea\u30d5\u30a7\u30c3\u30c1\u3067\u9ad8\u901f\u8868\u793a\u3002",
+        "archive-f1": "\u89e3\u51cd\u4e0d\u8981",
+        "archive-f2": "\u30d1\u30b9\u30ef\u30fc\u30c9\u4ed8\u304d\u30a2\u30fc\u30ab\u30a4\u30d6\u5bfe\u5fdc",
+        "archive-f3": "\u30d0\u30c3\u30af\u30b0\u30e9\u30a6\u30f3\u30c9\u30d7\u30ea\u30d5\u30a7\u30c3\u30c1",
+        "fmt-images-ext": "PNG JPG GIF WebP",
+        "adv-title": "\u5145\u5b9f\u306e\u6a5f\u80fd",
+        "adv-subtitle": "\u5feb\u9069\u306a\u8aad\u66f8\u4f53\u9a13\u306b\u5fc5\u8981\u306a\u3059\u3079\u3066\u3092\u642d\u8f09\u3002",
+        "adv-f1": "12\u7a2e\u985e\u306e\u30ea\u30a2\u30eb\u30bf\u30a4\u30e0\u30d5\u30a3\u30eb\u30bf\u30fc",
+        "adv-f2": "\u30d6\u30c3\u30af\u30de\u30fc\u30af & \u30af\u30a4\u30c3\u30af\u30ca\u30d3",
+        "adv-f3": "\u81ea\u52d5\u30da\u30fc\u30b8\u3081\u304f\u308a\uff080.5\u301c30\u79d2\uff09",
+        "adv-f4": "5\u500d\u30ba\u30fc\u30e0\uff08\u30d4\u30f3\u30c1 & \u30d1\u30f3\uff09",
+        "adv-f5": "\u753b\u50cf\u56de\u8ee2\uff0890\u00b0 \u6642\u8a08/\u53cd\u6642\u8a08\u56de\u308a\uff09",
+        "adv-f6": "\u30d5\u30eb\u30ad\u30fc\u30dc\u30fc\u30c9\u30b7\u30e7\u30fc\u30c8\u30ab\u30c3\u30c8"
+    },
+    "zh-Hans": {
+        "hero-tagline": "macOS \u65b0\u4e00\u4ee3\u6f2b\u753b\u9605\u8bfb\u5668",
+        "pill-archive": "ZIP / RAR / 7z / PDF",
+        "pill-spread": "\u53cc\u9875\u6a21\u5f0f",
+        "pill-fast": "\u6781\u901f\u52a0\u8f7d",
+        "pill-free": "\u514d\u8d39\u5f00\u6e90",
+        "modes-title": "\u968f\u5fc3\u6240\u6b32\u5730\u9605\u8bfb",
+        "modes-subtitle": "\u5355\u9875\u3001\u53cc\u9875\u6216\u903c\u771f\u4e66\u7c4d\u6a21\u5f0f\u3002\n\u4ece\u5de6\u5230\u53f3\u6216\u4ece\u53f3\u5230\u5de6\uff0c\u968f\u4f60\u559c\u597d\u3002",
+        "modes-f1": "\u53cc\u9875\u663e\u793a\uff08\u5e26\u88c5\u8ba2\u6548\u679c\uff09",
+        "modes-f2": "\u7b80\u6d01\u5355\u9875\u6a21\u5f0f",
+        "modes-f3": "\u5de6\u53f3\u53cc\u5411\u9605\u8bfb",
+        "modes-f4": "\u903c\u771f 3D \u4e66\u7c4d\u5916\u89c2",
+        "label-spread": "\u53cc\u9875",
+        "label-single": "\u5355\u9875",
+        "archive-title": "\u6253\u5f00\u4efb\u4f55\u6587\u4ef6",
+        "archive-subtitle": "\u65e0\u9700\u89e3\u538b\u76f4\u63a5\u6253\u5f00\u538b\u7f29\u5305\u3002\n\u540e\u53f0\u9884\u52a0\u8f7d\uff0c\u6781\u901f\u663e\u793a\u3002",
+        "archive-f1": "\u65e0\u9700\u89e3\u538b",
+        "archive-f2": "\u652f\u6301\u52a0\u5bc6\u538b\u7f29\u5305",
+        "archive-f3": "\u540e\u53f0\u9884\u52a0\u8f7d",
+        "fmt-images-ext": "PNG JPG GIF WebP",
+        "adv-title": "\u529f\u80fd\u5f3a\u5927",
+        "adv-subtitle": "\u5b8c\u7f8e\u9605\u8bfb\u4f53\u9a8c\u6240\u9700\u7684\u4e00\u5207\uff0c\u5185\u7f6e\u5176\u4e2d\u3002",
+        "adv-f1": "12 \u79cd\u5b9e\u65f6\u6ee4\u955c",
+        "adv-f2": "\u4e66\u7b7e & \u5feb\u901f\u5bfc\u822a",
+        "adv-f3": "\u81ea\u52a8\u7ffb\u9875\uff080.5\u201330\u79d2\uff09",
+        "adv-f4": "5 \u500d\u7f29\u653e\uff08\u6346\u5408 & \u5e73\u79fb\uff09",
+        "adv-f5": "\u56fe\u7247\u65cb\u8f6c\uff0890\u00b0\uff09",
+        "adv-f6": "\u5b8c\u6574\u952e\u76d8\u5feb\u6377\u952e"
+    },
+    "zh-Hant": {
+        "hero-tagline": "macOS \u65b0\u4e16\u4ee3\u6f2b\u756b\u95b1\u8b80\u5668",
+        "pill-archive": "ZIP / RAR / 7z / PDF",
+        "pill-spread": "\u8de8\u9801\u6a21\u5f0f",
+        "pill-fast": "\u6975\u901f\u8f09\u5165",
+        "pill-free": "\u514d\u8cbb\u958b\u6e90",
+        "modes-title": "\u96a8\u5fc3\u6240\u6b32\u5730\u95b1\u8b80",
+        "modes-subtitle": "\u55ae\u9801\u3001\u8de8\u9801\u6216\u64ec\u771f\u66f8\u7c4d\u6a21\u5f0f\u3002\n\u5f9e\u5de6\u5230\u53f3\u6216\u5f9e\u53f3\u5230\u5de6\uff0c\u96a8\u4f60\u559c\u597d\u3002",
+        "modes-f1": "\u8de8\u9801\u986f\u793a\uff08\u5e36\u88dd\u8a02\u6548\u679c\uff09",
+        "modes-f2": "\u7c21\u6f54\u55ae\u9801\u6a21\u5f0f",
+        "modes-f3": "\u5de6\u53f3\u96d9\u5411\u95b1\u8b80",
+        "modes-f4": "\u64ec\u771f 3D \u66f8\u7c4d\u5916\u89c0",
+        "label-spread": "\u8de8\u9801",
+        "label-single": "\u55ae\u9801",
+        "archive-title": "\u958b\u555f\u4efb\u4f55\u6a94\u6848",
+        "archive-subtitle": "\u7121\u9700\u89e3\u58d3\u76f4\u63a5\u958b\u555f\u58d3\u7e2e\u6a94\u3002\n\u80cc\u666f\u9810\u8f09\uff0c\u6975\u901f\u986f\u793a\u3002",
+        "archive-f1": "\u7121\u9700\u89e3\u58d3",
+        "archive-f2": "\u652f\u63f4\u52a0\u5bc6\u58d3\u7e2e\u6a94",
+        "archive-f3": "\u80cc\u666f\u9810\u8f09",
+        "fmt-images-ext": "PNG JPG GIF WebP",
+        "adv-title": "\u529f\u80fd\u5f37\u5927",
+        "adv-subtitle": "\u5b8c\u7f8e\u95b1\u8b80\u9ad4\u9a57\u6240\u9700\u7684\u4e00\u5207\uff0c\u5167\u5efa\u5176\u4e2d\u3002",
+        "adv-f1": "12 \u7a2e\u5373\u6642\u6ffe\u93e1",
+        "adv-f2": "\u66f8\u7c64 & \u5feb\u901f\u5c0e\u822a",
+        "adv-f3": "\u81ea\u52d5\u7ffb\u9801\uff080.5\u201330\u79d2\uff09",
+        "adv-f4": "5 \u500d\u7e2e\u653e\uff08\u6346\u5408 & \u5e73\u79fb\uff09",
+        "adv-f5": "\u5716\u7247\u65cb\u8f49\uff0890\u00b0\uff09",
+        "adv-f6": "\u5b8c\u6574\u9375\u76e4\u5feb\u6377\u9375"
+    },
+    ko: {
+        "hero-tagline": "macOS\uc6a9 \ucc28\uc138\ub300 \ub9cc\ud654 \ubdf0\uc5b4",
+        "pill-archive": "ZIP / RAR / 7z / PDF",
+        "pill-spread": "\ud3bc\uccd0\ubcf4\uae30",
+        "pill-fast": "\ucd08\uace0\uc18d",
+        "pill-free": "\ubb34\ub8cc & \uc624\ud508\uc18c\uc2a4",
+        "modes-title": "\ub098\ub9cc\uc758 \uc2a4\ud0c0\uc77c\ub85c",
+        "modes-subtitle": "\ub2e8\uc77c \ud398\uc774\uc9c0, \ud3bc\uccd0\ubcf4\uae30, \uc0ac\uc2e4\uc801\uc778 \ucc45 \ubaa8\ub4dc.\n\uc88c\u21d2\uc6b0 \ub610\ub294 \uc6b0\u21d2\uc88c, \uc6d0\ud558\ub294 \ub300\ub85c.",
+        "modes-f1": "\ud3bc\uccd0\ubcf4\uae30 (\ud398\uc774\uc9c0 \ubc14\uc778\ub529)",
+        "modes-f2": "\uae54\ub054\ud55c \ub2e8\uc77c \ud398\uc774\uc9c0 \ubaa8\ub4dc",
+        "modes-f3": "LTR & RTL \uc77d\uae30 \ubc29\ud5a5",
+        "modes-f4": "\uc0ac\uc2e4\uc801\uc778 3D \ucc45 \uc678\uad00",
+        "label-spread": "\ud3bc\uccd0\ubcf4\uae30",
+        "label-single": "\ub2e8\uc77c",
+        "archive-title": "\ubb50\ub4e0\uc9c0 \uc5f4\uae30",
+        "archive-subtitle": "\uc555\ucd95 \ud574\uc81c \uc5c6\uc774 \ubc14\ub85c \uc5f4\uae30.\n\ubc31\uadf8\ub77c\uc6b4\ub4dc \ud504\ub9ac\ud398\uce58\ub85c \ucd08\uace0\uc18d.",
+        "archive-f1": "\uc555\ucd95 \ud574\uc81c \ubd88\ud544\uc694",
+        "archive-f2": "\uc554\ud638 \ubcf4\ud638 \uc544\uce74\uc774\ube0c \uc9c0\uc6d0",
+        "archive-f3": "\ubc31\uadf8\ub77c\uc6b4\ub4dc \ud504\ub9ac\ud398\uce58",
+        "fmt-images-ext": "PNG JPG GIF WebP",
+        "adv-title": "\uac15\ub825\ud55c \uae30\ub2a5",
+        "adv-subtitle": "\uc644\ubcbd\ud55c \ub3c5\uc11c \uacbd\ud5d8\uc5d0 \ud544\uc694\ud55c \ubaa8\ub4e0 \uac83.",
+        "adv-f1": "12\uac00\uc9c0 \uc2e4\uc2dc\uac04 \ud544\ud130",
+        "adv-f2": "\ubd81\ub9c8\ud06c & \ube60\ub978 \ub124\ube44\uac8c\uc774\uc158",
+        "adv-f3": "\uc790\ub3d9 \ud398\uc774\uc9c0 \ub118\uae40 (0.5\u201330\ucd08)",
+        "adv-f4": "5\ubc30 \uc90c (\ud540\uce58 & \ud328\ub2dd)",
+        "adv-f5": "\uc774\ubbf8\uc9c0 \ud68c\uc804 (90\u00b0)",
+        "adv-f6": "\ud480 \ud0a4\ubcf4\ub4dc \ub2e8\ucd95\ud0a4"
+    },
+    fr: {
+        "hero-tagline": "Visionneuse manga nouvelle g\u00e9n\u00e9ration pour macOS",
+        "pill-archive": "ZIP / RAR / 7z / PDF",
+        "pill-spread": "Vue double page",
+        "pill-fast": "Ultra rapide",
+        "pill-free": "Gratuit & Open Source",
+        "modes-title": "Lisez \u00e0 votre fa\u00e7on",
+        "modes-subtitle": "Page simple, double page ou mode livre r\u00e9aliste.\nDe gauche \u00e0 droite ou inversement \u2014 c'est votre choix.",
+        "modes-f1": "Vue double page avec reliure",
+        "modes-f2": "Mode page simple",
+        "modes-f3": "Lecture LTR & RTL",
+        "modes-f4": "Apparence livre 3D r\u00e9aliste",
+        "label-spread": "DOUBLE",
+        "label-single": "SIMPLE",
+        "archive-title": "Ouvrez tout",
+        "archive-subtitle": "Ouvrez les archives sans extraction.\nUltra rapide avec pr\u00e9chargement en arri\u00e8re-plan.",
+        "archive-f1": "Aucune extraction n\u00e9cessaire",
+        "archive-f2": "Archives prot\u00e9g\u00e9es par mot de passe",
+        "archive-f3": "Pr\u00e9chargement en arri\u00e8re-plan",
+        "fmt-images-ext": "PNG JPG GIF WebP",
+        "adv-title": "Plein de fonctionnalit\u00e9s",
+        "adv-subtitle": "Tout ce dont vous avez besoin pour une exp\u00e9rience de lecture parfaite.",
+        "adv-f1": "12 filtres d'image en temps r\u00e9el",
+        "adv-f2": "Signets & navigation rapide",
+        "adv-f3": "Tourne-page auto (0.5\u201330s)",
+        "adv-f4": "Zoom 5x avec pincement & panoramique",
+        "adv-f5": "Rotation d'image (90\u00b0)",
+        "adv-f6": "Raccourcis clavier complets"
+    },
+    de: {
+        "hero-tagline": "Manga- & Comic-Viewer der n\u00e4chsten Generation f\u00fcr macOS",
+        "pill-archive": "ZIP / RAR / 7z / PDF",
+        "pill-spread": "Doppelseitenansicht",
+        "pill-fast": "Blitzschnell",
+        "pill-free": "Kostenlos & Open Source",
+        "modes-title": "Lesen Sie auf Ihre Art",
+        "modes-subtitle": "Einzelseite, Doppelseite oder realistischer Buchmodus.\nLinks nach rechts oder umgekehrt \u2014 Ihre Wahl.",
+        "modes-f1": "Doppelseitenansicht mit Bindung",
+        "modes-f2": "Klarer Einzelseitenmodus",
+        "modes-f3": "LTR & RTL Leserichtung",
+        "modes-f4": "Realistische 3D-Buchoptik",
+        "label-spread": "DOPPEL",
+        "label-single": "EINZEL",
+        "archive-title": "Alles \u00f6ffnen",
+        "archive-subtitle": "Archive direkt ohne Entpacken \u00f6ffnen.\nBlitzschnell mit Hintergrund-Prefetching.",
+        "archive-f1": "Kein Entpacken n\u00f6tig",
+        "archive-f2": "Passwortgesch\u00fctzte Archive",
+        "archive-f3": "Hintergrund-Prefetching",
+        "fmt-images-ext": "PNG JPG GIF WebP",
+        "adv-title": "Voller Power",
+        "adv-subtitle": "Alles, was Sie f\u00fcr das perfekte Leseerlebnis brauchen.",
+        "adv-f1": "12 Echtzeit-Bildfilter",
+        "adv-f2": "Lesezeichen & Schnellnavigation",
+        "adv-f3": "Auto-Bl\u00e4ttern (0.5\u201330s)",
+        "adv-f4": "5x Zoom mit Pinch & Pan",
+        "adv-f5": "Bilddrehung (90\u00b0)",
+        "adv-f6": "Volle Tastaturk\u00fcrzel"
+    },
+    es: {
+        "hero-tagline": "Visor de manga y c\u00f3mics de nueva generaci\u00f3n para macOS",
+        "pill-archive": "ZIP / RAR / 7z / PDF",
+        "pill-spread": "Vista doble p\u00e1gina",
+        "pill-fast": "Ultra r\u00e1pido",
+        "pill-free": "Gratis y Open Source",
+        "modes-title": "Lee a tu manera",
+        "modes-subtitle": "P\u00e1gina \u00fanica, doble p\u00e1gina o modo libro realista.\nDe izquierda a derecha o al rev\u00e9s \u2014 t\u00fa eliges.",
+        "modes-f1": "Vista doble p\u00e1gina con encuadernaci\u00f3n",
+        "modes-f2": "Modo p\u00e1gina \u00fanica limpio",
+        "modes-f3": "Direcci\u00f3n de lectura LTR & RTL",
+        "modes-f4": "Apariencia de libro 3D realista",
+        "label-spread": "DOBLE",
+        "label-single": "SIMPLE",
+        "archive-title": "Abre cualquier cosa",
+        "archive-subtitle": "Abre archivos comprimidos sin extracci\u00f3n.\nUltra r\u00e1pido con precarga en segundo plano.",
+        "archive-f1": "Sin necesidad de extracci\u00f3n",
+        "archive-f2": "Archivos protegidos con contrase\u00f1a",
+        "archive-f3": "Precarga en segundo plano",
+        "fmt-images-ext": "PNG JPG GIF WebP",
+        "adv-title": "Lleno de potencia",
+        "adv-subtitle": "Todo lo que necesitas para la experiencia de lectura perfecta.",
+        "adv-f1": "12 filtros de imagen en tiempo real",
+        "adv-f2": "Marcadores y navegaci\u00f3n r\u00e1pida",
+        "adv-f3": "Paso de p\u00e1gina autom\u00e1tico (0.5\u201330s)",
+        "adv-f4": "Zoom 5x con pellizco y desplazamiento",
+        "adv-f5": "Rotaci\u00f3n de imagen (90\u00b0)",
+        "adv-f6": "Atajos de teclado completos"
+    },
+    "pt-BR": {
+        "hero-tagline": "Visualizador de mang\u00e1 e quadrinhos de nova gera\u00e7\u00e3o para macOS",
+        "pill-archive": "ZIP / RAR / 7z / PDF", "pill-spread": "Vis\u00e3o dupla", "pill-fast": "Ultra r\u00e1pido", "pill-free": "Gratuito & Open Source",
+        "modes-title": "Leia do seu jeito", "modes-subtitle": "P\u00e1gina \u00fanica, p\u00e1gina dupla ou modo livro realista.\nDa esquerda para a direita ou vice-versa \u2014 voc\u00ea escolhe.",
+        "modes-f1": "Vis\u00e3o dupla com lombada", "modes-f2": "Modo p\u00e1gina \u00fanica", "modes-f3": "Leitura LTR & RTL", "modes-f4": "Apar\u00eancia de livro 3D realista",
+        "label-spread": "DUPLA", "label-single": "SIMPLES",
+        "archive-title": "Abra qualquer coisa", "archive-subtitle": "Abra arquivos compactados sem extra\u00e7\u00e3o.\nUltra r\u00e1pido com pr\u00e9-carregamento.",
+        "archive-f1": "Sem necessidade de extra\u00e7\u00e3o", "archive-f2": "Arquivos protegidos por senha", "archive-f3": "Pr\u00e9-carregamento em segundo plano", "fmt-images-ext": "PNG JPG GIF WebP",
+        "adv-title": "Cheio de recursos", "adv-subtitle": "Tudo que voc\u00ea precisa para a experi\u00eancia perfeita de leitura.",
+        "adv-f1": "12 filtros de imagem em tempo real", "adv-f2": "Favoritos & navega\u00e7\u00e3o r\u00e1pida", "adv-f3": "Virada autom\u00e1tica (0.5\u201330s)",
+        "adv-f4": "Zoom 5x com pinch & pan", "adv-f5": "Rota\u00e7\u00e3o de imagem (90\u00b0)", "adv-f6": "Atalhos de teclado completos"
+    },
+    th: {
+        "hero-tagline": "\u0e42\u0e1b\u0e23\u0e41\u0e01\u0e23\u0e21\u0e14\u0e39\u0e21\u0e31\u0e07\u0e07\u0e30\u0e41\u0e25\u0e30\u0e04\u0e2d\u0e21\u0e21\u0e34\u0e04\u0e23\u0e38\u0e48\u0e19\u0e43\u0e2b\u0e21\u0e48\u0e2a\u0e33\u0e2b\u0e23\u0e31\u0e1a macOS",
+        "pill-archive": "ZIP / RAR / 7z / PDF", "pill-spread": "\u0e2a\u0e2d\u0e07\u0e2b\u0e19\u0e49\u0e32", "pill-fast": "\u0e40\u0e23\u0e47\u0e27\u0e2a\u0e38\u0e14\u0e46", "pill-free": "\u0e1f\u0e23\u0e35 & \u0e42\u0e2d\u0e40\u0e1e\u0e19\u0e0b\u0e2d\u0e23\u0e4c\u0e2a",
+        "modes-title": "\u0e2d\u0e48\u0e32\u0e19\u0e15\u0e32\u0e21\u0e2a\u0e44\u0e15\u0e25\u0e4c\u0e02\u0e2d\u0e07\u0e04\u0e38\u0e13",
+        "modes-subtitle": "\u0e2b\u0e19\u0e49\u0e32\u0e40\u0e14\u0e35\u0e22\u0e27 \u0e2a\u0e2d\u0e07\u0e2b\u0e19\u0e49\u0e32 \u0e2b\u0e23\u0e37\u0e2d\u0e42\u0e2b\u0e21\u0e14\u0e2b\u0e19\u0e31\u0e07\u0e2a\u0e37\u0e2d\u0e2a\u0e21\u0e08\u0e23\u0e34\u0e07\n\u0e0b\u0e49\u0e32\u0e22\u0e44\u0e1b\u0e02\u0e27\u0e32\u0e2b\u0e23\u0e37\u0e2d\u0e02\u0e27\u0e32\u0e44\u0e1b\u0e0b\u0e49\u0e32\u0e22 \u2014 \u0e04\u0e38\u0e13\u0e40\u0e25\u0e37\u0e2d\u0e01\u0e40\u0e2d\u0e07",
+        "modes-f1": "\u0e2a\u0e2d\u0e07\u0e2b\u0e19\u0e49\u0e32 (\u0e2a\u0e31\u0e19\u0e2b\u0e25\u0e31\u0e07)", "modes-f2": "\u0e42\u0e2b\u0e21\u0e14\u0e2b\u0e19\u0e49\u0e32\u0e40\u0e14\u0e35\u0e22\u0e27", "modes-f3": "\u0e17\u0e34\u0e28\u0e17\u0e32\u0e07\u0e2d\u0e48\u0e32\u0e19 LTR & RTL", "modes-f4": "\u0e23\u0e39\u0e1b\u0e25\u0e31\u0e01\u0e29\u0e13\u0e4c\u0e2b\u0e19\u0e31\u0e07\u0e2a\u0e37\u0e2d 3D",
+        "label-spread": "\u0e2a\u0e2d\u0e07\u0e2b\u0e19\u0e49\u0e32", "label-single": "\u0e2b\u0e19\u0e49\u0e32\u0e40\u0e14\u0e35\u0e22\u0e27",
+        "archive-title": "\u0e40\u0e1b\u0e34\u0e14\u0e44\u0e14\u0e49\u0e17\u0e38\u0e01\u0e2d\u0e22\u0e48\u0e32\u0e07", "archive-subtitle": "\u0e40\u0e1b\u0e34\u0e14\u0e44\u0e1f\u0e25\u0e4c\u0e1a\u0e35\u0e1a\u0e2d\u0e31\u0e14\u0e42\u0e14\u0e22\u0e15\u0e23\u0e07\n\u0e40\u0e23\u0e47\u0e27\u0e2a\u0e38\u0e14\u0e46 \u0e14\u0e49\u0e27\u0e22\u0e01\u0e32\u0e23\u0e42\u0e2b\u0e25\u0e14\u0e25\u0e48\u0e27\u0e07\u0e2b\u0e19\u0e49\u0e32",
+        "archive-f1": "\u0e44\u0e21\u0e48\u0e15\u0e49\u0e2d\u0e07\u0e41\u0e15\u0e01\u0e44\u0e1f\u0e25\u0e4c", "archive-f2": "\u0e44\u0e1f\u0e25\u0e4c\u0e1a\u0e35\u0e1a\u0e2d\u0e31\u0e14\u0e17\u0e35\u0e48\u0e21\u0e35\u0e23\u0e2b\u0e31\u0e2a\u0e1c\u0e48\u0e32\u0e19", "archive-f3": "\u0e42\u0e2b\u0e25\u0e14\u0e25\u0e48\u0e27\u0e07\u0e2b\u0e19\u0e49\u0e32", "fmt-images-ext": "PNG JPG GIF WebP",
+        "adv-title": "\u0e40\u0e15\u0e47\u0e21\u0e44\u0e1b\u0e14\u0e49\u0e27\u0e22\u0e1e\u0e25\u0e31\u0e07", "adv-subtitle": "\u0e17\u0e38\u0e01\u0e2d\u0e22\u0e48\u0e32\u0e07\u0e17\u0e35\u0e48\u0e04\u0e38\u0e13\u0e15\u0e49\u0e2d\u0e07\u0e01\u0e32\u0e23\u0e2a\u0e33\u0e2b\u0e23\u0e31\u0e1a\u0e1b\u0e23\u0e30\u0e2a\u0e1a\u0e01\u0e32\u0e23\u0e13\u0e4c\u0e2d\u0e48\u0e32\u0e19\u0e17\u0e35\u0e48\u0e2a\u0e21\u0e1a\u0e39\u0e23\u0e13\u0e4c\u0e41\u0e1a\u0e1a",
+        "adv-f1": "12 \u0e1f\u0e34\u0e25\u0e40\u0e15\u0e2d\u0e23\u0e4c\u0e20\u0e32\u0e1e\u0e41\u0e1a\u0e1a\u0e40\u0e23\u0e35\u0e22\u0e25\u0e44\u0e17\u0e21\u0e4c", "adv-f2": "\u0e1a\u0e38\u0e4a\u0e01\u0e21\u0e32\u0e23\u0e4c\u0e04 & \u0e19\u0e33\u0e17\u0e32\u0e07\u0e14\u0e48\u0e27\u0e19", "adv-f3": "\u0e1e\u0e25\u0e34\u0e01\u0e2b\u0e19\u0e49\u0e32\u0e2d\u0e31\u0e15\u0e42\u0e19\u0e21\u0e31\u0e15\u0e34 (0.5\u201330\u0e27\u0e34)",
+        "adv-f4": "\u0e0b\u0e39\u0e21 5 \u0e40\u0e17\u0e48\u0e32", "adv-f5": "\u0e2b\u0e21\u0e38\u0e19\u0e20\u0e32\u0e1e (90\u00b0)", "adv-f6": "\u0e04\u0e35\u0e22\u0e4c\u0e25\u0e31\u0e14\u0e04\u0e23\u0e1a\u0e16\u0e49\u0e27\u0e19"
+    },
+    vi: {
+        "hero-tagline": "Tr\u00ecnh xem manga & truy\u1ec7n tranh th\u1ebf h\u1ec7 m\u1edbi cho macOS",
+        "pill-archive": "ZIP / RAR / 7z / PDF", "pill-spread": "Xem \u0111\u00f4i trang", "pill-fast": "Si\u00eau nhanh", "pill-free": "Mi\u1ec5n ph\u00ed & M\u00e3 ngu\u1ed3n m\u1edf",
+        "modes-title": "\u0110\u1ecdc theo c\u00e1ch c\u1ee7a b\u1ea1n", "modes-subtitle": "Trang \u0111\u01a1n, trang \u0111\u00f4i ho\u1eb7c ch\u1ebf \u0111\u1ed9 s\u00e1ch th\u1ef1c t\u1ebf.\nTr\u00e1i sang ph\u1ea3i ho\u1eb7c ph\u1ea3i sang tr\u00e1i \u2014 b\u1ea1n ch\u1ecdn.",
+        "modes-f1": "Xem \u0111\u00f4i trang v\u1edbi g\u00e1y s\u00e1ch", "modes-f2": "Ch\u1ebf \u0111\u1ed9 trang \u0111\u01a1n", "modes-f3": "H\u01b0\u1edbng \u0111\u1ecdc LTR & RTL", "modes-f4": "Giao di\u1ec7n s\u00e1ch 3D",
+        "label-spread": "\u0110\u00d4I", "label-single": "\u0110\u01a0N",
+        "archive-title": "M\u1edf m\u1ecdi th\u1ee9", "archive-subtitle": "M\u1edf t\u1ec7p n\u00e9n tr\u1ef1c ti\u1ebfp kh\u00f4ng c\u1ea7n gi\u1ea3i n\u00e9n.\nSi\u00eau nhanh v\u1edbi t\u1ea3i tr\u01b0\u1edbc.",
+        "archive-f1": "Kh\u00f4ng c\u1ea7n gi\u1ea3i n\u00e9n", "archive-f2": "T\u1ec7p n\u00e9n c\u00f3 m\u1eadt kh\u1ea9u", "archive-f3": "T\u1ea3i tr\u01b0\u1edbc n\u1ec1n", "fmt-images-ext": "PNG JPG GIF WebP",
+        "adv-title": "M\u1ea1nh m\u1ebd", "adv-subtitle": "M\u1ecdi th\u1ee9 b\u1ea1n c\u1ea7n cho tr\u1ea3i nghi\u1ec7m \u0111\u1ecdc ho\u00e0n h\u1ea3o.",
+        "adv-f1": "12 b\u1ed9 l\u1ecdc \u1ea3nh th\u1eddi gian th\u1ef1c", "adv-f2": "D\u1ea5u trang & \u0111i\u1ec1u h\u01b0\u1edbng nhanh", "adv-f3": "L\u1eadt trang t\u1ef1 \u0111\u1ed9ng (0.5\u201330s)",
+        "adv-f4": "Zoom 5x", "adv-f5": "Xoay \u1ea3nh (90\u00b0)", "adv-f6": "Ph\u00edm t\u1eaft \u0111\u1ea7y \u0111\u1ee7"
+    },
+    id: {
+        "hero-tagline": "Penampil manga & komik generasi baru untuk macOS",
+        "pill-archive": "ZIP / RAR / 7z / PDF", "pill-spread": "Tampilan ganda", "pill-fast": "Sangat cepat", "pill-free": "Gratis & Open Source",
+        "modes-title": "Baca sesukamu", "modes-subtitle": "Halaman tunggal, ganda, atau mode buku realistis.\nKiri ke kanan atau kanan ke kiri \u2014 pilihanmu.",
+        "modes-f1": "Tampilan ganda dengan jilid", "modes-f2": "Mode halaman tunggal", "modes-f3": "Arah baca LTR & RTL", "modes-f4": "Tampilan buku 3D realistis",
+        "label-spread": "GANDA", "label-single": "TUNGGAL",
+        "archive-title": "Buka apa saja", "archive-subtitle": "Buka arsip langsung tanpa ekstraksi.\nSangat cepat dengan prefetching.",
+        "archive-f1": "Tanpa perlu ekstraksi", "archive-f2": "Arsip dilindungi kata sandi", "archive-f3": "Prefetching latar belakang", "fmt-images-ext": "PNG JPG GIF WebP",
+        "adv-title": "Penuh fitur", "adv-subtitle": "Semua yang kamu butuhkan untuk pengalaman membaca sempurna.",
+        "adv-f1": "12 filter gambar real-time", "adv-f2": "Bookmark & navigasi cepat", "adv-f3": "Halaman otomatis (0.5\u201330d)",
+        "adv-f4": "Zoom 5x", "adv-f5": "Rotasi gambar (90\u00b0)", "adv-f6": "Pintasan keyboard lengkap"
+    },
+    it: {
+        "hero-tagline": "Il visualizzatore manga e fumetti di nuova generazione per macOS",
+        "pill-archive": "ZIP / RAR / 7z / PDF", "pill-spread": "Vista doppia pagina", "pill-fast": "Ultraveloce", "pill-free": "Gratuito & Open Source",
+        "modes-title": "Leggi a modo tuo", "modes-subtitle": "Pagina singola, doppia pagina o modalit\u00e0 libro realistico.\nDa sinistra a destra o viceversa \u2014 scegli tu.",
+        "modes-f1": "Vista doppia pagina con rilegatura", "modes-f2": "Modalit\u00e0 pagina singola", "modes-f3": "Direzione lettura LTR & RTL", "modes-f4": "Aspetto libro 3D realistico",
+        "label-spread": "DOPPIA", "label-single": "SINGOLA",
+        "archive-title": "Apri qualsiasi cosa", "archive-subtitle": "Apri archivi direttamente senza estrazione.\nUltraveloce con precaricamento.",
+        "archive-f1": "Nessuna estrazione necessaria", "archive-f2": "Archivi protetti da password", "archive-f3": "Precaricamento in background", "fmt-images-ext": "PNG JPG GIF WebP",
+        "adv-title": "Pieno di potenza", "adv-subtitle": "Tutto ci\u00f2 che serve per un'esperienza di lettura perfetta.",
+        "adv-f1": "12 filtri immagine in tempo reale", "adv-f2": "Segnalibri & navigazione rapida", "adv-f3": "Giro pagina automatico (0.5\u201330s)",
+        "adv-f4": "Zoom 5x con pinch & pan", "adv-f5": "Rotazione immagine (90\u00b0)", "adv-f6": "Scorciatoie da tastiera complete"
+    },
+    pl: {
+        "hero-tagline": "Przegl\u0105darka mangi i komiks\u00f3w nowej generacji dla macOS",
+        "pill-archive": "ZIP / RAR / 7z / PDF", "pill-spread": "Widok podw\u00f3jny", "pill-fast": "B\u0142yskawicznie", "pill-free": "Darmowe & Open Source",
+        "modes-title": "Czytaj po swojemu", "modes-subtitle": "Pojedyncza strona, podw\u00f3jny widok lub tryb realistycznej ksi\u0105\u017cki.\nOd lewej do prawej lub odwrotnie \u2014 Tw\u00f3j wyb\u00f3r.",
+        "modes-f1": "Widok podw\u00f3jny z opraw\u0105", "modes-f2": "Tryb pojedynczej strony", "modes-f3": "Kierunek czytania LTR & RTL", "modes-f4": "Realistyczny wygl\u0105d ksi\u0105\u017cki 3D",
+        "label-spread": "PODW\u00d3JNY", "label-single": "POJEDYNCZY",
+        "archive-title": "Otw\u00f3rz cokolwiek", "archive-subtitle": "Otwieraj archiwa bezpo\u015brednio.\nB\u0142yskawicznie z pobieraniem w tle.",
+        "archive-f1": "Bez rozpakowywania", "archive-f2": "Archiwa chronione has\u0142em", "archive-f3": "Pobieranie w tle", "fmt-images-ext": "PNG JPG GIF WebP",
+        "adv-title": "Pe\u0142en mocy", "adv-subtitle": "Wszystko, czego potrzebujesz do idealnego czytania.",
+        "adv-f1": "12 filtr\u00f3w obrazu w czasie rzeczywistym", "adv-f2": "Zak\u0142adki & szybka nawigacja", "adv-f3": "Automatyczne przewracanie (0.5\u201330s)",
+        "adv-f4": "Zoom 5x", "adv-f5": "Obr\u00f3t obrazu (90\u00b0)", "adv-f6": "Pe\u0142ne skr\u00f3ty klawiszowe"
+    },
+    tr: {
+        "hero-tagline": "macOS i\u00e7in yeni nesil manga ve \u00e7izgi roman g\u00f6r\u00fcnt\u00fcleyici",
+        "pill-archive": "ZIP / RAR / 7z / PDF", "pill-spread": "\u00c7ift sayfa", "pill-fast": "Hiper h\u0131zl\u0131", "pill-free": "\u00dccretsiz & A\u00e7\u0131k Kaynak",
+        "modes-title": "Kendi tarz\u0131nda oku", "modes-subtitle": "Tek sayfa, \u00e7ift sayfa veya ger\u00e7ek\u00e7i kitap modu.\nSoldan sa\u011fa veya sa\u011fdan sola \u2014 sen se\u00e7.",
+        "modes-f1": "\u00c7ift sayfa g\u00f6r\u00fcn\u00fcm\u00fc", "modes-f2": "Tek sayfa modu", "modes-f3": "LTR & RTL okuma y\u00f6n\u00fc", "modes-f4": "Ger\u00e7ek\u00e7i 3D kitap g\u00f6r\u00fcn\u00fcm\u00fc",
+        "label-spread": "\u00c7\u0130FT", "label-single": "TEK",
+        "archive-title": "Her \u015feyi a\u00e7", "archive-subtitle": "Ar\u015fivleri \u00e7\u0131karmadan do\u011frudan a\u00e7.\nArka plan \u00f6ny\u00fckleme ile hiper h\u0131zl\u0131.",
+        "archive-f1": "\u00c7\u0131karma gerekmez", "archive-f2": "Parola korumal\u0131 ar\u015fivler", "archive-f3": "Arka plan \u00f6ny\u00fckleme", "fmt-images-ext": "PNG JPG GIF WebP",
+        "adv-title": "G\u00fc\u00e7 dolu", "adv-subtitle": "M\u00fckemmel okuma deneyimi i\u00e7in gereken her \u015fey.",
+        "adv-f1": "12 ger\u00e7ek zamanl\u0131 filtre", "adv-f2": "Yer i\u015fareti & h\u0131zl\u0131 gezinme", "adv-f3": "Otomatik sayfa \u00e7evirme (0.5\u201330s)",
+        "adv-f4": "5x yak\u0131nla\u015ft\u0131rma", "adv-f5": "G\u00f6r\u00fcnt\u00fc d\u00f6nd\u00fcrme (90\u00b0)", "adv-f6": "Tam klavye k\u0131sayollar\u0131"
+    },
+    ru: {
+        "hero-tagline": "\u041f\u0440\u043e\u0441\u043c\u043e\u0442\u0440\u0449\u0438\u043a \u043c\u0430\u043d\u0433\u0438 \u0438 \u043a\u043e\u043c\u0438\u043a\u0441\u043e\u0432 \u043d\u043e\u0432\u043e\u0433\u043e \u043f\u043e\u043a\u043e\u043b\u0435\u043d\u0438\u044f \u0434\u043b\u044f macOS",
+        "pill-archive": "ZIP / RAR / 7z / PDF", "pill-spread": "\u0420\u0430\u0437\u0432\u043e\u0440\u043e\u0442", "pill-fast": "\u041c\u043e\u043b\u043d\u0438\u0435\u043d\u043e\u0441\u043d\u043e", "pill-free": "\u0411\u0435\u0441\u043f\u043b\u0430\u0442\u043d\u043e & Open Source",
+        "modes-title": "\u0427\u0438\u0442\u0430\u0439\u0442\u0435 \u043a\u0430\u043a \u0443\u0434\u043e\u0431\u043d\u043e", "modes-subtitle": "\u041e\u0434\u043d\u0430 \u0441\u0442\u0440\u0430\u043d\u0438\u0446\u0430, \u0440\u0430\u0437\u0432\u043e\u0440\u043e\u0442 \u0438\u043b\u0438 \u0440\u0435\u0430\u043b\u0438\u0441\u0442\u0438\u0447\u043d\u0430\u044f \u043a\u043d\u0438\u0433\u0430.\n\u0421\u043b\u0435\u0432\u0430 \u043d\u0430\u043f\u0440\u0430\u0432\u043e \u0438\u043b\u0438 \u0441\u043f\u0440\u0430\u0432\u0430 \u043d\u0430\u043b\u0435\u0432\u043e \u2014 \u0432\u0430\u0448 \u0432\u044b\u0431\u043e\u0440.",
+        "modes-f1": "\u0420\u0430\u0437\u0432\u043e\u0440\u043e\u0442 \u0441 \u043f\u0435\u0440\u0435\u043f\u043b\u0451\u0442\u043e\u043c", "modes-f2": "\u0420\u0435\u0436\u0438\u043c \u043e\u0434\u043d\u043e\u0439 \u0441\u0442\u0440\u0430\u043d\u0438\u0446\u044b", "modes-f3": "LTR & RTL \u043d\u0430\u043f\u0440\u0430\u0432\u043b\u0435\u043d\u0438\u0435", "modes-f4": "\u0420\u0435\u0430\u043b\u0438\u0441\u0442\u0438\u0447\u043d\u044b\u0439 3D \u0432\u0438\u0434 \u043a\u043d\u0438\u0433\u0438",
+        "label-spread": "\u0420\u0410\u0417\u0412\u041e\u0420\u041e\u0422", "label-single": "\u041e\u0414\u041d\u0410",
+        "archive-title": "\u041e\u0442\u043a\u0440\u043e\u0439\u0442\u0435 \u0447\u0442\u043e \u0443\u0433\u043e\u0434\u043d\u043e", "archive-subtitle": "\u041e\u0442\u043a\u0440\u044b\u0432\u0430\u0439\u0442\u0435 \u0430\u0440\u0445\u0438\u0432\u044b \u043d\u0430\u043f\u0440\u044f\u043c\u0443\u044e.\n\u041c\u043e\u043b\u043d\u0438\u0435\u043d\u043e\u0441\u043d\u043e \u0441 \u043f\u0440\u0435\u0434\u0437\u0430\u0433\u0440\u0443\u0437\u043a\u043e\u0439.",
+        "archive-f1": "\u0411\u0435\u0437 \u0440\u0430\u0441\u043f\u0430\u043a\u043e\u0432\u043a\u0438", "archive-f2": "\u0410\u0440\u0445\u0438\u0432\u044b \u0441 \u043f\u0430\u0440\u043e\u043b\u0435\u043c", "archive-f3": "\u041f\u0440\u0435\u0434\u0437\u0430\u0433\u0440\u0443\u0437\u043a\u0430", "fmt-images-ext": "PNG JPG GIF WebP",
+        "adv-title": "\u041c\u043e\u0449\u043d\u044b\u0439", "adv-subtitle": "\u0412\u0441\u0451 \u0434\u043b\u044f \u0438\u0434\u0435\u0430\u043b\u044c\u043d\u043e\u0433\u043e \u0447\u0442\u0435\u043d\u0438\u044f.",
+        "adv-f1": "12 \u0444\u0438\u043b\u044c\u0442\u0440\u043e\u0432 \u0432 \u0440\u0435\u0430\u043b\u044c\u043d\u043e\u043c \u0432\u0440\u0435\u043c\u0435\u043d\u0438", "adv-f2": "\u0417\u0430\u043a\u043b\u0430\u0434\u043a\u0438 & \u0431\u044b\u0441\u0442\u0440\u0430\u044f \u043d\u0430\u0432\u0438\u0433\u0430\u0446\u0438\u044f", "adv-f3": "\u0410\u0432\u0442\u043e\u043f\u0435\u0440\u0435\u043b\u0438\u0441\u0442\u044b\u0432\u0430\u043d\u0438\u0435 (0.5\u201330\u0441)",
+        "adv-f4": "5x \u043c\u0430\u0441\u0448\u0442\u0430\u0431", "adv-f5": "\u041f\u043e\u0432\u043e\u0440\u043e\u0442 (90\u00b0)", "adv-f6": "\u0413\u043e\u0440\u044f\u0447\u0438\u0435 \u043a\u043b\u0430\u0432\u0438\u0448\u0438"
+    },
+    ms: {
+        "hero-tagline": "Pemapar manga & komik generasi baharu untuk macOS",
+        "pill-archive": "ZIP / RAR / 7z / PDF", "pill-spread": "Paparan berganda", "pill-fast": "Pantas", "pill-free": "Percuma & Sumber Terbuka",
+        "modes-title": "Baca gaya anda", "modes-subtitle": "Halaman tunggal, berganda atau mod buku realistik.\nKiri ke kanan atau kanan ke kiri \u2014 pilihan anda.",
+        "modes-f1": "Paparan berganda", "modes-f2": "Mod halaman tunggal", "modes-f3": "Arah bacaan LTR & RTL", "modes-f4": "Rupa buku 3D realistik",
+        "label-spread": "GANDA", "label-single": "TUNGGAL",
+        "archive-title": "Buka apa sahaja", "archive-subtitle": "Buka arkib tanpa pengekstrakan.\nPantas dengan pramuat.",
+        "archive-f1": "Tanpa pengekstrakan", "archive-f2": "Arkib dilindungi kata laluan", "archive-f3": "Pramuat latar belakang", "fmt-images-ext": "PNG JPG GIF WebP",
+        "adv-title": "Berkuasa penuh", "adv-subtitle": "Semua yang anda perlukan untuk pengalaman membaca sempurna.",
+        "adv-f1": "12 penapis imej masa nyata", "adv-f2": "Penanda buku & navigasi pantas", "adv-f3": "Halaman automatik (0.5\u201330s)",
+        "adv-f4": "Zum 5x", "adv-f5": "Putaran imej (90\u00b0)", "adv-f6": "Pintasan papan kekunci penuh"
+    },
+    nl: {
+        "hero-tagline": "De manga- & stripviewer van de volgende generatie voor macOS",
+        "pill-archive": "ZIP / RAR / 7z / PDF", "pill-spread": "Dubbele pagina", "pill-fast": "Razendsnel", "pill-free": "Gratis & Open Source",
+        "modes-title": "Lees op jouw manier", "modes-subtitle": "Enkele pagina, dubbele pagina of realistisch boekmodus.\nLinks naar rechts of andersom \u2014 jouw keuze.",
+        "modes-f1": "Dubbele pagina met binding", "modes-f2": "Enkele pagina-modus", "modes-f3": "LTR & RTL leesrichting", "modes-f4": "Realistisch 3D-boek",
+        "label-spread": "DUBBEL", "label-single": "ENKEL",
+        "archive-title": "Open alles", "archive-subtitle": "Open archieven direct zonder uitpakken.\nRazendsnel met vooraf laden.",
+        "archive-f1": "Geen uitpakken nodig", "archive-f2": "Met wachtwoord beveiligde archieven", "archive-f3": "Vooraf laden op achtergrond", "fmt-images-ext": "PNG JPG GIF WebP",
+        "adv-title": "Vol kracht", "adv-subtitle": "Alles wat je nodig hebt voor de perfecte leeservaring.",
+        "adv-f1": "12 realtime beeldfilters", "adv-f2": "Bladwijzers & snelle navigatie", "adv-f3": "Automatisch bladeren (0.5\u201330s)",
+        "adv-f4": "5x zoom met knijpen & pannen", "adv-f5": "Beeldrotatie (90\u00b0)", "adv-f6": "Volledige toetsenbordsneltoetsen"
+    },
+    sv: {
+        "hero-tagline": "N\u00e4sta generations manga- och serievisare f\u00f6r macOS",
+        "pill-archive": "ZIP / RAR / 7z / PDF", "pill-spread": "Uppslag", "pill-fast": "Blixtsnabbt", "pill-free": "Gratis & \u00d6ppen k\u00e4llkod",
+        "modes-title": "L\u00e4s p\u00e5 ditt s\u00e4tt", "modes-subtitle": "Enkel sida, uppslag eller realistiskt bokl\u00e4ge.\nV\u00e4nster till h\u00f6ger eller tv\u00e4rtom \u2014 du v\u00e4ljer.",
+        "modes-f1": "Uppslag med bindning", "modes-f2": "Enkelt sidl\u00e4ge", "modes-f3": "L\u00e4sriktning LTR & RTL", "modes-f4": "Realistiskt 3D-bokutseende",
+        "label-spread": "UPPSLAG", "label-single": "ENKEL",
+        "archive-title": "\u00d6ppna vad som helst", "archive-subtitle": "\u00d6ppna arkiv direkt utan uppackning.\nBlixtsnabbt med f\u00f6rh\u00e4mtning.",
+        "archive-f1": "Ingen uppackning beh\u00f6vs", "archive-f2": "L\u00f6senordsskyddade arkiv", "archive-f3": "Bakgrundsf\u00f6rh\u00e4mtning", "fmt-images-ext": "PNG JPG GIF WebP",
+        "adv-title": "Full av kraft", "adv-subtitle": "Allt du beh\u00f6ver f\u00f6r den perfekta l\u00e4supplevelsen.",
+        "adv-f1": "12 bildfilter i realtid", "adv-f2": "Bokm\u00e4rken & snabb navigering", "adv-f3": "Automatisk bl\u00e4ddring (0.5\u201330s)",
+        "adv-f4": "5x zoom", "adv-f5": "Bildrotation (90\u00b0)", "adv-f6": "Kompletta kortkommandon"
+    },
+    da: {
+        "hero-tagline": "N\u00e6ste generations manga- og tegneseriefremviser til macOS",
+        "pill-archive": "ZIP / RAR / 7z / PDF", "pill-spread": "Opslag", "pill-fast": "Lynhurtigt", "pill-free": "Gratis & Open Source",
+        "modes-title": "L\u00e6s p\u00e5 din m\u00e5de", "modes-subtitle": "Enkeltside, opslag eller realistisk bogtilstand.\nVenstre til h\u00f8jre eller omvendt \u2014 dit valg.",
+        "modes-f1": "Opslag med binding", "modes-f2": "Enkeltsidetilstand", "modes-f3": "L\u00e6seretning LTR & RTL", "modes-f4": "Realistisk 3D-bogudseende",
+        "label-spread": "OPSLAG", "label-single": "ENKEL",
+        "archive-title": "\u00c5bn hvad som helst", "archive-subtitle": "\u00c5bn arkiver direkte uden udpakning.\nLynhurtigt med forh\u00e5ndshentning.",
+        "archive-f1": "Ingen udpakning n\u00f8dvendig", "archive-f2": "Adgangskodebeskyttede arkiver", "archive-f3": "Baggrunds-forh\u00e5ndshentning", "fmt-images-ext": "PNG JPG GIF WebP",
+        "adv-title": "Fuld af kraft", "adv-subtitle": "Alt hvad du beh\u00f8ver til den perfekte l\u00e6seoplevelse.",
+        "adv-f1": "12 billedfiltre i realtid", "adv-f2": "Bogm\u00e6rker & hurtig navigation", "adv-f3": "Automatisk bladring (0.5\u201330s)",
+        "adv-f4": "5x zoom", "adv-f5": "Billeddrejning (90\u00b0)", "adv-f6": "Fulde tastaturgenveje"
+    },
+    nb: {
+        "hero-tagline": "Neste generasjons manga- og tegneserieviser for macOS",
+        "pill-archive": "ZIP / RAR / 7z / PDF", "pill-spread": "Oppslag", "pill-fast": "Lynrask", "pill-free": "Gratis & \u00c5pen kildekode",
+        "modes-title": "Les p\u00e5 din m\u00e5te", "modes-subtitle": "Enkeltside, oppslag eller realistisk bokmodus.\nVenstre til h\u00f8yre eller omvendt \u2014 ditt valg.",
+        "modes-f1": "Oppslag med binding", "modes-f2": "Enkeltsidmodus", "modes-f3": "Leseretning LTR & RTL", "modes-f4": "Realistisk 3D-bokutseende",
+        "label-spread": "OPPSLAG", "label-single": "ENKEL",
+        "archive-title": "\u00c5pne hva som helst", "archive-subtitle": "\u00c5pne arkiver direkte uten utpakking.\nLynraskt med forh\u00e5ndslasting.",
+        "archive-f1": "Ingen utpakking n\u00f8dvendig", "archive-f2": "Passordbeskyttede arkiver", "archive-f3": "Bakgrunnsforh\u00e5ndslasting", "fmt-images-ext": "PNG JPG GIF WebP",
+        "adv-title": "Full av kraft", "adv-subtitle": "Alt du trenger for den perfekte leseopplevelsen.",
+        "adv-f1": "12 bildefiltre i sanntid", "adv-f2": "Bokmerker & rask navigering", "adv-f3": "Automatisk blaing (0.5\u201330s)",
+        "adv-f4": "5x zoom", "adv-f5": "Bilderotasjon (90\u00b0)", "adv-f6": "Fulle tastatursnarveier"
+    },
+    fi: {
+        "hero-tagline": "Seuraavan sukupolven manga- ja sarjakuvakatseluohjelma macOS:lle",
+        "pill-archive": "ZIP / RAR / 7z / PDF", "pill-spread": "Aukeama", "pill-fast": "Salamannopea", "pill-free": "Ilmainen & Avoin l\u00e4hdekoodi",
+        "modes-title": "Lue omalla tavallasi", "modes-subtitle": "Yksitt\u00e4inen sivu, aukeama tai realistinen kirjatila.\nVasemmalta oikealle tai p\u00e4invastoin \u2014 sin\u00e4 valitset.",
+        "modes-f1": "Aukeama sidonnalla", "modes-f2": "Yksitt\u00e4inen sivutila", "modes-f3": "Lukusuunta LTR & RTL", "modes-f4": "Realistinen 3D-kirjan\u00e4kym\u00e4",
+        "label-spread": "AUKEAMA", "label-single": "SIVU",
+        "archive-title": "Avaa mit\u00e4 tahansa", "archive-subtitle": "Avaa arkistot suoraan purkamatta.\nSalamannopea esihakulla.",
+        "archive-f1": "Ei purkamista", "archive-f2": "Salasanasuojatut arkistot", "archive-f3": "Taustaesihaku", "fmt-images-ext": "PNG JPG GIF WebP",
+        "adv-title": "T\u00e4ynn\u00e4 voimaa", "adv-subtitle": "Kaikki mit\u00e4 tarvitset t\u00e4ydelliseen lukukokemukseen.",
+        "adv-f1": "12 reaaliaikaista kuvasuodatinta", "adv-f2": "Kirjanmerkit & nopea navigointi", "adv-f3": "Automaattinen sivunk\u00e4\u00e4nt\u00f6 (0.5\u201330s)",
+        "adv-f4": "5x zoomaus", "adv-f5": "Kuvan kierto (90\u00b0)", "adv-f6": "T\u00e4ydet pikan\u00e4pp\u00e4imet"
+    },
+    "pt-PT": {
+        "hero-tagline": "Visualizador de manga e banda desenhada de nova geração para macOS",
+        "pill-archive": "ZIP / RAR / 7z / PDF", "pill-spread": "Vista dupla", "pill-fast": "Ultra rápido", "pill-free": "Gratuito & Open Source",
+        "modes-title": "Leia à sua maneira", "modes-subtitle": "Página única, página dupla ou modo livro realista.\nDa esquerda para a direita ou vice-versa — a escolha é sua.",
+        "modes-f1": "Vista dupla com lombada", "modes-f2": "Modo página única", "modes-f3": "Leitura LTR & RTL", "modes-f4": "Aparência de livro 3D realista",
+        "label-spread": "DUPLA", "label-single": "SIMPLES",
+        "archive-title": "Abra qualquer coisa", "archive-subtitle": "Abra ficheiros comprimidos sem extração.\nUltra rápido com pré-carregamento.",
+        "archive-f1": "Sem necessidade de extração", "archive-f2": "Ficheiros protegidos por palavra-passe", "archive-f3": "Pré-carregamento em segundo plano", "fmt-images-ext": "PNG JPG GIF WebP",
+        "adv-title": "Cheio de recursos", "adv-subtitle": "Tudo o que precisa para a experiência perfeita de leitura.",
+        "adv-f1": "12 filtros de imagem em tempo real", "adv-f2": "Favoritos & navegação rápida", "adv-f3": "Viragem automática (0.5–30s)",
+        "adv-f4": "Zoom 5x com pinch & pan", "adv-f5": "Rotação de imagem (90°)", "adv-f6": "Atalhos de teclado completos"
+    },
+    "ar-SA": {
+        "hero-tagline": "عارض المانغا والقصص المصورة من الجيل التالي لنظام macOS",
+        "pill-archive": "ZIP / RAR / 7z / PDF", "pill-spread": "عرض مزدوج", "pill-fast": "سريع للغاية", "pill-free": "مجاني ومفتوح المصدر",
+        "modes-title": "اقرأ بطريقتك", "modes-subtitle": "صفحة واحدة، صفحة مزدوجة أو وضع الكتاب الواقعي.\nمن اليسار لليمين أو العكس — اختيارك.",
+        "modes-f1": "عرض مزدوج مع التجليد", "modes-f2": "وضع الصفحة الواحدة", "modes-f3": "اتجاه القراءة LTR و RTL", "modes-f4": "مظهر كتاب ثلاثي الأبعاد واقعي",
+        "label-spread": "مزدوج", "label-single": "مفرد",
+        "archive-title": "افتح أي شيء", "archive-subtitle": "افتح الأرشيفات مباشرة بدون استخراج.\nسريع للغاية مع التحميل المسبق.",
+        "archive-f1": "لا حاجة للاستخراج", "archive-f2": "أرشيفات محمية بكلمة مرور", "archive-f3": "تحميل مسبق في الخلفية", "fmt-images-ext": "PNG JPG GIF WebP",
+        "adv-title": "مليء بالقوة", "adv-subtitle": "كل ما تحتاجه لتجربة قراءة مثالية.",
+        "adv-f1": "12 مرشح صور في الوقت الفعلي", "adv-f2": "إشارات مرجعية وتنقل سريع", "adv-f3": "تقليب تلقائي (0.5–30 ثانية)",
+        "adv-f4": "تكبير 5 أضعاف", "adv-f5": "تدوير الصور (90°)", "adv-f6": "اختصارات لوحة مفاتيح كاملة"
+    },
+    ca: {
+        "hero-tagline": "Visualitzador de manga i còmics de nova generació per a macOS",
+        "pill-archive": "ZIP / RAR / 7z / PDF", "pill-spread": "Vista doble pàgina", "pill-fast": "Ultra ràpid", "pill-free": "Gratuït i de codi obert",
+        "modes-title": "Llegeix a la teva manera", "modes-subtitle": "Pàgina simple, doble pàgina o mode llibre realista.\nD'esquerra a dreta o a l'inrevés — tu tries.",
+        "modes-f1": "Vista doble pàgina amb enquadernació", "modes-f2": "Mode pàgina simple", "modes-f3": "Direcció de lectura LTR i RTL", "modes-f4": "Aparença de llibre 3D realista",
+        "label-spread": "DOBLE", "label-single": "SIMPLE",
+        "archive-title": "Obre qualsevol cosa", "archive-subtitle": "Obre arxius comprimits sense extracció.\nUltra ràpid amb precàrrega en segon pla.",
+        "archive-f1": "Sense necessitat d'extracció", "archive-f2": "Arxius protegits amb contrasenya", "archive-f3": "Precàrrega en segon pla", "fmt-images-ext": "PNG JPG GIF WebP",
+        "adv-title": "Ple de potència", "adv-subtitle": "Tot el que necessites per a l'experiència de lectura perfecta.",
+        "adv-f1": "12 filtres d'imatge en temps real", "adv-f2": "Marcadors i navegació ràpida", "adv-f3": "Pas de pàgina automàtic (0.5–30s)",
+        "adv-f4": "Zoom 5x amb pessic i desplaçament", "adv-f5": "Rotació d'imatge (90°)", "adv-f6": "Dreceres de teclat completes"
+    },
+    cs: {
+        "hero-tagline": "Prohlížeč mangy a komiksů nové generace pro macOS",
+        "pill-archive": "ZIP / RAR / 7z / PDF", "pill-spread": "Dvoustránkový režim", "pill-fast": "Bleskově rychlé", "pill-free": "Zdarma & Open Source",
+        "modes-title": "Čtěte po svém", "modes-subtitle": "Jedna stránka, dvoustránkový režim nebo realistický režim knihy.\nZleva doprava nebo zprava doleva — vaše volba.",
+        "modes-f1": "Dvoustránkový režim s vazbou", "modes-f2": "Režim jedné stránky", "modes-f3": "Směr čtení LTR & RTL", "modes-f4": "Realistický 3D vzhled knihy",
+        "label-spread": "DVOJITÁ", "label-single": "JEDNODUCHÁ",
+        "archive-title": "Otevřete cokoliv", "archive-subtitle": "Otevírejte archivy přímo bez rozbalení.\nBleskově rychlé s předběžným načítáním.",
+        "archive-f1": "Bez rozbalování", "archive-f2": "Archivy chráněné heslem", "archive-f3": "Předběžné načítání na pozadí", "fmt-images-ext": "PNG JPG GIF WebP",
+        "adv-title": "Plný síly", "adv-subtitle": "Vše, co potřebujete pro dokonalý zážitek ze čtení.",
+        "adv-f1": "12 obrazových filtrů v reálném čase", "adv-f2": "Záložky & rychlá navigace", "adv-f3": "Automatické otáčení stránek (0.5–30s)",
+        "adv-f4": "5x zoom", "adv-f5": "Otáčení obrazu (90°)", "adv-f6": "Kompletní klávesové zkratky"
+    },
+    el: {
+        "hero-tagline": "Πρόγραμμα προβολής manga και κόμικ νέας γενιάς για macOS",
+        "pill-archive": "ZIP / RAR / 7z / PDF", "pill-spread": "Διπλή σελίδα", "pill-fast": "Αστραπιαίο", "pill-free": "Δωρεάν & Ανοιχτού Κώδικα",
+        "modes-title": "Διαβάστε με τον τρόπο σας", "modes-subtitle": "Μονή σελίδα, διπλή σελίδα ή ρεαλιστική λειτουργία βιβλίου.\nΑριστερά προς δεξιά ή αντίστροφα — εσείς επιλέγετε.",
+        "modes-f1": "Διπλή σελίδα με βιβλιοδεσία", "modes-f2": "Λειτουργία μονής σελίδας", "modes-f3": "Κατεύθυνση ανάγνωσης LTR & RTL", "modes-f4": "Ρεαλιστική 3D εμφάνιση βιβλίου",
+        "label-spread": "ΔΙΠΛΗ", "label-single": "ΜΟΝΗ",
+        "archive-title": "Ανοίξτε οτιδήποτε", "archive-subtitle": "Ανοίξτε αρχεία απευθείας χωρίς εξαγωγή.\nΑστραπιαίο με προφόρτωση.",
+        "archive-f1": "Χωρίς εξαγωγή", "archive-f2": "Αρχεία με κωδικό πρόσβασης", "archive-f3": "Προφόρτωση στο παρασκήνιο", "fmt-images-ext": "PNG JPG GIF WebP",
+        "adv-title": "Γεμάτο δύναμη", "adv-subtitle": "Όλα όσα χρειάζεστε για την τέλεια εμπειρία ανάγνωσης.",
+        "adv-f1": "12 φίλτρα εικόνας σε πραγματικό χρόνο", "adv-f2": "Σελιδοδείκτες & γρήγορη πλοήγηση", "adv-f3": "Αυτόματη αλλαγή σελίδας (0.5–30s)",
+        "adv-f4": "5x ζουμ", "adv-f5": "Περιστροφή εικόνας (90°)", "adv-f6": "Πλήρεις συντομεύσεις πληκτρολογίου"
+    },
+    he: {
+        "hero-tagline": "מציג מנגה וקומיקס מהדור הבא עבור macOS",
+        "pill-archive": "ZIP / RAR / 7z / PDF", "pill-spread": "תצוגה כפולה", "pill-fast": "מהיר בזק", "pill-free": "חינם וקוד פתוח",
+        "modes-title": "קראו בדרככם", "modes-subtitle": "עמוד בודד, עמוד כפול או מצב ספר מציאותי.\nמשמאל לימין או מימין לשמאל — הבחירה שלכם.",
+        "modes-f1": "תצוגה כפולה עם כריכה", "modes-f2": "מצב עמוד בודד", "modes-f3": "כיוון קריאה LTR ו-RTL", "modes-f4": "מראה ספר תלת-ממדי מציאותי",
+        "label-spread": "כפול", "label-single": "בודד",
+        "archive-title": "פתחו כל דבר", "archive-subtitle": "פתחו ארכיונים ישירות ללא חילוץ.\nמהיר בזק עם טעינה מקדימה.",
+        "archive-f1": "ללא צורך בחילוץ", "archive-f2": "ארכיונים מוגני סיסמה", "archive-f3": "טעינה מקדימה ברקע", "fmt-images-ext": "PNG JPG GIF WebP",
+        "adv-title": "מלא בעוצמה", "adv-subtitle": "כל מה שצריך לחוויית קריאה מושלמת.",
+        "adv-f1": "12 מסנני תמונה בזמן אמת", "adv-f2": "סימניות וניווט מהיר", "adv-f3": "דפדוף אוטומטי (0.5–30 שניות)",
+        "adv-f4": "זום פי 5", "adv-f5": "סיבוב תמונה (90°)", "adv-f6": "קיצורי מקלדת מלאים"
+    },
+    hi: {
+        "hero-tagline": "macOS के लिए अगली पीढ़ी का मांगा और कॉमिक व्यूअर",
+        "pill-archive": "ZIP / RAR / 7z / PDF", "pill-spread": "स्प्रेड व्यू", "pill-fast": "बिजली की तेज़ी", "pill-free": "मुफ़्त और ओपन सोर्स",
+        "modes-title": "अपने तरीके से पढ़ें", "modes-subtitle": "सिंगल पेज, स्प्रेड व्यू या यथार्थवादी पुस्तक मोड।\nबाएं से दाएं या दाएं से बाएं — आपकी पसंद।",
+        "modes-f1": "बाइंडिंग के साथ स्प्रेड व्यू", "modes-f2": "स्वच्छ सिंगल पेज मोड", "modes-f3": "LTR और RTL पठन दिशा", "modes-f4": "यथार्थवादी 3D पुस्तक दिखावट",
+        "label-spread": "स्प्रेड", "label-single": "सिंगल",
+        "archive-title": "कुछ भी खोलें", "archive-subtitle": "आर्काइव को बिना निकाले सीधे खोलें।\nबैकग्राउंड प्रीफ़ेचिंग के साथ बिजली की तेज़ी।",
+        "archive-f1": "निकालने की ज़रूरत नहीं", "archive-f2": "पासवर्ड-संरक्षित आर्काइव", "archive-f3": "बैकग्राउंड प्रीफ़ेचिंग", "fmt-images-ext": "PNG JPG GIF WebP",
+        "adv-title": "शक्ति से भरपूर", "adv-subtitle": "पूर्ण पठन अनुभव के लिए आवश्यक सब कुछ।",
+        "adv-f1": "12 रियल-टाइम इमेज फ़िल्टर", "adv-f2": "बुकमार्क और तेज़ नेविगेशन", "adv-f3": "ऑटो पेज टर्न (0.5–30 सेकंड)",
+        "adv-f4": "5x ज़ूम (पिंच और पैन)", "adv-f5": "इमेज रोटेशन (90°)", "adv-f6": "पूर्ण कीबोर्ड शॉर्टकट"
+    },
+    hr: {
+        "hero-tagline": "Preglednik mange i stripova nove generacije za macOS",
+        "pill-archive": "ZIP / RAR / 7z / PDF", "pill-spread": "Dvostruki prikaz", "pill-fast": "Munjevito brzo", "pill-free": "Besplatno i otvorenog koda",
+        "modes-title": "Čitajte na svoj način", "modes-subtitle": "Jedna stranica, dvostruki prikaz ili realistični način knjige.\nS lijeva na desno ili obrnuto — vaš izbor.",
+        "modes-f1": "Dvostruki prikaz s uvezom", "modes-f2": "Način jedne stranice", "modes-f3": "Smjer čitanja LTR i RTL", "modes-f4": "Realistični 3D izgled knjige",
+        "label-spread": "DVOSTRUKO", "label-single": "JEDNOSTRUKO",
+        "archive-title": "Otvorite bilo što", "archive-subtitle": "Otvarajte arhive izravno bez raspakiranja.\nMunjevito brzo s predučitavanjem.",
+        "archive-f1": "Bez raspakiranja", "archive-f2": "Arhive zaštićene lozinkom", "archive-f3": "Predučitavanje u pozadini", "fmt-images-ext": "PNG JPG GIF WebP",
+        "adv-title": "Puno snage", "adv-subtitle": "Sve što trebate za savršeno iskustvo čitanja.",
+        "adv-f1": "12 slikovnih filtara u stvarnom vremenu", "adv-f2": "Oznake i brza navigacija", "adv-f3": "Automatsko okretanje stranica (0.5–30s)",
+        "adv-f4": "5x zum", "adv-f5": "Rotacija slike (90°)", "adv-f6": "Potpune tipkovničke prečace"
+    },
+    hu: {
+        "hero-tagline": "Új generációs manga- és képregényolvasó macOS-re",
+        "pill-archive": "ZIP / RAR / 7z / PDF", "pill-spread": "Dupla oldal", "pill-fast": "Villámgyors", "pill-free": "Ingyenes & Nyílt forráskódú",
+        "modes-title": "Olvasson a maga módján", "modes-subtitle": "Egyetlen oldal, dupla oldal vagy realisztikus könyv mód.\nBalról jobbra vagy fordítva — az Ön választása.",
+        "modes-f1": "Dupla oldal kötéssel", "modes-f2": "Egyoldalas mód", "modes-f3": "Olvasási irány LTR & RTL", "modes-f4": "Realisztikus 3D könyv megjelenés",
+        "label-spread": "DUPLA", "label-single": "EGYETLEN",
+        "archive-title": "Nyisson meg bármit", "archive-subtitle": "Nyissa meg az archívumokat kicsomagolás nélkül.\nVillámgyors háttérbetöltéssel.",
+        "archive-f1": "Nincs szükség kicsomagolásra", "archive-f2": "Jelszóval védett archívumok", "archive-f3": "Háttérbetöltés", "fmt-images-ext": "PNG JPG GIF WebP",
+        "adv-title": "Tele erővel", "adv-subtitle": "Minden, amire szüksége van a tökéletes olvasási élményhez.",
+        "adv-f1": "12 valós idejű képszűrő", "adv-f2": "Könyvjelzők & gyors navigáció", "adv-f3": "Automatikus lapozás (0.5–30s)",
+        "adv-f4": "5x nagyítás", "adv-f5": "Képforgatás (90°)", "adv-f6": "Teljes billentyűparancsok"
+    },
+    ro: {
+        "hero-tagline": "Vizualizator manga și benzi desenate de nouă generație pentru macOS",
+        "pill-archive": "ZIP / RAR / 7z / PDF", "pill-spread": "Vizualizare dublă", "pill-fast": "Ultra rapid", "pill-free": "Gratuit & Open Source",
+        "modes-title": "Citiți în felul vostru", "modes-subtitle": "Pagină unică, pagină dublă sau mod carte realist.\nDe la stânga la dreapta sau invers — alegerea voastră.",
+        "modes-f1": "Vizualizare dublă cu legătură", "modes-f2": "Mod pagină unică", "modes-f3": "Direcție de citire LTR & RTL", "modes-f4": "Aspect carte 3D realist",
+        "label-spread": "DUBLĂ", "label-single": "UNICĂ",
+        "archive-title": "Deschideți orice", "archive-subtitle": "Deschideți arhive direct fără extragere.\nUltra rapid cu preîncărcare.",
+        "archive-f1": "Fără extragere necesară", "archive-f2": "Arhive protejate cu parolă", "archive-f3": "Preîncărcare în fundal", "fmt-images-ext": "PNG JPG GIF WebP",
+        "adv-title": "Plin de putere", "adv-subtitle": "Tot ce aveți nevoie pentru experiența perfectă de citire.",
+        "adv-f1": "12 filtre de imagine în timp real", "adv-f2": "Marcaje & navigare rapidă", "adv-f3": "Întoarcere automată a paginii (0.5–30s)",
+        "adv-f4": "Zoom 5x", "adv-f5": "Rotire imagine (90°)", "adv-f6": "Comenzi rapide de tastatură complete"
+    },
+    sk: {
+        "hero-tagline": "Prehliadač mangy a komiksov novej generácie pre macOS",
+        "pill-archive": "ZIP / RAR / 7z / PDF", "pill-spread": "Dvojstránkový režim", "pill-fast": "Bleskovo rýchle", "pill-free": "Zadarmo & Open Source",
+        "modes-title": "Čítajte po svojom", "modes-subtitle": "Jedna stránka, dvojstránkový režim alebo realistický režim knihy.\nZľava doprava alebo sprava doľava — vaša voľba.",
+        "modes-f1": "Dvojstránkový režim s väzbou", "modes-f2": "Režim jednej stránky", "modes-f3": "Smer čítania LTR & RTL", "modes-f4": "Realistický 3D vzhľad knihy",
+        "label-spread": "DVOJITÁ", "label-single": "JEDNODUCHÁ",
+        "archive-title": "Otvorte čokoľvek", "archive-subtitle": "Otvárajte archívy priamo bez rozbalenia.\nBleskovo rýchle s predbežným načítaním.",
+        "archive-f1": "Bez rozbaľovania", "archive-f2": "Archívy chránené heslom", "archive-f3": "Predbežné načítanie na pozadí", "fmt-images-ext": "PNG JPG GIF WebP",
+        "adv-title": "Plný sily", "adv-subtitle": "Všetko, čo potrebujete pre dokonalý zážitok z čítania.",
+        "adv-f1": "12 obrazových filtrov v reálnom čase", "adv-f2": "Záložky & rýchla navigácia", "adv-f3": "Automatické otáčanie stránok (0.5–30s)",
+        "adv-f4": "5x zoom", "adv-f5": "Otáčanie obrazu (90°)", "adv-f6": "Kompletné klávesové skratky"
+    },
+    uk: {
+        "hero-tagline": "Переглядач манги та коміксів нового покоління для macOS",
+        "pill-archive": "ZIP / RAR / 7z / PDF", "pill-spread": "Розворот", "pill-fast": "Блискавично", "pill-free": "Безкоштовно & Open Source",
+        "modes-title": "Читайте як зручно", "modes-subtitle": "Одна сторінка, розворот або реалістична книга.\nЗліва направо або справа наліво — ваш вибір.",
+        "modes-f1": "Розворот з палітуркою", "modes-f2": "Режим однієї сторінки", "modes-f3": "Напрямок читання LTR & RTL", "modes-f4": "Реалістичний 3D вигляд книги",
+        "label-spread": "РОЗВОРОТ", "label-single": "ОДНА",
+        "archive-title": "Відкрийте будь-що", "archive-subtitle": "Відкривайте архіви напряму без розпакування.\nБлискавично з попереднім завантаженням.",
+        "archive-f1": "Без розпакування", "archive-f2": "Архіви з паролем", "archive-f3": "Попереднє завантаження", "fmt-images-ext": "PNG JPG GIF WebP",
+        "adv-title": "Потужний", "adv-subtitle": "Все для ідеального читання.",
+        "adv-f1": "12 фільтрів у реальному часі", "adv-f2": "Закладки & швидка навігація", "adv-f3": "Автогортання (0.5–30с)",
+        "adv-f4": "5x масштаб", "adv-f5": "Поворот (90°)", "adv-f6": "Гарячі клавіші"
+    }
+
+};
+
+// Regional variants (exact copies of parent languages)
+i18n["en-AU"] = i18n.en;
+i18n["en-CA"] = i18n.en;
+i18n["en-GB"] = i18n.en;
+i18n["es-MX"] = i18n.es;
+i18n["fr-CA"] = i18n.fr;
+i18n["no"] = i18n.nb;
+
+
+function switchLang(lang, btn) {
+    const strings = i18n[lang] || i18n.en;
+    document.querySelectorAll('[data-i18n]').forEach(el => {
+        const key = el.getAttribute('data-i18n');
+        if (strings[key]) {
+            // Preserve HTML structure for titles with <span class="accent">
+            if (el.querySelector && el.querySelector('.accent')) {
+                const accentEl = el.querySelector('.accent');
+                const accentText = accentEl.textContent;
+                // Don't modify titles with accent spans via textContent
+                return;
+            }
+            el.textContent = strings[key];
+        }
+    });
+
+    // Handle titles with accent spans separately
+    const titleMap = {
+        "modes-title": { en: ["Read Your ", "Way"], ja: ["自分好みの", "読み方で"], "zh-Hans": ["随心所欲地", "阅读"], "zh-Hant": ["隨心所欲地", "閱讀"], ko: ["나만의 ", "스타일로"], fr: ["Lisez à votre ", "façon"], de: ["Lesen Sie auf ", "Ihre Art"], es: ["Lee a tu ", "manera"], "pt-BR": ["Leia do ", "seu jeito"], th: ["อ่านตาม", "สไตล์ของคุณ"], vi: ["Đọc theo ", "cách của bạn"], id: ["Baca ", "sesukamu"], it: ["Leggi a ", "modo tuo"], pl: ["Czytaj ", "po swojemu"], tr: ["Kendi ", "tarzında oku"], ru: ["Читайте ", "как удобно"], ms: ["Baca ", "gaya anda"], nl: ["Lees op ", "jouw manier"], sv: ["Läs på ", "ditt sätt"], da: ["Læs på ", "din måde"], nb: ["Les på ", "din måte"], fi: ["Lue ", "omalla tavallasi"], "pt-PT": ["Leia à ", "sua maneira"], "ar-SA": ["اقرأ ", "بطريقتك"], ca: ["Llegeix a la ", "teva manera"], cs: ["Čtěte ", "po svém"], el: ["Διαβάστε με τον ", "τρόπο σας"], he: ["קראו ", "בדרככם"], hi: ["अपने तरीके से ", "पढ़ें"], hr: ["Čitajte na ", "svoj način"], hu: ["Olvasson a ", "maga módján"], no: ["Les på ", "din måte"], ro: ["Citiți în ", "felul vostru"], sk: ["Čítajte ", "po svojom"], uk: ["Читайте ", "як зручно"], "en-AU": ["Read Your ", "Way"], "en-CA": ["Read Your ", "Way"], "en-GB": ["Read Your ", "Way"], "es-MX": ["Lee a tu ", "manera"], "fr-CA": ["Lisez à votre ", "façon"] },
+        "archive-title": { en: ["Open ", "Anything"], ja: ["何でも", "開ける"], "zh-Hans": ["打开", "任何文件"], "zh-Hant": ["開啟", "任何檔案"], ko: ["뭐든지 ", "열기"], fr: ["Ouvrez ", "tout"], de: ["Alles ", "öffnen"], es: ["Abre ", "cualquier cosa"], "pt-BR": ["Abra ", "qualquer coisa"], th: ["เปิดได้", "ทุกอย่าง"], vi: ["Mở ", "mọi thứ"], id: ["Buka ", "apa saja"], it: ["Apri ", "qualsiasi cosa"], pl: ["Otwórz ", "cokolwiek"], tr: ["Her şeyi ", "aç"], ru: ["Откройте ", "что угодно"], ms: ["Buka ", "apa sahaja"], nl: ["Open ", "alles"], sv: ["Öppna ", "vad som helst"], da: ["Åbn ", "hvad som helst"], nb: ["Åpne ", "hva som helst"], fi: ["Avaa ", "mitä tahansa"], "pt-PT": ["Abra ", "qualquer coisa"], "ar-SA": ["افتح ", "أي شيء"], ca: ["Obre ", "qualsevol cosa"], cs: ["Otevřete ", "cokoliv"], el: ["Ανοίξτε ", "οτιδήποτε"], he: ["פתחו ", "כל דבר"], hi: ["कुछ भी ", "खोलें"], hr: ["Otvorite ", "bilo što"], hu: ["Nyisson meg ", "bármit"], no: ["Åpne ", "hva som helst"], ro: ["Deschideți ", "orice"], sk: ["Otvorte ", "čokoľvek"], uk: ["Відкрийте ", "будь-що"], "en-AU": ["Open ", "Anything"], "en-CA": ["Open ", "Anything"], "en-GB": ["Open ", "Anything"], "es-MX": ["Abre ", "cualquier cosa"], "fr-CA": ["Ouvrez ", "tout"] },
+        "adv-title": { en: ["Packed with ", "Power"], ja: ["充実の", "機能"], "zh-Hans": ["功能", "强大"], "zh-Hant": ["功能", "強大"], ko: ["강력한 ", "기능"], fr: ["Plein de ", "fonctionnalités"], de: ["Voller ", "Power"], es: ["Lleno de ", "potencia"], "pt-BR": ["Cheio de ", "recursos"], th: ["เต็มไปด้วย", "พลัง"], vi: ["Mạnh ", "mẽ"], id: ["Penuh ", "fitur"], it: ["Pieno di ", "potenza"], pl: ["Pełen ", "mocy"], tr: ["Güç ", "dolu"], ru: ["Мощный ", "инструмент"], ms: ["Berkuasa ", "penuh"], nl: ["Vol ", "kracht"], sv: ["Full av ", "kraft"], da: ["Fuld af ", "kraft"], nb: ["Full av ", "kraft"], fi: ["Täynnä ", "voimaa"], "pt-PT": ["Cheio de ", "recursos"], "ar-SA": ["مليء ", "بالقوة"], ca: ["Ple de ", "potència"], cs: ["Plný ", "síly"], el: ["Γεμάτο ", "δύναμη"], he: ["מלא ", "בעוצמה"], hi: ["शक्ति से ", "भरपूर"], hr: ["Puno ", "snage"], hu: ["Tele ", "erővel"], no: ["Full av ", "kraft"], ro: ["Plin de ", "putere"], sk: ["Plný ", "sily"], uk: ["Потужний ", "інструмент"], "en-AU": ["Packed with ", "Power"], "en-CA": ["Packed with ", "Power"], "en-GB": ["Packed with ", "Power"], "es-MX": ["Lleno de ", "potencia"], "fr-CA": ["Plein de ", "fonctionnalités"] }
+    };
+
+    Object.entries(titleMap).forEach(([key, langs]) => {
+        const el = document.querySelector(`[data-i18n="${key}"]`);
+        if (el) {
+            const parts = langs[lang] || langs.en;
+            el.innerHTML = parts[0] + '<span class="accent">' + parts[1] + '</span>';
+        }
+    });
+
+    document.querySelectorAll('.controls button').forEach(b => b.classList.remove('active'));
+    if (btn) btn.classList.add('active');
+}
+
+// Initialize Lucide icons
+lucide.createIcons();
+</script>
+
+</body>
+</html>
